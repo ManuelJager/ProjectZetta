@@ -52,6 +52,7 @@ public class ShipController : MonoBehaviour, IController
     public TurningRate turningRate;
 
     private GameObject _ship;
+    private GameObject _target;
     private Camera _camera;
     #endregion
     private void Start()
@@ -60,12 +61,14 @@ public class ShipController : MonoBehaviour, IController
         SetTurningRateVectors();
         _ship = transform.parent.gameObject;
         _camera = Camera.main;
+        _target = GameObject.Find("Target");
     }
 
     void Update()
     {
         //rotates the ship towards the cursor
-        _ship.transform.rotation = RotationUtilities.MouseLookAtRotation(_ship, _camera, turningRate.leftTurningRate, turningRate.rightTurningRate);
+        //_ship.transform.rotation = RotationUtilities.MouseLookAtRotation(_ship, _camera, turningRate.leftTurningRate, turningRate.rightTurningRate);
+        _ship.transform.rotation = RotationUtilities.ObjectLookAtRotation(_ship, _target, 10f);
     }
 
     public void SetThrustVectors(float[] thrustVectors = null)

@@ -33,11 +33,47 @@ public static class RotationUtilities
         return Quaternion.Euler(target.transform.rotation.eulerAngles + new Vector3(.0f, .0f, zStep));
     }
     /// <summary>
+    /// Rotates an object towards a target at a constant rate
+    /// Works with independent left / right turning rates
+    /// This feature is intended in the case of ship rotation, to take into account assymetric thruster layouts, for a more realistic feel
+    /// </summary>
+    /// <param name="current">The gameObject that needs to rotate</param>
+    /// <param name="target">Target GameObject</param>
+    /// <param name="leftTurningRate">Speed at which the object should turn to the left</param>
+    /// <param name="rightTurningRate">Speed at which the object should turn to the right</param>
+    /// <returns></returns>
+    public static Quaternion ObjectLookAtRotation(GameObject current, GameObject target, float leftTurningRate, float rightTurningRate)
+    {
+        Quaternion q = GetRotationToTarget(current, target);
+        var zStep = CalculateZStep(target.transform.rotation.eulerAngles, q.eulerAngles, leftTurningRate, rightTurningRate);
+        return Quaternion.Euler(target.transform.rotation.eulerAngles + new Vector3(.0f, .0f, zStep));
+    }
+    /// <summary>
+    /// Rotates an object towards a target at a constant rate
+    /// </summary>
+    /// <param name="current">The gameObject that needs to rotate</param>
+    /// <param name="target">Target GameObject</param>
+    /// <param name="turningRate">Speed at which the object should turn to any side</param>
+    /// <returns></returns>
+    public static Quaternion ObjectLookAtRotation(GameObject current, GameObject target, float turningRate)
+    {
+        Quaternion q = GetRotationToTarget(current, target);
+        var zStep = CalculateZStep(current.transform.rotation.eulerAngles, q.eulerAngles, turningRate);
+        return Quaternion.Euler(current.transform.rotation.eulerAngles + new Vector3(.0f, .0f, zStep));
+    }
+    /// <summary>
     /// gets rotation relative from target to mouse position
     /// </summary>
-    public static Quaternion GetMouseWorldPos(GameObject target, Camera camera)
+    private static Quaternion GetMouseWorldPos(GameObject target, Camera camera)
     {
         Vector3 vectorToTarget = camera.ScreenToWorldPoint(Input.mousePosition) - target.transform.position;
+        float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg;
+        return Quaternion.AngleAxis(angle, Vector3.forward);
+    }
+
+    private static Quaternion GetRotationToTarget(GameObject current, GameObject target)
+    {
+        Vector3 vectorToTarget = current.transform.position - target.transform.position;
         float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg;
         return Quaternion.AngleAxis(angle, Vector3.forward);
     }
@@ -53,7 +89,7 @@ public static class RotationUtilities
     /// <param name="leftTurningRate">Speed at which the object should turn to the left</param>
     /// <param name="rightTurningRate">Speed at which the object should turn to the right</param>
     /// <returns></returns>
-    public static float CalculateZStep(Vector3 targetRotation, Vector3 currentRotation, float leftTurningRate, float rightTurningRate)
+    private static float CalculateZStep(Vector3 targetRotation, Vector3 currentRotation, float leftTurningRate, float rightTurningRate)
     {
         //zDif is smallest value betweens the two z rotation differences
         float zDif = GetZDif(targetRotation, currentRotation);
@@ -77,7 +113,7 @@ public static class RotationUtilities
     /// <param name="currentRotation">Rotation of object</param>
     /// <param name="turningRate">Speed at which the object should turn to any side</param>
     /// <returns></returns>
-    public static float CalculateZStep(Vector3 targetRotation, Vector3 currentRotation, float turningRate)
+    private static float CalculateZStep(Vector3 targetRotation, Vector3 currentRotation, float turningRate)
     {
         float zDif = GetZDif(targetRotation, currentRotation);
         //wether to rotate left(true) or right(false)
@@ -93,7 +129,7 @@ public static class RotationUtilities
     /// <summary>
     /// returns wether the target rotation is to the left or to the right of the current rotation
     /// </summary>
-    public static bool IsTargetRotationLeftToRotation(Vector3 targetRotation, Vector3 currentRotation)
+    private static bool IsTargetRotationLeftToRotation(Vector3 targetRotation, Vector3 currentRotation)
     {
         bool rotateDirection = ((targetRotation.z - currentRotation.z + 360f) % 360f) > 180.0f ? true : false;
         return rotateDirection;
@@ -101,7 +137,7 @@ public static class RotationUtilities
     /// <summary>
     /// returns the smallest difference between the two vector 3 rotations along the z axis
     /// </summary>
-    public static float GetZDif(Vector3 targetRotation, Vector3 currentRotation)
+    private static float GetZDif(Vector3 targetRotation, Vector3 currentRotation)
     {
         float zDif1 = Mathf.Abs(targetRotation.z - currentRotation.z);
         float zDif2 = Mathf.Abs(currentRotation.z - targetRotation.z);
