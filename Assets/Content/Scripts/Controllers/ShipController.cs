@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class ShipController : MonoBehaviour, IController
 {
@@ -22,6 +24,23 @@ public class ShipController : MonoBehaviour, IController
             _aimingMode = value;
         }
     }
+    public enum DampeningMode
+    {
+        On,
+        Off
+    }
+    private DampeningMode _dampeningMode = DampeningMode.On;
+    public DampeningMode dampeningMode
+    {
+        get
+        {
+            return _dampeningMode;
+        }
+        set
+        {
+            _dampeningMode = value;
+        }
+    }
     public struct Thrust
     {
         public float forwardThrust;
@@ -29,7 +48,7 @@ public class ShipController : MonoBehaviour, IController
         public float leftThrust;
         public float rightThrust;
 
-        public Thrust(float forwardThrust = 3f, float backwardsThrust = 1f, float leftThrust = 1f, float rightThrust = 1f)
+        public Thrust(float forwardThrust, float backwardsThrust, float leftThrust, float rightThrust)
         {
             this.forwardThrust = forwardThrust;
             this.backwardsThrust = backwardsThrust;
@@ -43,34 +62,37 @@ public class ShipController : MonoBehaviour, IController
         public float leftTurningRate;
         public float rightTurningRate;
 
-        public TurningRate(float leftTurningRate = 1f, float rightTurningRate = 1f)
+        public TurningRate(float leftTurningRate, float rightTurningRate)
         {
             this.leftTurningRate = leftTurningRate;
             this.rightTurningRate = rightTurningRate;
         }
     }
     public TurningRate turningRate;
-
+    [SerializeField]
     private GameObject _ship;
+    [SerializeField]
     private Rigidbody2D _rb2d;
     private GameObject _target;
     private Camera _camera;
+    //0 forward , 1 backward, 2 left, 3 right
+    private List<GameObject>[] _thrusterGroups;
 
-    private float movementFactor = 3;
-    private float movementThreshold = 10;
-    private float accel = 10;
     #endregion
     private void Start()
     {
-        SetThrustVectors();
         SetTurningRateVectors();
-        _ship = transform.parent.gameObject;
-        _rb2d = _ship.GetComponent<Rigidbody2D>();
         _camera = Camera.main;
-        _target = GameObject.Find("Target");
         _camera.gameObject.GetComponent<CameraFollower>().SetTarget(_ship);
+        //initialize thrusterGroups
+        _thrusterGroups = new List<GameObject>[4];
+        for (int i = 0; i < 4; i++)
+        {
+            _thrusterGroups[i] = new List<GameObject>();
+        }
+        SetThrusterGroups();
+        SetThrustVectors(ShipControllerUitlities.CalculateThrustVectors(_thrusterGroups));
     }
-
     void Update()
     {
         switch (aimingMode)
@@ -81,23 +103,48 @@ public class ShipController : MonoBehaviour, IController
             case AimingMode.Keyboard:
                 break;
         }
-        //rotates the ship towards the cursor
-        
-
-
-        //_ship.transform.rotation = RotationUtilities.ObjectLookAtRotation(_ship, _target, 10f);
     }
-
     void FixedUpdate()
     {
-        Vector2 input = Input.
-
-        _ship.transform.Translate(movementFactor * thrust.forwardThrust, 0.0f, 0.0f);
+        Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        bool[] thrusterGroupFiring = { false, false, false, false };
+        if (input.x > 0)
+        {
+            thrusterGroupFiring[2] = true;
+        }
+        if (input.x < 0)
+        {
+            thrusterGroupFiring[3] = true;
+        }
+        if (input.y > 0)
+        {
+            thrusterGroupFiring[0] = true;
+        }
+        if (input.y < 0)
+        {
+            thrusterGroupFiring[1] = true;
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            if (thrusterGroupFiring[i])
+            {
+                FireThrusterGroup(i);
+            }
+            else
+            {
+                ShipControllerUitlities.SetThrusterGroupFlame(_thrusterGroups[i], false);
+            }
+        }
+        //dampen ship movement with thruster force pointing in the opposite direction of current velocity;
+        if (dampeningMode == DampeningMode.On)
+        {
+            //Dampening.Dampen(input, _rb2d, _ship.transform.rotation.eulerAngles.z, _ship, thrust);
+        }
     }
     public void SetThrustVectors(float[] thrustVectors = null)
     {
         //if no argument has been given, thrust vectors will be set to default values
-        thrustVectors = thrustVectors ?? new float[4] { 0.1f, 1f, 1f, 1f };
+        thrustVectors = thrustVectors ?? new float[4] { 150f, 100f, 100f, 100f };
         thrust.forwardThrust = thrustVectors[0];
         thrust.backwardsThrust = thrustVectors[1];
         thrust.leftThrust = thrustVectors[2];
@@ -126,4 +173,56 @@ public class ShipController : MonoBehaviour, IController
         turningRateVectors[1] = turningRate.rightTurningRate;
         return turningRateVectors;
     }
-}
+    public void SetThrusterGroups()
+    {
+        var shipLayout = _ship.transform.GetChild(0).GetChild(0);
+        var count = shipLayout.childCount;
+        for (int i = 0; i < count; i++)
+        {
+            var child = shipLayout.transform.GetChild(i);
+            if (child.tag == "Thruster")
+            {
+                AddToThrusterGroups(child.gameObject);
+            }
+        }
+    }
+    private void AddToThrusterGroups(GameObject thruster)
+    {
+        switch (thruster.transform.rotation.eulerAngles.z)
+        {
+            case 0f:
+                _thrusterGroups[0].Add(thruster);
+                break;
+            case 90f:
+                _thrusterGroups[3].Add(thruster);
+                break;
+            case 180f:
+                _thrusterGroups[1].Add(thruster);
+                break;
+            case 270f:
+                _thrusterGroups[2].Add(thruster);
+                break;
+        }
+    }
+    private void FireThrusterGroup(int group)
+    {
+        var orientation = new Common.Orientation();
+        switch (group)
+        {
+            case 0:
+                orientation = Common.Orientation.forward;
+                break;
+            case 1:
+                orientation = Common.Orientation.backward;
+                break;
+            case 2:
+                orientation = Common.Orientation.right;
+                break;
+            case 3:
+                orientation = Common.Orientation.left;
+                break;
+        }
+        ShipControllerUitlities.ApplyRB2DForce(_rb2d, _ship, thrust, orientation);
+        ShipControllerUitlities.SetThrusterGroupFlame(_thrusterGroups[group], true);
+    }
+}   

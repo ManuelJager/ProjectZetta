@@ -8,5 +8,5 @@ public interface IBlock
     float GetHealth();
     int GetMass();
     int GetArmor();
-    void Destroy();
+    void SubtractFromGridAndDestroy();
 }

@@ -146,4 +146,20 @@ public static class RotationUtilities
         float zDif = Mathf.Min(zDif1, zDif2);
         return zDif;
     }
+    /// <summary>
+    /// Rotates a vector2 along the z axis
+    /// </summary>
+    public static Vector2 RotateVector2(Vector2 vector, float angle)
+    {
+        #region magic
+        var theta = angle * Mathf.Deg2Rad;
+
+        var cs = Mathf.Cos(theta);
+        var sn = Mathf.Sin(theta);
+
+        var px = vector.x * cs - vector.y * sn;
+        var py = vector.x * sn + vector.y * cs;
+        #endregion
+        return new Vector2(px, py);
+    }
 }

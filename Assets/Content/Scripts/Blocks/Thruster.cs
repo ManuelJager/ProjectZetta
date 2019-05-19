@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ArmorBlock : MonoBehaviour, IBlock
+public class Thruster : MonoBehaviour, IBlock, IThruster
 {
     #region vars
     [SerializeField]
@@ -11,12 +11,17 @@ public class ArmorBlock : MonoBehaviour, IBlock
     private int mass;
     [SerializeField]
     private int armor;
+    [SerializeField]
+    private float thrust;
+    [SerializeField]
+    private GameObject thruster;
     #endregion
-    public ArmorBlock(float health, int mass, int armor)
+    public Thruster(float health, int mass, int armor, float thrust)
     {
         this.health = health;
         this.mass = mass;
         this.armor = armor;
+        this.thrust = thrust;
     }
     public void SetHealth(float value)
     {
@@ -41,5 +46,17 @@ public class ArmorBlock : MonoBehaviour, IBlock
     public void SubtractFromGridAndDestroy()
     {
         Destroy(gameObject);
+    }
+    public void SetThrusterFlame(bool value, float strength = 0f)
+    {
+        thruster.SetActive(value);
+    }
+    public void SetThrust(float value)
+    {
+        thrust = value;
+    }
+    public float GetThrust()
+    {
+        return thrust;
     }
 }
