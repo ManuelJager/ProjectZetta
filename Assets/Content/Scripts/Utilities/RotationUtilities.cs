@@ -14,8 +14,9 @@ public static class RotationUtilities
     /// <param name="leftTurningRate">Speed at which the object should turn to the left</param>
     /// <param name="rightTurningRate">Speed at which the object should turn to the right</param>
     /// <returns></returns>
-    public static Quaternion MouseLookAtRotation(GameObject target, Camera camera, float leftTurningRate, float rightTurningRate)
+    public static Quaternion MouseLookAtRotation(GameObject target, float leftTurningRate, float rightTurningRate, Camera camera = null)
     {
+        camera = camera ?? Camera.main;
         Quaternion q = GetMouseWorldPos(target, camera);
         var zStep = CalculateZStep(target.transform.rotation.eulerAngles, q.eulerAngles, leftTurningRate, rightTurningRate);
         return Quaternion.Euler(target.transform.rotation.eulerAngles + new Vector3(.0f, .0f, zStep));
@@ -26,8 +27,9 @@ public static class RotationUtilities
     /// <param name="target">Target GameObject</param>
     /// <param name="camera">Rendering camera</param>
     /// <param name="turningRate">Speed at which the object should turn to any side</param>
-    public static Quaternion MouseLookAtRotation(GameObject target, Camera camera, float turningRate)
+    public static Quaternion MouseLookAtRotation(GameObject target, float turningRate, Camera camera = null)
     {
+        camera = camera ?? Camera.main;
         Quaternion q = GetMouseWorldPos(target, camera);
         var zStep = CalculateZStep(target.transform.rotation.eulerAngles, q.eulerAngles, turningRate);
         return Quaternion.Euler(target.transform.rotation.eulerAngles + new Vector3(.0f, .0f, zStep));

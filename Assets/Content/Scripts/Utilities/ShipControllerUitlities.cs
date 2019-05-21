@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class ShipControllerUitlities
 {
-    public static void ApplyRB2DForce(Rigidbody2D rb2d, GameObject gameObject, ShipController.Thrust thrust, Common.Orientation orientation)
+    public static void ApplyRB2DForce(Rigidbody2D rb2d, GameObject gameObject, ShipGrid.Thrust thrust, Common.Orientation orientation)
     {
         switch (orientation)
         {
