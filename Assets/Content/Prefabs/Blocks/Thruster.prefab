@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 486215640213389409}
   - component: {fileID: 486215640213389408}
   - component: {fileID: 2298050045829359791}
-  - component: {fileID: 2586145922987190111}
   - component: {fileID: 8876731279466525338}
   m_Layer: 0
   m_Name: Thruster
@@ -109,21 +108,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &2586145922987190111
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 486215640213389422}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac51b4f140912274497753da8ad4b211, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 0
-  mass: 0
-  armor: 0
 --- !u!114 &8876731279466525338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,7 +123,7 @@ MonoBehaviour:
   health: 50
   mass: 2
   armor: 5
-  thrust: 100
+  thrust: 1000
   thruster: {fileID: 2671299439371699410}
 --- !u!1 &2671299439371699410
 GameObject:

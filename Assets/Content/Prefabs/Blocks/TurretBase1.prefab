@@ -366,7 +366,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turretSpeed: 50
   projectileSpeed: 200
-  fireRate: 10
+  fireRate: 5
   turret: {fileID: 7944339099970422007}
   animator: {fileID: 3351968588599773825}
   firePoint: {fileID: 7853348930792487713}
