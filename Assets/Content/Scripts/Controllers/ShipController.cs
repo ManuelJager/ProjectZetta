@@ -49,7 +49,7 @@ public class ShipController : MonoBehaviour
         _camera = Camera.main;
         _camera.gameObject.GetComponent<CameraFollower>().SetTarget(gameObject);
         _ship = transform.parent.gameObject;
-        shipGrid = _ship.AddComponent<ShipGrid>();
+        shipGrid = _ship.GetComponent<ShipGrid>();
     }
     void Update()
     {

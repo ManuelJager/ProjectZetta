@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 public class ShipGrid : MonoBehaviour
 {
     private GameObject _ship;
     private Rigidbody2D _rb2d;
+    private GameObject[,] _shipGrid;
+    private Vector2Int lowest;
+    private Vector2Int highest;
 
     public struct Thrust
     {
@@ -34,7 +38,7 @@ public class ShipGrid : MonoBehaviour
     }
     public TurningRate turningRate;
     public List<GameObject>[] _thrusterGroups;
-    private void Awake()
+    private void Start()
     {
         _ship = gameObject;
         _rb2d = GetComponent<Rigidbody2D>();
@@ -46,10 +50,10 @@ public class ShipGrid : MonoBehaviour
         SetThrusterGroups();
         SetTurningRateVectors();
         SetThrustVectors(ShipControllerUitlities.CalculateThrustVectors(_thrusterGroups));
-        SetUpgrid();
+        CalculateMass();
+        ConstructGrid();
     }
-
-    private void SetUpgrid()
+    private void CalculateMass()
     {
         List<IBlock> blocks = new List<IBlock>();
         var shipLayout = _ship.transform.GetChild(0).GetChild(0);
@@ -152,4 +156,63 @@ public class ShipGrid : MonoBehaviour
         ShipControllerUitlities.ApplyRB2DForce(_rb2d, _ship, thrust, orientation);
         ShipControllerUitlities.SetThrusterGroupFlame(_thrusterGroups[group], true);
     }
+    public void AddToGrid(Transform block)
+    {
+        var pos = block.position;
+        var targetXIndex = (int)pos.x - lowest.x;
+        var targetYIndex = (int)pos.y - lowest.y;
+        if (!IndexIsOutsideGridBounds(new int[] { targetXIndex, targetYIndex }))
+        {
+            _shipGrid[targetXIndex, targetYIndex] = block.gameObject;
+        }
+        else
+        {
+            Debug.LogWarning("Block is outside of bounds");
+        }
+    }
+    private void ConstructGrid()
+    {
+        var shipLayout = _ship.transform.GetChild(0).GetChild(0);
+        var count = shipLayout.childCount;
+        //list of all x and y positions of all blocks
+        List<float> xPositions = new List<float>();
+        List<float> yPositions = new List<float>();
+        //iterates through all blocks and adds the positions to their respective list
+        for (int i = 0; i < count; i++)
+        {
+            var child = shipLayout.transform.GetChild(i);
+            xPositions.Add(child.transform.localPosition.x);
+            yPositions.Add(child.transform.localPosition.y);
+        }
+        //lowest abd highest offset of block positions from 0,0
+        lowest = new Vector2Int((int)Mathf.Min(xPositions.ToArray()), (int)Mathf.Min(yPositions.ToArray()));
+        highest = new Vector2Int((int)Mathf.Max(xPositions.ToArray()), (int)Mathf.Max(yPositions.ToArray()));
+        //target size in width and height of grid
+        Vector2Int gridSize = highest - lowest + new Vector2Int(1, 1);
+
+        _shipGrid = new GameObject[gridSize.x, gridSize.y];
+
+        for (int i = 0; i < count; i++)
+        {
+            var child = shipLayout.transform.GetChild(i);
+            AddToGrid(child);
+        }
+        //debug
+        if (PlayerPrefs.Instance.debug3)
+        {
+            Debug.Log(lowest);
+            Debug.Log(highest);
+            Debug.Log(gridSize);
+        }
+    }
+    private bool IndexIsOutsideGridBounds(int[] index)
+    {
+        for (int x = 0; x < index.Length; x++)
+        {
+            if (index[x] > _shipGrid.GetLength(x)) return true;
+            if (index[x] < 0) return true;
+        }
+        return false;
+    }
+
 }
