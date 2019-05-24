@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.Linq;
-
+﻿using UnityEngine;
 public class ShipController : MonoBehaviour
 {
     #region declarations
@@ -48,7 +43,6 @@ public class ShipController : MonoBehaviour
     private Camera _camera;
     public bool[] thrusterGroupFiring = new bool[4];
     private ShipGrid shipGrid;
-
     #endregion
     private void Awake()
     {

@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.Reflection;
-
+﻿using System.Reflection;
 public static class Common
 {
     public enum Orientation

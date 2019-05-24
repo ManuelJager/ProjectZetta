@@ -1,8 +1,5 @@
 ﻿#pragma warning disable 649
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 public class Thruster : MonoBehaviour, IBlock, IThruster
 {
     #region vars
@@ -26,7 +23,7 @@ public class Thruster : MonoBehaviour, IBlock, IThruster
     }
     public void SetHealth(float value)
     {
-        health -= value;
+        health = value;
         if (health <= .0f)
         {
             SubtractFromGridAndDestroy();
@@ -59,5 +56,13 @@ public class Thruster : MonoBehaviour, IBlock, IThruster
     public float GetThrust()
     {
         return thrust;
+    }
+    public int GetRootGridID()
+    {
+        return transform.root.GetInstanceID();
+    }
+    public void DebugThis()
+    {
+        Debug.Log("Rood id of " + transform.root.name + " is : " + GetRootGridID());
     }
 }

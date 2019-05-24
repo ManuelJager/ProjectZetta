@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿using UnityEngine;
 public static class Dampening
 {
     static Vector2 relativeVelocity = new Vector2();
@@ -38,7 +34,6 @@ public static class Dampening
         Debug.Log("Relative vel is : " + relativeVelocity);
         Debug.Log("Absolute vel is : " + rb2d.velocity);
     }
-
     public static void DampenVertically()
     {
         if (relativeVelocity.y < -0.05)
@@ -50,7 +45,6 @@ public static class Dampening
             shipController.thrusterGroupFiring[2] = true;
         }
     }
-
     public static void DampenHorizontally()
     {
         if (relativeVelocity.x < -0.05)

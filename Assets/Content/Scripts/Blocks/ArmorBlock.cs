@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿using UnityEngine;
 public class ArmorBlock : MonoBehaviour, IBlock
 {
     #region vars
@@ -20,7 +17,7 @@ public class ArmorBlock : MonoBehaviour, IBlock
     }
     public void SetHealth(float value)
     {
-        health -= value;
+        health = value;
         if (health <= .0f)
         {
             SubtractFromGridAndDestroy();
@@ -41,5 +38,13 @@ public class ArmorBlock : MonoBehaviour, IBlock
     public void SubtractFromGridAndDestroy()
     {
         Destroy(gameObject);
+    }
+    public int GetRootGridID()
+    {
+        return transform.root.GetInstanceID();
+    }
+    public void DebugThis()
+    {
+        Debug.Log("Rood id of " + transform.root.name + " is : " + GetRootGridID());
     }
 }

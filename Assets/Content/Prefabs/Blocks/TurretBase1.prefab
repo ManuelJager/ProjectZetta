@@ -262,6 +262,7 @@ GameObject:
   - component: {fileID: 5735994724135006647}
   - component: {fileID: 3351968588599773825}
   - component: {fileID: 5717553540959765035}
+  - component: {fileID: 8704436924974161677}
   m_Layer: 0
   m_Name: Turret
   m_TagString: Untagged
@@ -320,7 +321,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: -2510476293373519475, guid: 01d38f7f965ca5842bca2d179c0d523a,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -365,9 +366,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turretSpeed: 50
-  projectileSpeed: 200
-  fireRate: 5
+  projectileSpeed: 3000
+  projectileDamage: 150
+  fireRate: 20
   turret: {fileID: 7944339099970422007}
   animator: {fileID: 3351968588599773825}
   firePoint: {fileID: 7853348930792487713}
   audioSource: {fileID: 4823843030622891869}
+  projectilePrefab: {fileID: 5521314273024301127, guid: 6850e9e0fb2cc2d459f6189d1ccd0dd1,
+    type: 3}
+--- !u!114 &8704436924974161677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7944339099970422007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58629221a6f6fd14f92b676fd776ef26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
