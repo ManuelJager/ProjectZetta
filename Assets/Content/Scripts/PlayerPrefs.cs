@@ -19,8 +19,17 @@ public class PlayerPrefs : MonoBehaviour
     /// </summary>
     public bool debug4;
     /// <summary>
+    /// Debugs the grid positions of multi size blocks 
+    /// </summary>
+    public bool debug5;
+    /// <summary>
+    /// Suplementary multi size block debugging
+    /// </summary>
+    public bool debug6;
+    /// <summary>
     /// Wether or not sabot rounds instantiate shell casing graphics on fire
     /// </summary>
+
     public bool sabotRoundSpread;
     public static PlayerPrefs Instance;
     private void Awake()

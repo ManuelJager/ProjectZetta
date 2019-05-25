@@ -121,9 +121,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dfd1d687d2b7084d97935faee8a7a4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 50
-  mass: 2
-  armor: 5
+  _health: 20
+  _mass: 2
+  _armor: 5
   thrust: 1000
   thruster: {fileID: 2671299439371699410}
 --- !u!1 &2671299439371699410

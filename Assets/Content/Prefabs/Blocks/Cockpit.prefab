@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8145373105469277319}
   - component: {fileID: 8145373105469277318}
   - component: {fileID: 7516823843987942473}
-  - component: {fileID: 6077213115560567737}
+  - component: {fileID: 2379592963018102308}
   m_Layer: 0
   m_Name: Cockpit
   m_TagString: Block
@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8145373105469277320}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.84, y: -1.59, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -107,7 +107,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3, y: 1}
   m_EdgeRadius: 0
---- !u!114 &6077213115560567737
+--- !u!114 &2379592963018102308
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -116,9 +116,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8145373105469277320}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac51b4f140912274497753da8ad4b211, type: 3}
+  m_Script: {fileID: 11500000, guid: 8e1ebd6e648ecca40bcb45dac2a68fcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 50
-  mass: 1
-  armor: 20
+  _health: 200
+  _mass: 5
+  _armor: 30
+  _size: {x: 3, y: 2}

@@ -120,6 +120,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac51b4f140912274497753da8ad4b211, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 50
-  mass: 1
-  armor: 20
+  _health: 50
+  _mass: 1
+  _armor: 10

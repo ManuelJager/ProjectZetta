@@ -121,9 +121,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 387121d567b36f14d9c7e3ce484defd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 20
-  mass: 5
-  armor: 5
+  _health: 30
+  _mass: 3
+  _armor: 10
 --- !u!1 &7853348930792487713
 GameObject:
   m_ObjectHideFlags: 0
@@ -167,7 +167,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: df32c6443b186944b9282fc98a7544e9, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -241,7 +241,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0

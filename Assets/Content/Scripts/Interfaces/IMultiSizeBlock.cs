@@ -5,4 +5,5 @@ using UnityEngine;
 public interface IMultiSizeBlock : IBlock
 {
     Vector2Int size { get; set; }
+    Vector2Int effectiveSize { get; }
 }
