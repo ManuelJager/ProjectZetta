@@ -2,44 +2,45 @@
 using UnityEngine;
 public class Thruster : MonoBehaviour, IBlock, IThruster
 {
-    #region vars
     [SerializeField]
-    private float health;
+    private float _health;
     [SerializeField]
-    private int mass;
+    private int _mass;
     [SerializeField]
-    private int armor;
+    private int _armor;
     [SerializeField]
     private float thrust;
     [SerializeField]
     private GameObject thruster;
-    #endregion
-    public Thruster(float health, int mass, int armor, float thrust)
+    public float health
     {
-        this.health = health;
-        this.mass = mass;
-        this.armor = armor;
-        this.thrust = thrust;
-    }
-    public void SetHealth(float value)
-    {
-        health = value;
-        if (health <= .0f)
+        get
         {
-            SubtractFromGridAndDestroy();
+            return _health;
+        }
+        set
+        {
+            _health = value;
+            if (value <= .0f)
+            {
+                SubtractFromGridAndDestroy();
+            }
         }
     }
-    public float GetHealth()
+    public int mass
     {
-        return health;
+        get
+        {
+            return _mass;
+        }
     }
-    public int GetMass()
+
+    public int armor
     {
-        return mass;
-    }
-    public int GetArmor()
-    {
-        return armor;
+        get
+        {
+            return _armor;
+        }
     }
     public void SubtractFromGridAndDestroy()
     {

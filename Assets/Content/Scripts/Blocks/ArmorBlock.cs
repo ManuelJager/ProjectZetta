@@ -1,39 +1,43 @@
-﻿using UnityEngine;
+﻿#pragma warning disable 649
+using UnityEngine;
 public class ArmorBlock : MonoBehaviour, IBlock
 {
-    #region vars
     [SerializeField]
-    private float health;
+    private float _health;
     [SerializeField]
-    private int mass;
+    private int _mass;
     [SerializeField]
-    private int armor;
-    #endregion
-    public ArmorBlock(float health, int mass, int armor)
+    private int _armor;
+
+    public float health
     {
-        this.health = health;
-        this.mass = mass;
-        this.armor = armor;
-    }
-    public void SetHealth(float value)
-    {
-        health = value;
-        if (health <= .0f)
+        get
         {
-            SubtractFromGridAndDestroy();
+            return _health;
+        }
+        set
+        {
+            _health = value;
+            if (value <= .0f)
+            {
+                SubtractFromGridAndDestroy();
+            }
         }
     }
-    public float GetHealth()
+    public int mass
     {
-        return health;
+        get
+        {
+            return _mass;
+        }
     }
-    public int GetMass()
+
+    public int armor
     {
-        return mass;
-    }
-    public int GetArmor()
-    {
-        return armor;
+        get
+        {
+            return _armor;
+        }
     }
     public void SubtractFromGridAndDestroy()
     {

@@ -1,16 +1,25 @@
 fileFormatVersion: 2
-guid: cf164ca7b526f5240bdb5203dbb36520
+guid: 10fa4867d58691949ae6d10ea8427075
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8208293239309660446
-    second: SabotRound (1)_0
+      213: 2734423211405241899
+    second: ShipTiles_0
   - first:
-      213: 6076227574472522610
-    second: SabotRound (1)_1
+      213: 7347111767958844189
+    second: ShipTiles_1
   - first:
-      213: -5836615152440123919
-    second: SabotRound (1)_2
+      213: 6903120917539983151
+    second: ShipTiles_2
+  - first:
+      213: -1963881525561619928
+    second: ShipTiles_3
+  - first:
+      213: 2577598707902432233
+    second: ShipTiles_4
+  - first:
+      213: 4580618572166466534
+    second: ShipTiles_5
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -104,55 +113,118 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SabotRound (1)_0
+      name: ShipTiles_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 14
-        width: 21
-        height: 7
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a550262cd12220442a6fce8d0489e97e
-      internalID: 8208293239309660446
+      spriteID: 38a81c804d0b3494abcdd41cbf8d2e1e
+      internalID: 2734423211405241899
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SabotRound (1)_1
+      name: ShipTiles_1
       rect:
         serializedVersion: 2
-        x: 0
-        y: 7
-        width: 21
-        height: 7
+        x: 32
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e2b7deae847c4004e819d6940c4e7f94
-      internalID: 6076227574472522610
+      spriteID: 4051a52946793e340aed307037f181d1
+      internalID: 7347111767958844189
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SabotRound (1)_2
+      name: ShipTiles_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cecff861c6ad5144384b56beb8c01a0c
+      internalID: 6903120917539983151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ShipTiles_3
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c32876bfc541884a8259147713fa597
+      internalID: -1963881525561619928
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ShipTiles_4
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 21
-        height: 7
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 54051431c6c18ed48b1f09b36712f774
+      internalID: 2577598707902432233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ShipTiles_5
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -160,8 +232,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 24ad0afaaaddd47498da401201e5e3f2
-      internalID: -5836615152440123919
+      spriteID: cecd49508f35e4f4eb44978611b6ae41
+      internalID: 4580618572166466534
       vertices: []
       indices: 
       edges: []
@@ -169,7 +241,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 6d3fa9101aa296b4cbabdff3a23c0988
+    spriteID: 14429c53d015aec449c88eef23e7fee4
     internalID: 0
     vertices: []
     indices: 

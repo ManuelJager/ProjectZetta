@@ -64,10 +64,11 @@ public class ShipGrid : MonoBehaviour
             //interface cast
             blocks.Add((IBlock)child.GetComponent(typeof(IBlock)));
         }
+        if (PlayerPrefs.Instance.debug4) Debug.Log("count of blocks in " + _ship.name + " is : " + blocks.Count);
         float targetMass = 0f;
         foreach (var block in blocks)
         {
-            targetMass += block.GetMass();
+            targetMass += block.mass;
         }
         _rb2d.mass = targetMass;
     }

@@ -1,16 +1,7 @@
 fileFormatVersion: 2
-guid: cf164ca7b526f5240bdb5203dbb36520
+guid: 370469e7af107b64a906836a04e8e0de
 TextureImporter:
-  internalIDToNameTable:
-  - first:
-      213: 8208293239309660446
-    second: SabotRound (1)_0
-  - first:
-      213: 6076227574472522610
-    second: SabotRound (1)_1
-  - first:
-      213: -5836615152440123919
-    second: SabotRound (1)_2
+  internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -49,7 +40,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -102,74 +93,11 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: SabotRound (1)_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 14
-        width: 21
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a550262cd12220442a6fce8d0489e97e
-      internalID: 8208293239309660446
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SabotRound (1)_1
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 7
-        width: 21
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e2b7deae847c4004e819d6940c4e7f94
-      internalID: 6076227574472522610
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SabotRound (1)_2
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 21
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 24ad0afaaaddd47498da401201e5e3f2
-      internalID: -5836615152440123919
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 6d3fa9101aa296b4cbabdff3a23c0988
+    spriteID: 8b8da345965d1834faba726d59fb0d74
     internalID: 0
     vertices: []
     indices: 

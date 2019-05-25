@@ -1,9 +1,8 @@
 ﻿public interface IBlock : IGridMember
 {
-    void SetHealth(float value);
-    float GetHealth();
-    int GetMass();
-    int GetArmor();
+    float health { get; set; }
+    int mass { get; }
+    int armor { get; }
     void SubtractFromGridAndDestroy();
     void DebugThis();
 }

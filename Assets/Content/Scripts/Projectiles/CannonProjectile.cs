@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#pragma warning disable 649
+using UnityEngine;
 public class CannonProjectile : MonoBehaviour, IProjectile
 {
     private int sourceGridID;
@@ -15,8 +16,8 @@ public class CannonProjectile : MonoBehaviour, IProjectile
             //returns out of function if collider grid is the same as the source grid of the projectile
             return;
         }
-        var blockHealth = block.GetHealth();
-        var blockArmor = block.GetArmor();
+        var blockHealth = block.health;
+        var blockArmor = block.armor;
         var effectiveDamage = projectileDamage - blockArmor;
         var effectiveTotalHealth = blockHealth + blockArmor;
         //Debugs the damage stats of the projectile and hit block
@@ -28,7 +29,7 @@ public class CannonProjectile : MonoBehaviour, IProjectile
             Debug.Log("EffectiveDamage = " + effectiveDamage);
             Debug.Log("Hit");
         }
-        if (effectiveDamage > blockArmor) block.SetHealth(blockHealth - effectiveDamage);
+        if (effectiveDamage > blockArmor) block.health = blockHealth - effectiveDamage;
         projectileDamage -= effectiveTotalHealth;
         if (projectileDamage < 0)
         {
