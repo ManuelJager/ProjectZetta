@@ -38,6 +38,10 @@ public class ShipController : MonoBehaviour
     }
     [SerializeField]
     private GameObject _ship;
+    [SerializeField]
+    private Transform _grid;
+    [SerializeField]
+    private Transform _cameraAnchorPoint;
 
     private GameObject _target;
     private Camera _camera;
@@ -46,10 +50,13 @@ public class ShipController : MonoBehaviour
     #endregion
     private void Awake()
     {
-        _camera = Camera.main;
-        _camera.gameObject.GetComponent<CameraFollower>().SetTarget(gameObject);
         _ship = transform.parent.gameObject;
         shipGrid = _ship.GetComponent<ShipGrid>();
+    }
+
+    private void Start()
+    {
+        EventManager.CallCameraTargetEvent(_cameraAnchorPoint);
     }
     void Update()
     {
@@ -58,7 +65,8 @@ public class ShipController : MonoBehaviour
             case AimingMode.Cursor:
                 if (!Input.GetKey(KeyCode.LeftShift))
                 {
-                    _ship.transform.rotation = RotationUtilities.MouseLookAtRotation(_ship, shipGrid.turningRate.leftTurningRate, shipGrid.turningRate.rightTurningRate);
+                    var rot = RotationUtilities.MouseLookAtRotation(_grid, shipGrid.turningRate.leftTurningRate, shipGrid.turningRate.rightTurningRate);
+                    _grid.transform.rotation = rot;
                 }
                 break;
             case AimingMode.Keyboard:

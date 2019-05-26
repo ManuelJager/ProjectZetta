@@ -12,12 +12,12 @@ public static class RotationUtilities
     /// <param name="leftTurningRate">Speed at which the object should turn to the left</param>
     /// <param name="rightTurningRate">Speed at which the object should turn to the right</param>
     /// <returns></returns>
-    public static Quaternion MouseLookAtRotation(GameObject target, float leftTurningRate, float rightTurningRate, Camera camera = null)
+    public static Quaternion MouseLookAtRotation(Transform target, float leftTurningRate, float rightTurningRate, Camera camera = null)
     {
         camera = camera ?? Camera.main;
         Quaternion q = GetMouseWorldPos(target, camera);
-        var zStep = CalculateZStep(target.transform.rotation.eulerAngles, q.eulerAngles, leftTurningRate, rightTurningRate);
-        return Quaternion.Euler(target.transform.rotation.eulerAngles + new Vector3(.0f, .0f, zStep));
+        var zStep = CalculateZStep(target.rotation.eulerAngles, q.eulerAngles, leftTurningRate, rightTurningRate);
+        return Quaternion.Euler(target.rotation.eulerAngles + new Vector3(.0f, .0f, zStep));
     }
     /// <summary>
     /// Rotates a target towards the mouse at a constant rate
@@ -25,12 +25,12 @@ public static class RotationUtilities
     /// <param name="target">Target GameObject</param>
     /// <param name="camera">Rendering camera</param>
     /// <param name="turningRate">Speed at which the object should turn to any side</param>
-    public static Quaternion MouseLookAtRotation(GameObject target, float turningRate, Camera camera = null)
+    public static Quaternion MouseLookAtRotation(Transform target, float turningRate, Camera camera = null)
     {
         camera = camera ?? Camera.main;
         Quaternion q = GetMouseWorldPos(target, camera);
-        var zStep = CalculateZStep(target.transform.rotation.eulerAngles, q.eulerAngles, turningRate);
-        return Quaternion.Euler(target.transform.rotation.eulerAngles + new Vector3(.0f, .0f, zStep));
+        var zStep = CalculateZStep(target.rotation.eulerAngles, q.eulerAngles, turningRate);
+        return Quaternion.Euler(target.rotation.eulerAngles + new Vector3(.0f, .0f, zStep));
     }
     /// <summary>
     /// Rotates an object towards a target at a constant rate
@@ -64,9 +64,9 @@ public static class RotationUtilities
     /// <summary>
     /// gets rotation relative from target to mouse position
     /// </summary>
-    private static Quaternion GetMouseWorldPos(GameObject target, Camera camera)
+    private static Quaternion GetMouseWorldPos(Transform target, Camera camera)
     {
-        Vector3 vectorToTarget = camera.ScreenToWorldPoint(Input.mousePosition) - target.transform.position;
+        Vector3 vectorToTarget = camera.ScreenToWorldPoint(Input.mousePosition) - target.position;
         float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg;
         return Quaternion.AngleAxis(angle, Vector3.forward);
     }

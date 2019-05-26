@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Extensions;
 public class ShipGrid : MonoBehaviour
 { 
     enum type
@@ -8,7 +9,17 @@ public class ShipGrid : MonoBehaviour
         single,
         multiple
     }
+    public struct PosBlockData
+    {
+        public Vector2 gridPosition;
+        public float mass;
 
+        public PosBlockData (Vector2 gridPosition, float mass)
+        {
+            this.gridPosition = gridPosition;
+            this.mass = mass;
+        }
+    }
     struct IBlockObject
     {
         public IBlock block;
@@ -32,7 +43,8 @@ public class ShipGrid : MonoBehaviour
             this.transform = transform;
         }
     }
-
+    [SerializeField]
+    private Transform _gridOffset;
     private GameObject _ship;
     private Rigidbody2D _rb2d;
     private GameObject[,] _shipGrid;
@@ -81,6 +93,8 @@ public class ShipGrid : MonoBehaviour
         SetTurningRateVectors();
         SetThrustVectors(ShipControllerUitlities.CalculateThrustVectors(_thrusterGroups));
         //CalculateMass();
+        
+
         ConstructGrid();
     }
     [Obsolete("mass calculations are automatically done in ContructGrid now")]
@@ -194,7 +208,7 @@ public class ShipGrid : MonoBehaviour
                 orientation = Common.Orientation.left;
                 break;
         }
-        ShipControllerUitlities.ApplyRB2DForce(_rb2d, _ship, thrust, orientation);
+        ShipControllerUitlities.ApplyRB2DForce(_rb2d, _gridOffset, thrust, orientation);
         ShipControllerUitlities.SetThrusterGroupFlame(_thrusterGroups[group], true);
     }
     public void AddToGrid(Transform block)
@@ -243,14 +257,17 @@ public class ShipGrid : MonoBehaviour
     {
         var shipLayout = _ship.transform.GetChild(0).GetChild(0);
         var childCount = shipLayout.childCount;
+
         float targetMass = 0f;
 
-        List<IMultiSizeBlockObject> multiSizeBlocks = new List<IMultiSizeBlockObject>();
-        List<IBlockObject> blocks = new List<IBlockObject>();
+        var multiSizeBlocks = new List<IMultiSizeBlockObject>();
+        var blocks = new List<IBlockObject>();
         //list of all x and y positions of all blocks
-        List<float> xPositions = new List<float>();
-        List<float> yPositions = new List<float>();
+        var xPositions = new List<float>();
+        var yPositions = new List<float>();
+
         //iterates through all blocks and adds the positions to their respective list
+        //total ship mass calculations
         for (int i = 0; i < childCount; i++)
         {
             var child = shipLayout.transform.GetChild(i);
@@ -288,13 +305,17 @@ public class ShipGrid : MonoBehaviour
         Vector2Int gridSize = highest - lowest + new Vector2Int(1, 1);
 
         _shipGrid = new GameObject[gridSize.x, gridSize.y];
-
+        
+        //holds the local positions and mass of all blocks
+        var posBlockData = new List<PosBlockData>();
+        //ship grid population
         for (int i = 0; i < childCount; i++)
         {
             var child = shipLayout.transform.GetChild(i);
             var multiSizeBlock = (IMultiSizeBlock)child.GetComponent(typeof(IMultiSizeBlock));
             if (multiSizeBlock != null)
             {
+                posBlockData.Add(new PosBlockData(child.localPosition, multiSizeBlock.mass));
                 foreach (var vector2 in getPositionsOfMultiSizeBlock(new IMultiSizeBlockObject(multiSizeBlock, child.transform)))
                 {
                     AddToGrid(child, vector2);
@@ -305,10 +326,13 @@ public class ShipGrid : MonoBehaviour
                 var block = (IBlock)child.GetComponent(typeof(IBlock));
                 if (block != null)
                 {
+                    posBlockData.Add(new PosBlockData(child.localPosition, block.mass));
                     AddToGrid(child);
                 }
             }
         }
+        var centerOfMass = posBlockData.WeightedAverage();
+        _gridOffset.localPosition = centerOfMass * -1;
         #region debugging
         if (PlayerPrefs.Instance.debug3)
         {
@@ -334,6 +358,11 @@ public class ShipGrid : MonoBehaviour
             }
             Debug.Log("Count of occupied grid tiles in " + _ship.name + " is : " + count);
         }
+        if (PlayerPrefs.Instance.debug7)
+        {
+            Debug.Log(centerOfMass);
+        }
+        
         #endregion
 
     }

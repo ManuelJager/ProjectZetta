@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 public class CameraFollower : MonoBehaviour
 {
-    private GameObject _target;
-    public void SetTarget(GameObject target)
+    private Transform _target;
+    public void SetTarget(Transform target)
     {
         _target = target;
+        Debug.Log("TargetSet");
     }
     private void Update()
     {
@@ -14,5 +15,15 @@ public class CameraFollower : MonoBehaviour
         {
             transform.position = new Vector3(_target.transform.position.x, _target.transform.position.y, -10);
         }
+    }
+
+    private void OnEnable()
+    {
+        EventManager.CameraTargetEvent += SetTarget;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.CameraTargetEvent -= SetTarget;
     }
 }

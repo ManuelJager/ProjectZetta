@@ -2,21 +2,21 @@
 using UnityEngine;
 public static class ShipControllerUitlities
 {
-    public static void ApplyRB2DForce(Rigidbody2D rb2d, GameObject gameObject, ShipGrid.Thrust thrust, Common.Orientation orientation)
+    public static void ApplyRB2DForce(Rigidbody2D rb2d, Transform gameObject, ShipGrid.Thrust thrust, Common.Orientation orientation)
     {
         switch (orientation)
         {
             case Common.Orientation.forward:
-                rb2d.AddForce(gameObject.transform.right * thrust.forwardThrust * Time.deltaTime);
+                rb2d.AddForce(gameObject.right * thrust.forwardThrust * Time.deltaTime);
                 break;
             case Common.Orientation.backward:
-                rb2d.AddForce(gameObject.transform.right * thrust.backwardsThrust * -1f * Time.deltaTime);
+                rb2d.AddForce(gameObject.right * thrust.backwardsThrust * -1f * Time.deltaTime);
                 break;
             case Common.Orientation.left:
-                rb2d.AddForce(gameObject.transform.up * thrust.leftThrust * Time.deltaTime);
+                rb2d.AddForce(gameObject.up * thrust.leftThrust * Time.deltaTime);
                 break;
             case Common.Orientation.right:
-                rb2d.AddForce(gameObject.transform.up * thrust.rightThrust * -1f * Time.deltaTime);
+                rb2d.AddForce(gameObject.up * thrust.rightThrust * -1f * Time.deltaTime);
                 break;
         }
     }
