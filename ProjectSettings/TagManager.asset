@@ -9,6 +9,7 @@ TagManager:
   - Controller
   - PlayerShip
   - Thruster
+  - GridOffset
   layers:
   - Default
   - TransparentFX

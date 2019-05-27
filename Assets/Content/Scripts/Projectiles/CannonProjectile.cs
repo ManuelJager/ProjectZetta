@@ -1,5 +1,6 @@
 ﻿#pragma warning disable 649
 using UnityEngine;
+using Extensions;
 public class CannonProjectile : MonoBehaviour, IProjectile
 {
     private int sourceGridID;
@@ -63,6 +64,6 @@ public class CannonProjectile : MonoBehaviour, IProjectile
         {
             return;
         }
-        ApplyDamage(block.GetRootGridID(), block);
+        ApplyDamage(collision.transform.GetRootGridID(), block);
     }
 }

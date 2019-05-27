@@ -18,5 +18,10 @@ namespace Extensions
             var weightSum = posBlockData.Sum(x => x.mass);
             return new Vector2(weightedXPosValueSum / weightSum, weightedYPosValueSum / weightSum);
         }
+
+        public static int GetRootGridID(this Transform transform)
+        {
+            return transform.root.GetInstanceID();
+        }
     }
 }

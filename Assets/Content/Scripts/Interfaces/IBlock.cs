@@ -1,4 +1,4 @@
-﻿public interface IBlock : IGridMember
+﻿public interface IBlock
 {
     float health { get; set; }
     int mass { get; }

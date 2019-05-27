@@ -1,7 +1,8 @@
 ﻿#pragma warning disable 649
 using System.Collections;
 using UnityEngine;
-public class Turret : MonoBehaviour, IGridMember
+using Extensions;
+public class Turret : MonoBehaviour
 {
     [SerializeField]
     public float turretSpeed, projectileSpeed, projectileDamage, fireRate;
@@ -26,7 +27,7 @@ public class Turret : MonoBehaviour, IGridMember
         animator.SetTrigger("Fire");
         var projectile = Instantiate(projectilePrefab);
         var IProjectile = (IProjectile)projectile.GetComponent(typeof(IProjectile));
-        IProjectile.ProjectileSetup(transform, firePoint.transform, projectileSpeed, projectileDamage, GetRootGridID());
+        IProjectile.ProjectileSetup(transform, firePoint.transform, projectileSpeed, projectileDamage, transform.GetRootGridID());
         yield return new WaitForSeconds(60.0f / rpm);
         allowFire = true;
     }
@@ -45,9 +46,5 @@ public class Turret : MonoBehaviour, IGridMember
     public void PlayShot()
     {
         audioSource.Play();
-    }
-    public int GetRootGridID()
-    {
-        return transform.root.GetInstanceID();
     }
 }

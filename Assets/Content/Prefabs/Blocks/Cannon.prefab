@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8867970142602118045}
   - component: {fileID: -2251874615374925943}
   m_Layer: 0
-  m_Name: TurretBase1
+  m_Name: Cannon
   m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149,7 +149,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7853348930792487713}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.4583, y: 0, z: 0}
+  m_LocalPosition: {x: 1.375, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 361298362823522363}
@@ -280,7 +280,7 @@ Transform:
   m_GameObject: {fileID: 7944339099970422007}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 0}
   m_Children:
   - {fileID: 6542873611074444492}
   m_Father: {fileID: 7082588843081460563}
