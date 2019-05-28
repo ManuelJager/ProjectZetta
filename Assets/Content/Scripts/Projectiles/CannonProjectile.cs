@@ -1,12 +1,13 @@
 ﻿#pragma warning disable 649
 using UnityEngine;
-using Extensions;
 public class CannonProjectile : MonoBehaviour, IProjectile
 {
     private int sourceGridID;
     private float projectileDamage;
     [SerializeField]
     private GameObject frontCasing, backCasing;
+    [SerializeField]
+    private Rigidbody2D rb2d;
     public void ApplyDamage(int colliderGridID, IBlock block)
     {
         
@@ -44,7 +45,7 @@ public class CannonProjectile : MonoBehaviour, IProjectile
         transform.position = position.position;
         this.sourceGridID = sourceGridID;
         this.projectileDamage = projectileDamage;
-        GetComponent<Rigidbody2D>().AddForce(transform.right * force);
+        rb2d.AddForce(transform.right * force);
         if (PlayerPrefs.Instance.sabotRoundSpread)
         {
             var backCasing = Instantiate(this.backCasing);

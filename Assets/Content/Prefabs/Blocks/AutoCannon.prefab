@@ -221,7 +221,7 @@ Animator:
   m_GameObject: {fileID: 7150988744676958688}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d581d33345eed5e40a47a87124603617, type: 2}
+  m_Controller: {fileID: 9100000, guid: af7693b9db9ccf343be96056dcb6c574, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -242,16 +242,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7490ffcb86b47d0479967fc5aa7bf324, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turretSpeed: 50
   projectileSpeed: 1000
   projectileDamage: 150
-  fireRate: 20
-  turret: {fileID: 7150988744676958688}
   animator: {fileID: 2559743994673459094}
   firePoint: {fileID: 7061132995534970422}
   audioSource: {fileID: 5760991914727295562}
   projectilePrefab: {fileID: 5521314273024301127, guid: 6850e9e0fb2cc2d459f6189d1ccd0dd1,
     type: 3}
+  _rateOfFire: 220
+  _turretSpeed: 60
 --- !u!114 &8488937240982092314
 MonoBehaviour:
   m_ObjectHideFlags: 0

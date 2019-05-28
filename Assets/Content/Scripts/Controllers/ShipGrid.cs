@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Extensions;
 public class ShipGrid : MonoBehaviour
 { 
     enum type
@@ -20,7 +19,7 @@ public class ShipGrid : MonoBehaviour
             this.mass = mass;
         }
     }
-    struct IBlockObject
+    public struct IBlockObject
     {
         public IBlock block;
         public Transform transform;
@@ -32,7 +31,7 @@ public class ShipGrid : MonoBehaviour
         }
     }
 
-    struct IMultiSizeBlockObject
+    public struct IMultiSizeBlockObject
     {
         public IMultiSizeBlock multiSizeBlock;
         public Transform transform;
@@ -57,7 +56,6 @@ public class ShipGrid : MonoBehaviour
         public float backwardsThrust;
         public float leftThrust;
         public float rightThrust;
-
         public Thrust(float forwardThrust, float backwardsThrust, float leftThrust, float rightThrust)
         {
             this.forwardThrust = forwardThrust;
@@ -71,7 +69,6 @@ public class ShipGrid : MonoBehaviour
     {
         public float leftTurningRate;
         public float rightTurningRate;
-
         public TurningRate(float leftTurningRate, float rightTurningRate)
         {
             this.leftTurningRate = leftTurningRate;
@@ -92,9 +89,6 @@ public class ShipGrid : MonoBehaviour
         SetThrusterGroups();
         SetTurningRateVectors();
         SetThrustVectors(ShipControllerUitlities.CalculateThrustVectors(_thrusterGroups));
-        //CalculateMass();
-        
-
         ConstructGrid();
     }
     [Obsolete("mass calculations are automatically done in ContructGrid now")]
@@ -276,7 +270,7 @@ public class ShipGrid : MonoBehaviour
             {
                 var multiSizeBlockObject = new IMultiSizeBlockObject(multiSizeBlock, child);
                 multiSizeBlocks.Add(multiSizeBlockObject);
-                var positions = getPositionsOfMultiSizeBlock(multiSizeBlockObject);
+                var positions = multiSizeBlockObject.getPositionsOfMultiSizeBlock();
                 foreach (var position in positions)
                 {
                     xPositions.Add(position.x);
@@ -316,7 +310,7 @@ public class ShipGrid : MonoBehaviour
             if (multiSizeBlock != null)
             {
                 posBlockData.Add(new PosBlockData(child.localPosition, multiSizeBlock.mass));
-                foreach (var vector2 in getPositionsOfMultiSizeBlock(new IMultiSizeBlockObject(multiSizeBlock, child.transform)))
+                foreach (var vector2 in new IMultiSizeBlockObject(multiSizeBlock, child.transform).getPositionsOfMultiSizeBlock())
                 {
                     AddToGrid(child, vector2);
                 }
@@ -374,40 +368,5 @@ public class ShipGrid : MonoBehaviour
             if (index[x] < 0) return true;
         }
         return false;
-    }
-    private Vector2[] getPositionsOfMultiSizeBlock (IMultiSizeBlockObject multiSizeBlockObject)
-    {
-        var size = multiSizeBlockObject.multiSizeBlock.effectiveSize;
-        var pos = multiSizeBlockObject.transform.localPosition;
-        var startingPos = new Vector2(pos.x - ((size.x - 1) / 2), pos.y - ((size.y - 1) / 2));
-        var returnData = new Vector2[size.x * size.y];
-        int index = 0;
-        
-        for (int x = 0; x < size.x; x++)
-        {
-            for (int y = 0; y < size.y; y++)
-            {
-                var xPos = startingPos.x + x;
-                var yPos = startingPos.y + y; 
-                returnData[index] = new Vector2(xPos, yPos);
-                index++;
-            }
-        }
-        #region debugging
-        if (PlayerPrefs.Instance.debug5)
-        {
-            foreach (var item in returnData)
-            {
-                Debug.Log(item);
-            }
-        }
-        if (PlayerPrefs.Instance.debug6) 
-        {
-            Debug.Log(pos);
-            Debug.Log(startingPos);
-            Debug.Log("subtraction value is : " + ((size.x - 1) / 2));
-        }
-        #endregion
-        return returnData;
     }
 }

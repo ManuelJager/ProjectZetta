@@ -99,6 +99,7 @@ MonoBehaviour:
     type: 3}
   backCasing: {fileID: 2850388869750475000, guid: 8ddd07d4c853bf24dbfb9da0872c8754,
     type: 3}
+  rb2d: {fileID: 3674032689794749008}
 --- !u!50 &3674032689794749008
 Rigidbody2D:
   serializedVersion: 4

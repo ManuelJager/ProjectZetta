@@ -366,16 +366,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7490ffcb86b47d0479967fc5aa7bf324, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turretSpeed: 50
-  projectileSpeed: 1000
+  projectileSpeed: 2500
   projectileDamage: 150
-  fireRate: 20
-  turret: {fileID: 7944339099970422007}
   animator: {fileID: 3351968588599773825}
   firePoint: {fileID: 7853348930792487713}
   audioSource: {fileID: 4823843030622891869}
   projectilePrefab: {fileID: 5521314273024301127, guid: 6850e9e0fb2cc2d459f6189d1ccd0dd1,
     type: 3}
+  _rateOfFire: 10
+  _turretSpeed: 50
 --- !u!114 &8704436924974161677
 MonoBehaviour:
   m_ObjectHideFlags: 0

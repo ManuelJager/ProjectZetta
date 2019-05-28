@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2298050045829359791}
   - component: {fileID: 8876731279466525338}
   m_Layer: 0
-  m_Name: Thruster
+  m_Name: SmallThruster
   m_TagString: Thruster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -124,8 +124,9 @@ MonoBehaviour:
   _health: 20
   _mass: 2
   _armor: 5
-  thrust: 1000
+  _thrust: 3000
   thruster: {fileID: 2671299439371699410}
+  animator: {fileID: 4796861235190296954}
 --- !u!1 &2671299439371699410
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,13 +138,14 @@ GameObject:
   - component: {fileID: 5683667435128244266}
   - component: {fileID: 8989968033433500760}
   - component: {fileID: 1367686578067240875}
+  - component: {fileID: 4796861235190296954}
   m_Layer: 0
   m_Name: ThrusterPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5683667435128244266
 Transform:
   m_ObjectHideFlags: 0
@@ -219,3 +221,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.32, y: 0.32, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!95 &4796861235190296954
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2671299439371699410}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f6fac960432c56e428d04cbb2a2e6be9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

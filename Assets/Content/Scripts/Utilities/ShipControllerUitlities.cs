@@ -37,7 +37,7 @@ public static class ShipControllerUitlities
         {
             foreach (var item in thrusterGroups[i])
             {
-                thrustVectors[i] += item.GetComponent<Thruster>().GetThrust();
+                thrustVectors[i] += item.GetComponent<Thruster>().thrust;
             }
         }
         return thrustVectors;

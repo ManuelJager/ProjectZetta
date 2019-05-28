@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 public class PlayerTurretController : MonoBehaviour
 {
-    private Turret turret;
+    private ITurret turret;
     private void Awake()
     {
-        turret = GetComponent<Turret>();
+        turret = (ITurret)GetComponent(typeof(ITurret));
     }
     private void Update()
     {
-        turret.turret.transform.rotation = RotationUtilities.MouseLookAtRotation(turret.turret.transform, turret.turretSpeed);
-        if (Input.GetMouseButton(0) && turret.GetCanFire()) turret.Fire();
+        turret.turretObject.transform.rotation = RotationUtilities.MouseLookAtRotation(turret.turretObject.transform, turret.turretSpeed);
+        if (Input.GetMouseButton(0) && turret.hasReloaded) turret.Fire();
     }
 }

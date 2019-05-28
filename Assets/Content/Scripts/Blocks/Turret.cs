@@ -1,13 +1,10 @@
 ﻿#pragma warning disable 649
 using System.Collections;
 using UnityEngine;
-using Extensions;
-public class Turret : MonoBehaviour
+public class Turret : MonoBehaviour, ITurret
 {
     [SerializeField]
-    public float turretSpeed, projectileSpeed, projectileDamage, fireRate;
-    [SerializeField]
-    public GameObject turret;
+    public float projectileSpeed, projectileDamage;
     [SerializeField]
     private Animator animator;
     [SerializeField]
@@ -16,32 +13,33 @@ public class Turret : MonoBehaviour
     private AudioSource audioSource;
     [SerializeField]
     private GameObject projectilePrefab;
-    private bool allowFire = true;
+    private bool _hasReloaded = true;
+    [SerializeField]
+    private float _rateOfFire;
+    [SerializeField]
+    private float _turretSpeed;
+
+    public bool hasReloaded {
+        get => _hasReloaded;
+        set => _hasReloaded = value;
+    }
+    public float rateOfFire => _rateOfFire;
+    public float turretSpeed => _turretSpeed;
+    public GameObject turretObject => gameObject;
     public void Fire()
     {
-        if (allowFire) StartCoroutine(FireShot(fireRate));
+        if (hasReloaded) StartCoroutine(FireShot(rateOfFire));
     }
     private IEnumerator FireShot (float rpm)
     {
-        allowFire = false;
+        hasReloaded = false;
         animator.SetTrigger("Fire");
+        PlayShot();
         var projectile = Instantiate(projectilePrefab);
         var IProjectile = (IProjectile)projectile.GetComponent(typeof(IProjectile));
         IProjectile.ProjectileSetup(transform, firePoint.transform, projectileSpeed, projectileDamage, transform.GetRootGridID());
         yield return new WaitForSeconds(60.0f / rpm);
-        allowFire = true;
-    }
-    public void SetCanFireTrue()
-    {
-        animator.SetBool("CanFire", true);
-    }
-    public void SetCanFireFalse()
-    {
-        animator.SetBool("CanFire", false);
-    }
-    public bool GetCanFire()
-    {
-        return animator.GetBool("CanFire");
+        hasReloaded = true;
     }
     public void PlayShot()
     {
