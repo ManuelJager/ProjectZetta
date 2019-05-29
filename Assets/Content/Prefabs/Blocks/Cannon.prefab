@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7082588843081460563}
   - component: {fileID: 7082588843081460562}
   - component: {fileID: 8867970142602118045}
-  - component: {fileID: -2251874615374925943}
+  - component: {fileID: 8428737082647404840}
   m_Layer: 0
   m_Name: Cannon
   m_TagString: Block
@@ -109,7 +109,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &-2251874615374925943
+--- !u!114 &8428737082647404840
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,12 +118,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 7082588843081460572}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 387121d567b36f14d9c7e3ce484defd4, type: 3}
+  m_Script: {fileID: 11500000, guid: 7490ffcb86b47d0479967fc5aa7bf324, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 30
-  _mass: 3
-  _armor: 10
+  projectileSpeed: 2500
+  projectileDamage: 120
+  animator: {fileID: 3351968588599773825}
+  firePoint: {fileID: 7853348930792487713}
+  audioSource: {fileID: 4823843030622891869}
+  projectilePrefab: {fileID: 5521314273024301127, guid: 6850e9e0fb2cc2d459f6189d1ccd0dd1,
+    type: 3}
+  _rateOfFire: 10
+  _turretSpeed: 50
+  _health: 70
+  _mass: 4
+  _armor: 20
+  _turretObject: {fileID: 361298362823522363}
 --- !u!1 &7853348930792487713
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,8 +272,6 @@ GameObject:
   - component: {fileID: 361298362823522363}
   - component: {fileID: 5735994724135006647}
   - component: {fileID: 3351968588599773825}
-  - component: {fileID: 5717553540959765035}
-  - component: {fileID: 8704436924974161677}
   m_Layer: 0
   m_Name: Turret
   m_TagString: Untagged
@@ -354,36 +362,3 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &5717553540959765035
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7944339099970422007}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7490ffcb86b47d0479967fc5aa7bf324, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectileSpeed: 2500
-  projectileDamage: 150
-  animator: {fileID: 3351968588599773825}
-  firePoint: {fileID: 7853348930792487713}
-  audioSource: {fileID: 4823843030622891869}
-  projectilePrefab: {fileID: 5521314273024301127, guid: 6850e9e0fb2cc2d459f6189d1ccd0dd1,
-    type: 3}
-  _rateOfFire: 10
-  _turretSpeed: 50
---- !u!114 &8704436924974161677
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7944339099970422007}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58629221a6f6fd14f92b676fd776ef26, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

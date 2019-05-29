@@ -138,8 +138,6 @@ GameObject:
   - component: {fileID: 576754049139088684}
   - component: {fileID: 4798801997059216544}
   - component: {fileID: 2559743994673459094}
-  - component: {fileID: 4781213760043722556}
-  - component: {fileID: 8488937240982092314}
   m_Layer: 0
   m_Name: Turret
   m_TagString: Untagged
@@ -230,39 +228,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &4781213760043722556
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7150988744676958688}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7490ffcb86b47d0479967fc5aa7bf324, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectileSpeed: 1000
-  projectileDamage: 150
-  animator: {fileID: 2559743994673459094}
-  firePoint: {fileID: 7061132995534970422}
-  audioSource: {fileID: 5760991914727295562}
-  projectilePrefab: {fileID: 5521314273024301127, guid: 6850e9e0fb2cc2d459f6189d1ccd0dd1,
-    type: 3}
-  _rateOfFire: 220
-  _turretSpeed: 60
---- !u!114 &8488937240982092314
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7150988744676958688}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58629221a6f6fd14f92b676fd776ef26, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8018928745348943435
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,7 +239,7 @@ GameObject:
   - component: {fileID: 8018928745348943428}
   - component: {fileID: 8018928745348943429}
   - component: {fileID: 8508363946437338762}
-  - component: {fileID: 7907520252029242014}
+  - component: {fileID: 5932889494246027915}
   m_Layer: 0
   m_Name: AutoCannon
   m_TagString: Block
@@ -372,7 +337,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &7907520252029242014
+--- !u!114 &5932889494246027915
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -381,9 +346,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 8018928745348943435}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 387121d567b36f14d9c7e3ce484defd4, type: 3}
+  m_Script: {fileID: 11500000, guid: 7490ffcb86b47d0479967fc5aa7bf324, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 30
+  projectileSpeed: 1000
+  projectileDamage: 40
+  animator: {fileID: 2559743994673459094}
+  firePoint: {fileID: 7061132995534970422}
+  audioSource: {fileID: 5760991914727295562}
+  projectilePrefab: {fileID: 5521314273024301127, guid: 6850e9e0fb2cc2d459f6189d1ccd0dd1,
+    type: 3}
+  _rateOfFire: 220
+  _turretSpeed: 60
+  _health: 50
   _mass: 3
-  _armor: 10
+  _armor: 20
+  _turretObject: {fileID: 576754049139088684}

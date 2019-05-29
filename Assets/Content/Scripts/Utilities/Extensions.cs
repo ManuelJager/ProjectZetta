@@ -16,7 +16,11 @@ public static class Extensions
         var weightSum = posBlockData.Sum(x => x.mass);
         return new Vector2(weightedXPosValueSum / weightSum, weightedYPosValueSum / weightSum);
     }
-
+    /// <summary>
+    /// Returns a vector2 array of the gridpositions a multi size block object would occupy
+    /// </summary>
+    /// <param name="multiSizeBlockObject"></param>
+    /// <returns></returns>
     public static Vector2[] getPositionsOfMultiSizeBlock(this ShipGrid.IMultiSizeBlockObject multiSizeBlockObject)
     {
         var size = multiSizeBlockObject.multiSizeBlock.effectiveSize;
@@ -52,5 +56,31 @@ public static class Extensions
         #endregion
         return returnData;
     }
+    /// <summary>
+    /// Gets the instance id of the absolute parent of a give transform
+    /// </summary>
+    /// <param name="transform"></param>
+    /// <returns></returns>
     public static int GetRootGridID(this Transform transform) => transform.root.GetInstanceID();
+    /// <summary>
+    /// Returns the effective size of a block inside the grid based on the block rotation
+    /// </summary>
+    /// <param name="transform"></param>
+    /// <param name="size"></param>
+    /// <returns></returns>
+    public static Vector2Int EffectiveSize(this Transform transform, Vector2Int size)
+    {
+        var zRot = transform.rotation.eulerAngles.z;
+        //Checks if block has been rotated, if so returns a size vector that takes the rotation into consideration
+        if (zRot == 90f || zRot == 270f)
+        {
+            return new Vector2Int(size.y, size.x);
+        }
+        return size;
+    }
+    /// <summary>
+    /// Sets this transform as the target of the camera follower instance
+    /// </summary>
+    /// <param name="transform"></param>
+    public static void SetThisAsCameraTarget(this Transform transform) => CameraFollower.Instance.SetTarget(transform);
 }

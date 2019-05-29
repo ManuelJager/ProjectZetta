@@ -16,67 +16,26 @@ public class Cockpit : MonoBehaviour, IMultiSizeBlock
 
     public float health
     {
-        get
-        {
-            return _health;
-        }
+        get => _health;
         set
         {
             _health = value;
-            if (value <= .0f)
-            {
-                SubtractFromGridAndDestroy();
-            }
+            if (value <= .0f) SubtractFromGridAndDestroy();
         }
     }
-    public int mass
-    {
-        get
-        {
-            return _mass;
-        }
+    public int mass => _mass;
+    public int armor => _armor;
+    public Vector2Int size {
+        get => _size;
+        set => _size = value;
     }
-    public int armor
-    {
-        get
-        {
-            return _armor;
-        }
-    }
-    public Vector2Int size
-    {
-        get
-        {
-            return _size;
-        }
-        set
-        {
-            _size = value;
-        }
-    }
-    public Vector2Int effectiveSize
-    {
-        get
-        {
-            var zRot = transform.rotation.eulerAngles.z;
-            //Checks if block has been rotated, if so returns a size vector that takes the rotation into consideration
-            if (zRot == 90f || zRot == 270f)
-            {
-                return new Vector2Int(size.y, size.x);
-            }
-            return size;
-        }
-    }
+    public Vector2Int effectiveSize => transform.EffectiveSize(size);
     public void SubtractFromGridAndDestroy()
     {
         Destroy(gameObject);
     }
-    public int GetRootGridID()
-    {
-        return transform.root.GetInstanceID();
-    }
     public void DebugThis()
     {
-        Debug.Log("Rood id of " + transform.root.name + " is : " + GetRootGridID());
+        Debug.Log("Rood id of " + transform.root.name + " is : " + transform.GetRootGridID());
     }
 }

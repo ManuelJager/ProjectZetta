@@ -8,7 +8,7 @@ public class PlayerTurretController : MonoBehaviour
     }
     private void Update()
     {
-        turret.turretObject.transform.rotation = RotationUtilities.MouseLookAtRotation(turret.turretObject.transform, turret.turretSpeed);
+        turret.turretObject.rotation = RotationUtilities.MouseLookAtRotation(turret.turretObject.transform, turret.turretSpeed);
         if (Input.GetMouseButton(0) && turret.hasReloaded) turret.Fire();
     }
 }

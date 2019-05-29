@@ -1,4 +1,4 @@
-﻿#pragma warning disable 649
+﻿    #pragma warning disable 649
 using UnityEngine;
 public class ArmorBlock : MonoBehaviour, IBlock
 {
@@ -11,12 +11,9 @@ public class ArmorBlock : MonoBehaviour, IBlock
 
     public float health
     {
-        get
-        {
-            return _health;
-        }
+        get => _health;
         set
-        {
+        { 
             _health = value;
             if (value <= .0f)
             {
@@ -24,30 +21,14 @@ public class ArmorBlock : MonoBehaviour, IBlock
             }
         }
     }
-    public int mass
-    {
-        get
-        {
-            return _mass;
-        }
-    }
-    public int armor
-    {
-        get
-        {
-            return _armor;
-        }
-    }
+    public int mass => _mass;
+    public int armor => _armor;
     public void SubtractFromGridAndDestroy()
     {
         Destroy(gameObject);
     }
-    public int GetRootGridID()
-    {
-        return transform.root.GetInstanceID();
-    }
     public void DebugThis()
     {
-        Debug.Log("Rood id of " + transform.root.name + " is : " + GetRootGridID());
+        Debug.Log("Rood id of " + transform.root.name + " is : " + transform.GetRootGridID());
     }
 }

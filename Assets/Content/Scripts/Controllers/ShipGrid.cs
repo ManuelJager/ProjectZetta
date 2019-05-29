@@ -42,13 +42,13 @@ public class ShipGrid : MonoBehaviour
             this.transform = transform;
         }
     }
-    [SerializeField]
-    private Transform _gridOffset;
     private GameObject _ship;
     private Rigidbody2D _rb2d;
     private GameObject[,] _shipGrid;
     private Vector2Int lowest;
     private Vector2Int highest;
+
+    public List<ITurret> turrets = new List<ITurret>();
 
     public struct Thrust
     {
@@ -75,6 +75,9 @@ public class ShipGrid : MonoBehaviour
             this.rightTurningRate = rightTurningRate;
         }
     }
+    private Transform _shipLayout;
+    public Transform shipLayout => _shipLayout != null ? _shipLayout : _shipLayout = transform.GetChild(0).GetChild(0);
+    
     public TurningRate turningRate;
     public List<GameObject>[] _thrusterGroups;
     private void Start()
@@ -96,7 +99,7 @@ public class ShipGrid : MonoBehaviour
     {
         List<IMultiSizeBlockObject> multiSizeBlocks = new List<IMultiSizeBlockObject>();
         List<IBlockObject> blocks = new List<IBlockObject>();
-        var shipLayout = _ship.transform.GetChild(0).GetChild(0);
+        var shipLayout = _ship.transform.GetChild(0);
         var count = shipLayout.childCount;
         for (int i = 0; i < count; i++)
         {
@@ -155,11 +158,10 @@ public class ShipGrid : MonoBehaviour
     }
     public void SetThrusterGroups()
     {
-        var shipLayout = _ship.transform.GetChild(0).GetChild(0);
         var count = shipLayout.childCount;
         for (int i = 0; i < count; i++)
         {
-            var child = shipLayout.transform.GetChild(i);
+            var child = shipLayout.GetChild(i);
             if (child.tag == "Thruster")
             {
                 AddToThrusterGroups(child.gameObject);
@@ -202,7 +204,7 @@ public class ShipGrid : MonoBehaviour
                 orientation = Common.Orientation.left;
                 break;
         }
-        ShipControllerUitlities.ApplyRB2DForce(_rb2d, _gridOffset, thrust, orientation);
+        ShipControllerUitlities.ApplyRB2DForce(_rb2d, shipLayout, thrust, orientation);
         ShipControllerUitlities.SetThrusterGroupFlame(_thrusterGroups[group], true);
     }
     public void AddToGrid(Transform block)
@@ -249,7 +251,6 @@ public class ShipGrid : MonoBehaviour
     }
     private void ConstructGrid()
     {
-        var shipLayout = _ship.transform.GetChild(0).GetChild(0);
         var childCount = shipLayout.childCount;
 
         float targetMass = 0f;
@@ -259,12 +260,16 @@ public class ShipGrid : MonoBehaviour
         //list of all x and y positions of all blocks
         var xPositions = new List<float>();
         var yPositions = new List<float>();
-
         //iterates through all blocks and adds the positions to their respective list
         //total ship mass calculations
         for (int i = 0; i < childCount; i++)
         {
             var child = shipLayout.transform.GetChild(i);
+            var turret = (ITurret)child.GetComponent(typeof(ITurret));
+            if (turret != null)
+            {
+                turrets.Add(turret);
+            }
             var multiSizeBlock = (IMultiSizeBlock)child.GetComponent(typeof(IMultiSizeBlock));
             if (multiSizeBlock != null)
             {
@@ -326,7 +331,7 @@ public class ShipGrid : MonoBehaviour
             }
         }
         var centerOfMass = posBlockData.WeightedAverage();
-        _gridOffset.localPosition = centerOfMass * -1;
+        shipLayout.localPosition = -centerOfMass;
         #region debugging
         if (PlayerPrefs.Instance.debug3)
         {
@@ -356,9 +361,7 @@ public class ShipGrid : MonoBehaviour
         {
             Debug.Log(centerOfMass);
         }
-        
         #endregion
-
     }
     private bool IndexIsOutsideGridBounds(int[] index)
     {

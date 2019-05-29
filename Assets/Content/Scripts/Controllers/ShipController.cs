@@ -56,7 +56,7 @@ public class ShipController : MonoBehaviour
 
     private void Start()
     {
-        EventManager.CallCameraTargetEvent(_cameraAnchorPoint);
+        _cameraAnchorPoint.SetThisAsCameraTarget();
     }
     void Update()
     {
@@ -72,31 +72,22 @@ public class ShipController : MonoBehaviour
             case AimingMode.Keyboard:
                 break;
         }
+        foreach (var turret in shipGrid.turrets)
+        {
+            turret.turretObject.transform.rotation = RotationUtilities.MouseLookAtRotation(turret.turretObject.transform, turret.turretSpeed);
+            if (Input.GetMouseButton(0) && turret.hasReloaded) turret.Fire();
+        }
     }
     void FixedUpdate()
     {
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         thrusterGroupFiring = new bool[4] { false, false, false, false };
         if (dampeningMode == DampeningMode.On)
-        {
             //Dampening.Dampen(input, _rb2d, _ship.transform.rotation.eulerAngles.z, _ship, thrust);
-        }
-        if (input.x > 0)
-        {
-            thrusterGroupFiring[2] = true;
-        }
-        if (input.x < 0)
-        {
-            thrusterGroupFiring[3] = true;
-        }
-        if (input.y > 0)
-        {
-            thrusterGroupFiring[0] = true;
-        }
-        if (input.y < 0)
-        {
-            thrusterGroupFiring[1] = true;
-        }
+        if (input.x > 0) thrusterGroupFiring[2] = true;
+        if (input.x < 0) thrusterGroupFiring[3] = true;
+        if (input.y > 0) thrusterGroupFiring[0] = true;
+        if (input.y < 0) thrusterGroupFiring[1] = true;
         for (int i = 0; i < 4; i++)
         {
             if (thrusterGroupFiring[i])

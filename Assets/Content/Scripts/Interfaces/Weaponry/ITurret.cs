@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface ITurret : IWeapon
 {
-    GameObject turretObject { get; }
+    Transform turretObject { get; }
     float turretSpeed { get; }
 }
