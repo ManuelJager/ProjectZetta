@@ -82,6 +82,7 @@ public class ShipGrid : MonoBehaviour
     public List<GameObject>[] _thrusterGroups;
     private void Start()
     {
+        gameObject.AddToTable();
         _ship = gameObject;
         _rb2d = GetComponent<Rigidbody2D>();
         _thrusterGroups = new List<GameObject>[4];

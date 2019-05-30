@@ -21,12 +21,12 @@ public static class Extensions
     /// </summary>
     /// <param name="multiSizeBlockObject"></param>
     /// <returns></returns>
-    public static Vector2[] getPositionsOfMultiSizeBlock(this ShipGrid.IMultiSizeBlockObject multiSizeBlockObject)
+    public static Vector2Int[] getPositionsOfMultiSizeBlock(this ShipGrid.IMultiSizeBlockObject multiSizeBlockObject)
     {
         var size = multiSizeBlockObject.multiSizeBlock.effectiveSize;
         var pos = multiSizeBlockObject.transform.localPosition;
-        var startingPos = new Vector2(pos.x - ((size.x - 1) / 2), pos.y - ((size.y - 1) / 2));
-        var returnData = new Vector2[size.x * size.y];
+        var startingPos = new Vector2Int((int)pos.x - ((size.x - 1) / 2),(int) pos.y - ((size.y - 1) / 2));
+        var returnData = new Vector2Int[size.x * size.y];
         int index = 0;
 
         for (int x = 0; x < size.x; x++)
@@ -35,7 +35,7 @@ public static class Extensions
             {
                 var xPos = startingPos.x + x;
                 var yPos = startingPos.y + y;
-                returnData[index] = new Vector2(xPos, yPos);
+                returnData[index] = new Vector2Int(xPos, yPos);
                 index++;
             }
         }
@@ -83,4 +83,18 @@ public static class Extensions
     /// </summary>
     /// <param name="transform"></param>
     public static void SetThisAsCameraTarget(this Transform transform) => CameraFollower.Instance.SetTarget(transform);
+
+    public static void AddToTable(this GameObject gameObject)
+    {
+        var instanceID = gameObject.transform.GetRootGridID();
+        try
+        {
+            GridManager.Instance.gridInstances.Add(instanceID, gameObject);
+        }
+        catch
+        {
+            Debug.LogWarning("grid : " + instanceID + " already exists");
+        }
+
+    }
 }
