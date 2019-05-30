@@ -130,10 +130,11 @@ MonoBehaviour:
     type: 3}
   _rateOfFire: 10
   _turretSpeed: 50
-  _health: 70
-  _mass: 4
-  _armor: 20
   _turretObject: {fileID: 361298362823522363}
+  _blockBaseClass:
+    _health: 80
+    _mass: 5
+    _armor: 10
 --- !u!1 &7853348930792487713
 GameObject:
   m_ObjectHideFlags: 0

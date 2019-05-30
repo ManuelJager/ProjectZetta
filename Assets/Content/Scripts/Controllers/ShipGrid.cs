@@ -80,6 +80,7 @@ public class ShipGrid : MonoBehaviour
     
     public TurningRate turningRate;
     public List<GameObject>[] _thrusterGroups;
+    public Vector2 centerOfMass;
     private void Start()
     {
         gameObject.AddToTable();
@@ -120,7 +121,7 @@ public class ShipGrid : MonoBehaviour
         float targetMass = 0f;
         foreach (var block in blocks)
         {
-            targetMass += block.block.mass;
+            targetMass += block.block.blockBaseClass.mass;
         }
         _rb2d.mass = targetMass;
     }
@@ -276,14 +277,14 @@ public class ShipGrid : MonoBehaviour
             {
                 var multiSizeBlockObject = new IMultiSizeBlockObject(multiSizeBlock, child);
                 multiSizeBlocks.Add(multiSizeBlockObject);
+                multiSizeBlock.multiSizeBlockBaseClass.parentClass = (MonoBehaviour)multiSizeBlock;
                 var positions = multiSizeBlockObject.getPositionsOfMultiSizeBlock();
                 foreach (var position in positions)
                 {
                     xPositions.Add(position.x);
                     yPositions.Add(position.y);
-
                 }
-                targetMass += multiSizeBlock.mass;
+                targetMass += multiSizeBlock.blockBaseClass.mass;
             }
             else
             {
@@ -293,7 +294,9 @@ public class ShipGrid : MonoBehaviour
                     blocks.Add(new IBlockObject(block, child));
                     xPositions.Add(child.transform.localPosition.x);
                     yPositions.Add(child.transform.localPosition.y);
-                    targetMass += block.mass;
+                    targetMass += block.blockBaseClass.mass;
+                    block.blockBaseClass.block = block;
+                    block.blockBaseClass.parentClass = (MonoBehaviour)block;
                 }
             }
         }
@@ -315,7 +318,7 @@ public class ShipGrid : MonoBehaviour
             var multiSizeBlock = (IMultiSizeBlock)child.GetComponent(typeof(IMultiSizeBlock));
             if (multiSizeBlock != null)
             {
-                posBlockData.Add(new PosBlockData(child.localPosition, multiSizeBlock.mass));
+                posBlockData.Add(new PosBlockData(child.localPosition, multiSizeBlock.blockBaseClass.mass));
                 foreach (var vector2 in new IMultiSizeBlockObject(multiSizeBlock, child.transform).getPositionsOfMultiSizeBlock())
                 {
                     AddToGrid(child, vector2);
@@ -326,12 +329,12 @@ public class ShipGrid : MonoBehaviour
                 var block = (IBlock)child.GetComponent(typeof(IBlock));
                 if (block != null)
                 {
-                    posBlockData.Add(new PosBlockData(child.localPosition, block.mass));
+                    posBlockData.Add(new PosBlockData(child.localPosition, block.blockBaseClass.mass));
                     AddToGrid(child);
                 }
             }
         }
-        var centerOfMass = posBlockData.WeightedAverage();
+        centerOfMass = posBlockData.WeightedAverage();
         shipLayout.localPosition = -centerOfMass;
         #region debugging
         if (PlayerPrefs.Instance.debug3)

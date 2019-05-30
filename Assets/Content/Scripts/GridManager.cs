@@ -12,4 +12,5 @@ public class GridManager : MonoBehaviour
         Instance = this;
         gridInstances = new Hashtable();
     }
+
 }

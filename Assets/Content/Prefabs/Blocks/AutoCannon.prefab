@@ -354,11 +354,12 @@ MonoBehaviour:
   animator: {fileID: 2559743994673459094}
   firePoint: {fileID: 7061132995534970422}
   audioSource: {fileID: 5760991914727295562}
-  projectilePrefab: {fileID: 5521314273024301127, guid: 6850e9e0fb2cc2d459f6189d1ccd0dd1,
+  projectilePrefab: {fileID: 1637550786022612463, guid: 3714aee51fa18904db470fdd5ebd079c,
     type: 3}
   _rateOfFire: 220
   _turretSpeed: 60
-  _health: 50
-  _mass: 3
-  _armor: 20
   _turretObject: {fileID: 576754049139088684}
+  _blockBaseClass:
+    _health: 60
+    _mass: 3
+    _armor: 5

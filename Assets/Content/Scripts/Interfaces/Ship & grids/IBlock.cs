@@ -1,8 +1,6 @@
 ﻿public interface IBlock
 {
-    float health { get; set; }
-    int mass { get; }
-    int armor { get; }
+    BlockBaseClass blockBaseClass { get; set; }
     void SubtractFromGridAndDestroy();
     void DebugThis();
 }

@@ -73,7 +73,7 @@ public static class RotationUtilities
     /// <summary>
     /// gets rotation relative from current to target
     /// </summary>
-    private static Quaternion GetRotationToTarget(GameObject current, GameObject target)
+    public static Quaternion GetRotationToTarget(GameObject current, GameObject target)
     {
         Vector3 vectorToTarget = current.transform.position - target.transform.position;
         float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg;

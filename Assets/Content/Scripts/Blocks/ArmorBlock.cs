@@ -3,26 +3,12 @@ using UnityEngine;
 public class ArmorBlock : MonoBehaviour, IBlock
 {
     [SerializeField]
-    private float _health;
-    [SerializeField]
-    private int _mass;
-    [SerializeField]
-    private int _armor;
-
-    public float health
+    private BlockBaseClass _blockBaseClass;
+    public BlockBaseClass blockBaseClass
     {
-        get => _health;
-        set
-        { 
-            _health = value;
-            if (value <= .0f)
-            {
-                SubtractFromGridAndDestroy();
-            }
-        }
+        get => _blockBaseClass;
+        set => _blockBaseClass = value;
     }
-    public int mass => _mass;
-    public int armor => _armor;
     public void SubtractFromGridAndDestroy()
     {
         Destroy(gameObject);

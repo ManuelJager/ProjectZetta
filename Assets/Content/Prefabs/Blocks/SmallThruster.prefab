@@ -127,6 +127,10 @@ MonoBehaviour:
   _thrust: 3000
   thruster: {fileID: 2671299439371699410}
   animator: {fileID: 4796861235190296954}
+  _blockBaseClass:
+    _health: 30
+    _mass: 2
+    _armor: 5
 --- !u!1 &2671299439371699410
 GameObject:
   m_ObjectHideFlags: 0

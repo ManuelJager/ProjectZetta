@@ -19,27 +19,14 @@ public class Turret : MonoBehaviour, ITurret, IBlock
     [SerializeField]
     private float _turretSpeed;
     [SerializeField]
-    private float _health;
-    [SerializeField]
-    private int _mass;
-    [SerializeField]
-    private int _armor;
-    [SerializeField]
     private Transform _turretObject;
-    public float health
+    [SerializeField]
+    private BlockBaseClass _blockBaseClass;
+    public BlockBaseClass blockBaseClass
     {
-        get => _health;
-        set
-        {
-            _health = value;
-            if (value <= .0f)
-            {
-                SubtractFromGridAndDestroy();
-            }
-        }
+        get => _blockBaseClass;
+        set => _blockBaseClass = value;
     }
-    public int mass => _mass;
-    public int armor => _armor;
     public bool hasReloaded {
         get => _hasReloaded;
         set => _hasReloaded = value;

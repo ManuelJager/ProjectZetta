@@ -14,20 +14,17 @@ public class Thruster : MonoBehaviour, IBlock, IThruster
     private GameObject thruster;
     [SerializeField]
     private Animator animator;
-    public float health {
-        get => _health;
-        set
-        {
-            _health = value;
-            if (value <= .0f) SubtractFromGridAndDestroy();
-        }
+    [SerializeField]
+    private BlockBaseClass _blockBaseClass;
+    public BlockBaseClass blockBaseClass
+    {
+        get => _blockBaseClass;
+        set => _blockBaseClass = value;
     }
     public float thrust {
         get => _thrust;
         set => _thrust = value;
     }
-    public int mass => _mass;
-    public int armor => _armor;
     public void SubtractFromGridAndDestroy()
     {
         Destroy(gameObject);

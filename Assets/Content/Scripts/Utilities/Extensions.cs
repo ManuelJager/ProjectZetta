@@ -23,7 +23,7 @@ public static class Extensions
     /// <returns></returns>
     public static Vector2Int[] getPositionsOfMultiSizeBlock(this ShipGrid.IMultiSizeBlockObject multiSizeBlockObject)
     {
-        var size = multiSizeBlockObject.multiSizeBlock.effectiveSize;
+        var size = multiSizeBlockObject.multiSizeBlock.multiSizeBlockBaseClass.effectiveSize;
         var pos = multiSizeBlockObject.transform.localPosition;
         var startingPos = new Vector2Int((int)pos.x - ((size.x - 1) / 2),(int) pos.y - ((size.y - 1) / 2));
         var returnData = new Vector2Int[size.x * size.y];
@@ -61,7 +61,7 @@ public static class Extensions
     /// </summary>
     /// <param name="transform"></param>
     /// <returns></returns>
-    public static int GetRootGridID(this Transform transform) => transform.root.GetInstanceID();
+    public static int GetRootGridID(this Transform transform) => transform.root.gameObject.GetInstanceID();
     /// <summary>
     /// Returns the effective size of a block inside the grid based on the block rotation
     /// </summary>
@@ -95,6 +95,36 @@ public static class Extensions
         {
             Debug.LogWarning("grid : " + instanceID + " already exists");
         }
-
     }
+    public static void RemoveFromTable(this GameObject gameObject)
+    {
+        var instanceID = gameObject.transform.GetRootGridID();
+        try
+        {
+            GridManager.Instance.gridInstances.Remove(instanceID);
+        }
+        catch
+        {
+            Debug.LogWarning("grid : " + instanceID + " doesn't exist");
+        }
+    }
+    public static GameObject GetFromTable(int instanceID)
+    {
+        GameObject gameObject = new GameObject();
+        try
+        {
+            gameObject = (GameObject)GridManager.Instance.gridInstances[instanceID];
+            if (gameObject == null)
+                Debug.LogWarning("Ship grid : " + instanceID + " is null");
+        }
+        catch
+        {
+            Debug.LogWarning("grid : " + instanceID + " doesn't exist");
+            return null;
+        }
+        return gameObject;
+    }
+    public static void Destroy(this GameObject gameObject) => Object.Destroy(gameObject);
+    public static IBlock CastToIBlock(this Transform transform) => (IBlock)transform.GetComponent(typeof(IBlock));
+    public static IMultiSizeBlock CastToIMultiSizeBlock(this Transform transform) => (IMultiSizeBlock)transform.GetComponent(typeof(IMultiSizeBlock));
 }

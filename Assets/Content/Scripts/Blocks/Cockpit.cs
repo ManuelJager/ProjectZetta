@@ -6,30 +6,19 @@ using UnityEngine;
 public class Cockpit : MonoBehaviour, IMultiSizeBlock
 {
     [SerializeField]
-    private float _health;
+    private MultiSizeBlockBaseClass _multiSizeBlockBaseClass;
     [SerializeField]
-    private int _mass;
-    [SerializeField]
-    private int _armor;
-    [SerializeField]
-    private Vector2Int _size;
-
-    public float health
+    private BlockBaseClass _blockBaseClass;
+    public BlockBaseClass blockBaseClass
     {
-        get => _health;
-        set
-        {
-            _health = value;
-            if (value <= .0f) SubtractFromGridAndDestroy();
-        }
+        get => _blockBaseClass;
+        set => _blockBaseClass = value;
     }
-    public int mass => _mass;
-    public int armor => _armor;
-    public Vector2Int size {
-        get => _size;
-        set => _size = value;
+    public MultiSizeBlockBaseClass multiSizeBlockBaseClass
+    {
+        get => _multiSizeBlockBaseClass;
+        set => _multiSizeBlockBaseClass = value;
     }
-    public Vector2Int effectiveSize => transform.EffectiveSize(size);
     public void SubtractFromGridAndDestroy()
     {
         Destroy(gameObject);
