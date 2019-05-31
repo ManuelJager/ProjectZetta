@@ -24,15 +24,15 @@ public static class ProjectileUtilities
         //Debugs the damage stats of the projectile and hit block
         if (projectileDamage < 0) projectile.Destroy();
     }
-    public static void HandleExplosiveProjectile(float explosionDamage, GameObject projectile, int sourceGridID, int colliderGridID, IBlock block, Vector2 explosionPosition, float explosionRadius, float explosionForce)
+    public static void HandleExplosiveProjectile(BaseProjectileType baseProjectile, ExplosiveDamageType explosiveDamage, int colliderGridID, IBlock block, Vector2 explosionPosition)
     {
         //Debugs the shipGrid GameObjectInstanceID and Name of the hit block 
         if (PlayerPrefs.Instance.debug1)
             block.DebugThis();
-        if (colliderGridID == sourceGridID)
+        if (colliderGridID == baseProjectile.sourceGridID)
             //returns out of function if collider grid is the same as the source grid of the projectile
             return;
-        Collider2D[] colliders2D = Physics2D.OverlapCircleAll(explosionPosition, explosionRadius);
+        Collider2D[] colliders2D = Physics2D.OverlapCircleAll(explosionPosition, explosiveDamage.explosionRadius);
         List<int> gridInstanceIDs = new List<int>();
         //apply explosion knockback to all grids within explosion range
         for (int i = 0; i < colliders2D.Length; i++)
@@ -50,14 +50,13 @@ public static class ProjectileUtilities
                     var shipGridCenterOfMass = shipGrid.centerOfMass;
                     var shipGridPos = shipGrid.transform.position;
                     var worldPosCenterOfMass = new Vector2(shipGridPos.x + shipGridCenterOfMass.x, shipGridPos.y + shipGridCenterOfMass.y);
-                    shipCollider.AddForce((worldPosCenterOfMass - explosionPosition) * explosionForce);
+                    shipCollider.AddForce((worldPosCenterOfMass - explosionPosition) * explosiveDamage.explosionForce);
                     gridInstanceIDs.Add(instanceID);
                 }
-                explosionDamage.ApplyDamageToBlock(block);
+                explosiveDamage.explosionDamage.ApplyDamageToBlock(block);
             }
-            
         }
-        projectile.Destroy();
+        baseProjectile.parentClass.transform.gameObject.Destroy();
     }
     public static void ApplyDamageToBlock(this float projectileDamage, IBlock block)
     {

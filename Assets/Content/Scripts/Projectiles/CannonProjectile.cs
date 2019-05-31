@@ -1,6 +1,6 @@
 ﻿#pragma warning disable 649
 using UnityEngine;
-public class CannonProjectile : MonoBehaviour, IProjectile
+/*public class CannonProjectile : MonoBehaviour, IProjectile
 {
     private int sourceGridID;
     private float projectileDamage;
@@ -22,3 +22,4 @@ public class CannonProjectile : MonoBehaviour, IProjectile
         ProjectileUtilities.HandlePenetrativeProjectile(ref projectileDamage, gameObject, sourceGridID, collision.transform.GetRootGridID(), block);
     }
 }
+*/

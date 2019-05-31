@@ -81,11 +81,13 @@ public class ShipGrid : MonoBehaviour
     public TurningRate turningRate;
     public List<GameObject>[] _thrusterGroups;
     public Vector2 centerOfMass;
+    public int gridID;
     private void Start()
     {
         gameObject.AddToTable();
         _ship = gameObject;
         _rb2d = GetComponent<Rigidbody2D>();
+        gridID = transform.GetRootGridID();
         _thrusterGroups = new List<GameObject>[4];
         for (int i = 0; i < 4; i++)
         {
@@ -278,6 +280,7 @@ public class ShipGrid : MonoBehaviour
                 var multiSizeBlockObject = new IMultiSizeBlockObject(multiSizeBlock, child);
                 multiSizeBlocks.Add(multiSizeBlockObject);
                 multiSizeBlock.multiSizeBlockBaseClass.parentClass = (MonoBehaviour)multiSizeBlock;
+                multiSizeBlock.blockBaseClass.gridID = gridID;
                 var positions = multiSizeBlockObject.getPositionsOfMultiSizeBlock();
                 foreach (var position in positions)
                 {
@@ -297,6 +300,7 @@ public class ShipGrid : MonoBehaviour
                     targetMass += block.blockBaseClass.mass;
                     block.blockBaseClass.block = block;
                     block.blockBaseClass.parentClass = (MonoBehaviour)block;
+                    block.blockBaseClass.gridID = gridID;
                 }
             }
         }

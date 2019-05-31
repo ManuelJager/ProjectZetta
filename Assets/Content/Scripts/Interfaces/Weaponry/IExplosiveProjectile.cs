@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IExplosiveProjectile : IProjectile
+public interface IExplosiveProjectile
 {
-    float radius { get; set; }
+    ExplosiveDamageType explosiveDamage { get; set; }
 }

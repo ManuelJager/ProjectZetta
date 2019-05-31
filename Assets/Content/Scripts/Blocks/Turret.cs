@@ -45,7 +45,7 @@ public class Turret : MonoBehaviour, ITurret, IBlock
         PlayShot();
         var projectile = Instantiate(projectilePrefab);
         var IProjectile = (IProjectile)projectile.GetComponent(typeof(IProjectile));
-        IProjectile.ProjectileSetup(turretObject, firePoint.transform, projectileSpeed, projectileDamage, transform.GetRootGridID());
+        IProjectile.baseProjectile = new BaseProjectileType(blockBaseClass.gridID, )          (turretObject, firePoint.transform, projectileSpeed, projectileDamage, transform.GetRootGridID());
         yield return new WaitForSeconds(60.0f / rpm);
         hasReloaded = true;
     }

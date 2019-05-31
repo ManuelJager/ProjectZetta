@@ -12,6 +12,7 @@ public class BlockBaseClass
     private int _armor;
     private IBlock _block;
     private MonoBehaviour _parentClass;
+    private int _gridID;
     public BlockBaseClass(float health, int mass, int armor, IBlock block, MonoBehaviour parentClass)
     {
         _health = health;
@@ -44,4 +45,9 @@ public class BlockBaseClass
     }
     public int mass => _mass;
     public int armor => _armor;
+    public int gridID
+    {
+        get => _gridID;
+        set => _gridID = value;
+    }
 }

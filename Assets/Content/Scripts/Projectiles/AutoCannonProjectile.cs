@@ -1,33 +1,24 @@
 ﻿#pragma warning disable 649
 using UnityEngine;
-public class AutoCannonProjectile : MonoBehaviour, IExplosiveProjectile
+public class AutoCannonProjectile : MonoBehaviour, IExplosiveProjectile, IProjectile
 {
-    private int sourceGridID;
-    private float projectileDamage;
-    [SerializeField]
-    private Rigidbody2D rb2d;
-    [SerializeField]
-    private float _radius;
-    [SerializeField]
-    private float _explosionForce;
-    public float radius
+    private ExplosiveDamageType _explosiveDamage;
+    private BaseProjectileType _baseProjectile;
+    public ExplosiveDamageType explosiveDamage
     {
-        get => _radius;
-        set => _radius = radius;
+        get => _explosiveDamage;
+        set => _explosiveDamage = value;
     }
-    public void ProjectileSetup(Transform rotation, Transform position, float force, float projectileDamage, int sourceGridID = 0)
+    public BaseProjectileType baseProjectile
     {
-        transform.rotation = rotation.rotation;
-        transform.position = position.position;
-        this.sourceGridID = sourceGridID;
-        this.projectileDamage = projectileDamage;
-        rb2d.AddForce(transform.right * force);
-    }
+        get => _baseProjectile;
+        set => _baseProjectile = value;
+    } 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         var block = collision.transform.CastToIBlock();
         if (block == null)
             return;
-        ProjectileUtilities.HandleExplosiveProjectile(projectileDamage, gameObject, sourceGridID, collision.transform.GetRootGridID(), block, transform.position, radius, _explosionForce);
+        ProjectileUtilities.HandleExplosiveProjectile(baseProjectile, explosiveDamage, block.blockBaseClass.gridID, block, transform.position);
     }
 }
