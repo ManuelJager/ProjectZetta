@@ -4,8 +4,6 @@ using UnityEngine;
 public class Turret : MonoBehaviour, ITurret, IBlock
 {
     [SerializeField]
-    public float projectileSpeed, projectileDamage;
-    [SerializeField]
     private Animator animator;
     [SerializeField]
     private GameObject firePoint;
@@ -22,6 +20,9 @@ public class Turret : MonoBehaviour, ITurret, IBlock
     private Transform _turretObject;
     [SerializeField]
     private BlockBaseClass _blockBaseClass;
+    [SerializeField]
+    private DamageTypes _damageTypes;
+    public DamageTypes damageTypes => _damageTypes;
     public BlockBaseClass blockBaseClass
     {
         get => _blockBaseClass;
@@ -34,6 +35,8 @@ public class Turret : MonoBehaviour, ITurret, IBlock
     public float rateOfFire => _rateOfFire;
     public float turretSpeed => _turretSpeed;
     public Transform turretObject => _turretObject;
+    [SerializeField]
+    private ProjectileParameters projectileParameters;
     public void Fire()
     {
         if (hasReloaded) StartCoroutine(FireShot(rateOfFire));
@@ -45,7 +48,6 @@ public class Turret : MonoBehaviour, ITurret, IBlock
         PlayShot();
         var projectile = Instantiate(projectilePrefab);
         var IProjectile = (IProjectile)projectile.GetComponent(typeof(IProjectile));
-        IProjectile.baseProjectile = new BaseProjectileType(blockBaseClass.gridID, )          (turretObject, firePoint.transform, projectileSpeed, projectileDamage, transform.GetRootGridID());
         yield return new WaitForSeconds(60.0f / rpm);
         hasReloaded = true;
     }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1875355754998432835}
   - component: {fileID: 7555580661055215608}
   - component: {fileID: 852520014707592142}
-  - component: {fileID: -5532966606052741330}
+  - component: {fileID: 3510501793158498312}
   m_Layer: 0
   m_Name: AutoCannonProjectile
   m_TagString: Untagged
@@ -130,7 +130,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.6, y: 0.1}
   m_EdgeRadius: 0
---- !u!114 &-5532966606052741330
+--- !u!114 &3510501793158498312
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -139,9 +139,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1637550786022612463}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ac30f2c31b729a4ea5158732f20d242, type: 3}
+  m_Script: {fileID: 11500000, guid: 7d3214c980f82734e90fbe0b0143f796, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb2d: {fileID: 7555580661055215608}
-  _radius: 1
-  _explosionForce: 100
+  sourceGridID: 0
+  range: 0
+  _projectileReferences:
+    _rb2d: {fileID: 7555580661055215608}

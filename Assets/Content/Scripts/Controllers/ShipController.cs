@@ -42,7 +42,6 @@ public class ShipController : MonoBehaviour
     private Transform _grid;
     [SerializeField]
     private Transform _cameraAnchorPoint;
-
     private GameObject _target;
     private Camera _camera;
     public bool[] thrusterGroupFiring = new bool[4];
@@ -53,7 +52,6 @@ public class ShipController : MonoBehaviour
         _ship = transform.parent.gameObject;
         shipGrid = _ship.GetComponent<ShipGrid>();
     }
-
     private void Start()
     {
         _cameraAnchorPoint.SetThisAsCameraTarget();

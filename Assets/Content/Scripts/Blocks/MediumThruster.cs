@@ -1,6 +1,6 @@
 ﻿#pragma warning disable 649
 using UnityEngine;
-public class Thruster : MonoBehaviour, IBlock, IThruster
+public class MediumThruster : MonoBehaviour, IBlock, IThruster, IMultiSizeBlock
 {
     [SerializeField]
     private float _thrust;
@@ -10,12 +10,20 @@ public class Thruster : MonoBehaviour, IBlock, IThruster
     private Animator animator;
     [SerializeField]
     private BlockBaseClass _blockBaseClass;
+    [SerializeField]
+    private MultiSizeBlockBaseClass _multiSizeBlockBaseClass;
     public BlockBaseClass blockBaseClass
     {
         get => _blockBaseClass;
         set => _blockBaseClass = value;
     }
-    public float thrust {
+    public MultiSizeBlockBaseClass multiSizeBlockBaseClass
+    {
+        get => _multiSizeBlockBaseClass;
+        set => _multiSizeBlockBaseClass = value;
+    }
+    public float thrust
+    {
         get => _thrust;
         set => _thrust = value;
     }

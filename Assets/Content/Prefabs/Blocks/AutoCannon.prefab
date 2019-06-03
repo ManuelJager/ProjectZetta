@@ -239,7 +239,7 @@ GameObject:
   - component: {fileID: 8018928745348943428}
   - component: {fileID: 8018928745348943429}
   - component: {fileID: 8508363946437338762}
-  - component: {fileID: 5932889494246027915}
+  - component: {fileID: 5289861999865581408}
   m_Layer: 0
   m_Name: AutoCannon
   m_TagString: Block
@@ -337,7 +337,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &5932889494246027915
+--- !u!114 &5289861999865581408
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -346,20 +346,38 @@ MonoBehaviour:
   m_GameObject: {fileID: 8018928745348943435}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7490ffcb86b47d0479967fc5aa7bf324, type: 3}
+  m_Script: {fileID: 11500000, guid: 19f84088c05e7104ba25e807489a9c40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileSpeed: 1000
-  projectileDamage: 40
   animator: {fileID: 2559743994673459094}
   firePoint: {fileID: 7061132995534970422}
   audioSource: {fileID: 5760991914727295562}
   projectilePrefab: {fileID: 1637550786022612463, guid: 3714aee51fa18904db470fdd5ebd079c,
     type: 3}
-  _rateOfFire: 220
-  _turretSpeed: 60
-  _turretObject: {fileID: 576754049139088684}
   _blockBaseClass:
-    _health: 60
-    _mass: 3
+    _health: 50
+    _mass: 2
     _armor: 5
+  _turretObject: {fileID: 576754049139088684}
+  _turretSpeed: 50
+  _rateOfFire: 180
+  projectileParameters:
+    range: 0
+    speed: 1000
+  _damageTypes:
+    _isExplosive: 0
+    _isKinetic: 0
+    _isEnergetic: 0
+    _explosiveType:
+      energeticDamage: 0
+      shieldMultiplier: 0
+      isEmp: 0
+      empStatusDuration: 0
+    _kineticType:
+      kineticDamage: 0
+      kineticForce: 0
+      effectiveDamage: 0
+    _energeticType:
+      explosiveDamage: 0
+      explosiveRadius: 0
+      explosiveForce: 0
