@@ -358,6 +358,7 @@ MonoBehaviour:
     _health: 50
     _mass: 2
     _armor: 5
+    _blastResistance: 0
   _turretObject: {fileID: 576754049139088684}
   _turretSpeed: 50
   _rateOfFire: 180
@@ -365,19 +366,19 @@ MonoBehaviour:
     range: 0
     speed: 1000
   _damageTypes:
-    _isExplosive: 0
+    _isExplosive: 1
     _isKinetic: 0
     _isEnergetic: 0
     _explosiveType:
-      energeticDamage: 0
-      shieldMultiplier: 0
-      isEmp: 0
-      empStatusDuration: 0
+      explosiveDamage: 50
+      explosiveRadius: 3
+      explosiveForce: 300
     _kineticType:
       kineticDamage: 0
       kineticForce: 0
       effectiveDamage: 0
     _energeticType:
-      explosiveDamage: 0
-      explosiveRadius: 0
-      explosiveForce: 0
+      energeticDamage: 0
+      shieldMultiplier: 0
+      isEmp: 0
+      empStatusDuration: 0

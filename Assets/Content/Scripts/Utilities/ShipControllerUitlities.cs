@@ -20,24 +20,24 @@ public static class ShipControllerUitlities
                 break;
         }
     }
-    public static void SetThrusterGroupFlame(List<GameObject> thrusters, bool value) 
+    public static void SetThrusterGroupFlame(List<IThruster> thrusters, bool value) 
     {
         if (thrusters != null)
         {
             foreach (var thruster in thrusters)
             {
-                thruster.GetComponent<Thruster>().SetThrusterFlame(value);
+                thruster.SetThrusterFlame(value);
             }
         }
     }
-    public static float[] CalculateThrustVectors(List<GameObject>[] thrusterGroups)
+    public static float[] CalculateThrustVectors(List<IThruster>[] thrusterGroups)
     {
         var thrustVectors = new float[4];
         for (int i = 0; i < 4; i++)
         {
             foreach (var item in thrusterGroups[i])
             {
-                thrustVectors[i] += item.GetComponent<Thruster>().thrust;
+                thrustVectors[i] += item.thrust;
             }
         }
         return thrustVectors;

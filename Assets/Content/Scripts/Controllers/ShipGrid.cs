@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 public class ShipGrid : MonoBehaviour
 { 
     enum type
@@ -79,24 +80,24 @@ public class ShipGrid : MonoBehaviour
     public Transform shipLayout => _shipLayout != null ? _shipLayout : _shipLayout = transform.GetChild(0).GetChild(0);
     
     public TurningRate turningRate;
-    public List<GameObject>[] _thrusterGroups;
+    public List<IThruster>[] _thrusterGroups;
     public Vector2 centerOfMass;
     public int gridID;
     private void Start()
     {
-        gameObject.AddToTable();
         _ship = gameObject;
         _rb2d = GetComponent<Rigidbody2D>();
         gridID = transform.GetRootGridID();
-        _thrusterGroups = new List<GameObject>[4];
+        new GridManager.shipReference(gameObject, this, _rb2d).AddToTable(gridID);
+        _thrusterGroups = new List<IThruster>[4];
         for (int i = 0; i < 4; i++)
         {
-            _thrusterGroups[i] = new List<GameObject>();
+            _thrusterGroups[i] = new List<IThruster>();
         }
-        SetThrusterGroups();
+        ConstructGrid();
         SetTurningRateVectors();
         SetThrustVectors(ShipControllerUitlities.CalculateThrustVectors(_thrusterGroups));
-        ConstructGrid();
+        
     }
     [Obsolete("mass calculations are automatically done in ContructGrid now")]
     private void CalculateMass()
@@ -137,6 +138,13 @@ public class ShipGrid : MonoBehaviour
         thrust.leftThrust = thrustVectors[2];
         thrust.rightThrust = thrustVectors[3];
     }
+    public void RemoveFromThrustGroup(IThruster thrusterToBeRemoved)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            _thrusterGroups[i].Remove(thrusterToBeRemoved);
+        }
+    }
     public float[] GetThrustVectors()
     {
         var thrustVectors = new float[4];
@@ -160,21 +168,9 @@ public class ShipGrid : MonoBehaviour
         turningRateVectors[1] = turningRate.rightTurningRate;
         return turningRateVectors;
     }
-    public void SetThrusterGroups()
+    private void AddToThrusterGroups(IThruster thruster)
     {
-        var count = shipLayout.childCount;
-        for (int i = 0; i < count; i++)
-        {
-            var child = shipLayout.GetChild(i);
-            if (child.tag == "Thruster")
-            {
-                AddToThrusterGroups(child.gameObject);
-            }
-        }
-    }
-    private void AddToThrusterGroups(GameObject thruster)
-    {
-        switch (thruster.transform.rotation.eulerAngles.z)
+        switch (((MonoBehaviour)thruster).transform.rotation.eulerAngles.z)
         {
             case 0f:
                 _thrusterGroups[0].Add(thruster);
@@ -271,9 +267,10 @@ public class ShipGrid : MonoBehaviour
             var child = shipLayout.transform.GetChild(i);
             var turret = (ITurret)child.GetComponent(typeof(ITurret));
             if (turret != null)
-            {
                 turrets.Add(turret);
-            }
+            var thruster = (IThruster)child.GetComponent(typeof(IThruster));
+            if (thruster != null)
+                AddToThrusterGroups(thruster);
             var multiSizeBlock = (IMultiSizeBlock)child.GetComponent(typeof(IMultiSizeBlock));
             if (multiSizeBlock != null)
             {
@@ -281,7 +278,7 @@ public class ShipGrid : MonoBehaviour
                 multiSizeBlocks.Add(multiSizeBlockObject);
                 multiSizeBlock.multiSizeBlockBaseClass.parentClass = (MonoBehaviour)multiSizeBlock;
                 multiSizeBlock.blockBaseClass.gridID = gridID;
-                var positions = multiSizeBlockObject.getPositionsOfMultiSizeBlock();
+                var positions = multiSizeBlockObject.GetPositionsOfMultiSizeBlock();
                 foreach (var position in positions)
                 {
                     xPositions.Add(position.x);
@@ -323,7 +320,7 @@ public class ShipGrid : MonoBehaviour
             if (multiSizeBlock != null)
             {
                 posBlockData.Add(new PosBlockData(child.localPosition, multiSizeBlock.blockBaseClass.mass));
-                foreach (var vector2 in new IMultiSizeBlockObject(multiSizeBlock, child.transform).getPositionsOfMultiSizeBlock())
+                foreach (var vector2 in new IMultiSizeBlockObject(multiSizeBlock, child.transform).GetPositionsOfMultiSizeBlock())
                 {
                     AddToGrid(child, vector2);
                 }

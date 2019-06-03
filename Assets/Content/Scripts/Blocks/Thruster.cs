@@ -22,6 +22,7 @@ public class Thruster : MonoBehaviour, IBlock, IThruster
     public void SubtractFromGridAndDestroy()
     {
         Destroy(gameObject);
+        Extensions.GetFromTable(blockBaseClass.gridID).shipGridClass.RemoveFromThrustGroup(this);
     }
     public void SetThrusterFlame(bool value, float strength = 0f)
     {

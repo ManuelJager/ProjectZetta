@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 public static class Extensions
 {
     /// <summary>
@@ -21,7 +22,7 @@ public static class Extensions
     /// </summary>
     /// <param name="multiSizeBlockObject"></param>
     /// <returns></returns>
-    public static Vector2Int[] getPositionsOfMultiSizeBlock(this ShipGrid.IMultiSizeBlockObject multiSizeBlockObject)
+    public static Vector2Int[] GetPositionsOfMultiSizeBlock(this ShipGrid.IMultiSizeBlockObject multiSizeBlockObject)
     {
         var size = multiSizeBlockObject.multiSizeBlock.multiSizeBlockBaseClass.effectiveSize;
         var pos = multiSizeBlockObject.transform.localPosition;
@@ -84,21 +85,20 @@ public static class Extensions
     /// <param name="transform"></param>
     public static void SetThisAsCameraTarget(this Transform transform) => CameraFollower.Instance.SetTarget(transform);
 
-    public static void AddToTable(this GameObject gameObject)
+    public static void AddToTable(this GridManager.shipReference shipReference, int instanceID)
     {
-        var instanceID = gameObject.transform.GetRootGridID();
         try
         {
-            GridManager.Instance.gridInstances.Add(instanceID, gameObject);
+            GridManager.Instance.gridInstances.Add(instanceID, shipReference);
         }
         catch
         {
             Debug.LogWarning("grid : " + instanceID + " already exists");
         }
     }
-    public static void RemoveFromTable(this GameObject gameObject)
+    public static void RemoveFromTable(this GridManager.shipReference shipReference)
     {
-        var instanceID = gameObject.transform.GetRootGridID();
+        var instanceID = shipReference.grid.transform.GetRootGridID();
         try
         {
             GridManager.Instance.gridInstances.Remove(instanceID);
@@ -108,23 +108,49 @@ public static class Extensions
             Debug.LogWarning("grid : " + instanceID + " doesn't exist");
         }
     }
-    public static GameObject GetFromTable(int instanceID)
+    public static GridManager.shipReference GetFromTable(int instanceID)
     {
-        GameObject gameObject = new GameObject();
+
+        GridManager.shipReference? shipReference = new GridManager.shipReference?();
         try
         {
-            gameObject = (GameObject)GridManager.Instance.gridInstances[instanceID];
-            if (gameObject == null)
+            shipReference = (GridManager.shipReference)GridManager.Instance.gridInstances[instanceID];
+            if (shipReference == null)
                 Debug.LogWarning("Ship grid : " + instanceID + " is null");
         }
         catch
         {
             Debug.LogWarning("grid : " + instanceID + " doesn't exist");
-            return null;
         }
-        return gameObject;
+        return shipReference ?? default; ;
     }
-    public static void Destroy(this GameObject gameObject) => Object.Destroy(gameObject);
+    public static void Destroy(this GameObject gameObject) => UnityEngine.Object.Destroy(gameObject);
     public static IBlock CastToIBlock(this Transform transform) => (IBlock)transform.GetComponent(typeof(IBlock));
     public static IMultiSizeBlock CastToIMultiSizeBlock(this Transform transform) => (IMultiSizeBlock)transform.GetComponent(typeof(IMultiSizeBlock));
+    public static Vector2 GetWorldPosCenterOfMassFromGridID(int instanceID)
+    {
+        var shipObject = GetFromTable(instanceID);
+        var shipGrid = shipObject.shipGridClass;
+        var shipGridCenterOfMass = shipGrid.centerOfMass;
+        var shipGridPos = shipGrid.transform.position;
+        var worldPosCenterOfMass = new Vector2(shipGridPos.x + shipGridCenterOfMass.x, shipGridPos.y + shipGridCenterOfMass.y);
+        return worldPosCenterOfMass;
+    }
+    public static Vector2 GetWorldPosCenterOfMassFromGridObject(GameObject shipObject)
+    {
+        var shipGrid = shipObject.GetComponent<ShipGrid>();
+        var shipGridCenterOfMass = shipGrid.centerOfMass;
+        var shipGridPos = shipGrid.transform.position;
+        var worldPosCenterOfMass = new Vector2(shipGridPos.x + shipGridCenterOfMass.x, shipGridPos.y + shipGridCenterOfMass.y);
+        return worldPosCenterOfMass;
+    }
+    public static Vector2 ToVector2(this Vector3 vector)
+    {
+        return new Vector2(vector.x, vector.y);
+    }
+    public static float Effective01RangeMultiplier(float multiplier) => -multiplier + 1;
+    public static void RemoveFromGridAndDestroy()
+    {
+
+    }
 }

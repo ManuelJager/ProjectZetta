@@ -10,6 +10,8 @@ public class BlockBaseClass
     private int _mass;
     [SerializeField]
     private int _armor;
+    [SerializeField]
+    private float _blastResistance;
     private IBlock _block;
     private MonoBehaviour _parentClass;
     private int _gridID;
@@ -49,5 +51,10 @@ public class BlockBaseClass
     {
         get => _gridID;
         set => _gridID = value;
+    }
+    public float blastResistance
+    {
+        get => _blastResistance;
+        set => _blastResistance = value;
     }
 }

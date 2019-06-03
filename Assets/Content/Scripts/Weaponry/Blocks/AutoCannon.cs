@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿#pragma warning disable 649
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -57,7 +58,7 @@ public class AutoCannon : MonoBehaviour, IBlock, ITurret, IWeapon
         PlayShot();
         var projectile = Instantiate(projectilePrefab);
         var IProjectile = (IProjectile)projectile.GetComponent(typeof(IProjectile));
-        IProjectile.Initialize(projectileParameters, damageTypes, firePoint.transform.position, turretObject.rotation, projectile.transform);
+        IProjectile.Initialize(projectileParameters, damageTypes, firePoint.transform.position, turretObject.rotation, projectile.transform, blockBaseClass.gridID);
         yield return new WaitForSeconds(60.0f / rateOfFire);
         hasReloaded = true;
     }

@@ -120,9 +120,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dfd1d687d2b7084d97935faee8a7a4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 20
-  _mass: 2
-  _armor: 5
   _thrust: 10000
   thruster: {fileID: 7177366742054446435}
   animator: {fileID: 295164212138938571}
@@ -130,6 +127,7 @@ MonoBehaviour:
     _health: 100
     _mass: 6
     _armor: 10
+    _blastResistance: 0
 --- !u!1 &7177366742054446435
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,7 +198,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 5195489d75267f34d9cf67ee584be818, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -208,7 +206,7 @@ SpriteRenderer:
   m_Size: {x: 0.32, y: 0.32}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!65 &6085350577731835418
