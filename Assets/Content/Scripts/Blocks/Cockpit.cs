@@ -3,12 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cockpit : MonoBehaviour, IMultiSizeBlock
+public class Cockpit : MonoBehaviour, IMultiSizeBlock, IPowerGenerator
 {
+    [SerializeField]
+    private float _powerGeneration;
     [SerializeField]
     private MultiSizeBlockBaseClass _multiSizeBlockBaseClass;
     [SerializeField]
     private BlockBaseClass _blockBaseClass;
+    public float powerGeneration => _powerGeneration;
     public BlockBaseClass blockBaseClass
     {
         get => _blockBaseClass;

@@ -149,8 +149,86 @@ public static class Extensions
         return new Vector2(vector.x, vector.y);
     }
     public static float Effective01RangeMultiplier(float multiplier) => -multiplier + 1;
-    public static void RemoveFromGridAndDestroy()
+    public static void RemoveFromGridAndDestroy(this IBlock block)
     {
 
+    }
+    /// <summary>
+    /// for loop wrapper that repeats an action an amount of time
+    /// </summary>
+    /// <param name="count"></param>
+    /// <param name="action"></param>
+    public static void Times(this int count, Action action)
+    {
+        try
+        {
+            var a = (uint)count;
+            for (int i = 0; i < count; i++)
+            {
+                action();
+            }
+        }
+        catch 
+        {
+            throw new ArgumentException("extension parameter of Extensions.Times() must be a non-negative value");
+        }
+        
+    }
+
+    public static bool IsPositive (this float value) => value > 0f;
+    public static float GetTotalTheoriticalPowerConsumption(List<IPowerConsumer> powerConsumers) => powerConsumers.Sum(item => item.powerConsumption);
+    public static float GetTotalTheoriticalPowerGeneration(List<IPowerGenerator> powerGenerators) => powerGenerators.Sum(item => item.powerGeneration);
+}
+
+public class ManuQueue<T> : IEnumerable
+{
+    protected private LinkedList<T> _inner;
+    private int _size;
+    public int size
+    {
+        get => _size;
+        set
+        {
+            if (value < 1)
+                Debug.LogWarning("Size is too small");
+            else
+            {
+                _inner = new LinkedList<T>();
+                _size = value;
+            }
+        }
+    }
+    public void Enqueue(T item)
+    {
+        _inner.AddFirst(item);
+        if (_inner.Count > size)
+            (_inner.Count - size).Times(() => _inner.RemoveLast());
+    }
+    public T Peek() => _inner.Count > 0 ? _inner.ElementAt(0) : default;
+    public T Dequeue()
+    {
+        var t = _inner.ElementAt(0);
+        _inner.RemoveFirst();
+        return t;
+    }
+    public IEnumerator GetEnumerator() {
+        foreach (var item in _inner)
+            yield return item;
+    }
+    public ManuQueue(int size = 1) => this.size = size;
+    public T this[int index]
+    {
+        get
+        {
+            try
+            {
+                var t = _inner.ElementAt(index);
+                return t;
+            }
+            catch
+            {
+                throw new ArgumentException("Index was out of ManuQueue range");
+            }
+        }
     }
 }

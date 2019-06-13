@@ -31,7 +31,6 @@ public class ShipGrid : MonoBehaviour
             this.transform = transform;
         }
     }
-
     public struct IMultiSizeBlockObject
     {
         public IMultiSizeBlock multiSizeBlock;
@@ -50,6 +49,13 @@ public class ShipGrid : MonoBehaviour
     private Vector2Int highest;
 
     public List<ITurret> turrets = new List<ITurret>();
+    
+    public List<IPowerConsumer> powerConsumers = new List<IPowerConsumer>();
+    public List<IPowerGenerator> powerGenerators = new List<IPowerGenerator>();
+    [HideInInspector]
+    public float totalPowerGeneration;
+    [HideInInspector]
+    public float totalPowerConsumption;
 
     public struct Thrust
     {
@@ -128,7 +134,6 @@ public class ShipGrid : MonoBehaviour
         }
         _rb2d.mass = targetMass;
     }
-
     public void SetThrustVectors(float[] thrustVectors = null)
     {
         //if no argument has been given, thrust vectors will be set to default values
@@ -337,6 +342,7 @@ public class ShipGrid : MonoBehaviour
         }
         centerOfMass = posBlockData.WeightedAverage();
         shipLayout.localPosition = -centerOfMass;
+
         #region debugging
         if (PlayerPrefs.Instance.debug3)
         {
@@ -368,6 +374,10 @@ public class ShipGrid : MonoBehaviour
         }
         #endregion
     }
+    public void RemoveFromPowerConsumption(IPowerConsumer item)  => totalPowerConsumption -= item.powerConsumption;
+    public void AddToPowerConsumption     (IPowerConsumer item)  => totalPowerConsumption += item.powerConsumption;
+    public void RemoveFromPowerGeneration (IPowerGenerator item) => totalPowerGeneration  -= item.powerGeneration;
+    public void AddToPowerGeneration      (IPowerGenerator item) => totalPowerGeneration  += item.powerGeneration;
     private bool IndexIsOutsideGridBounds(int[] index)
     {
         for (int x = 0; x < index.Length; x++)

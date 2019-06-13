@@ -41,5 +41,7 @@ public static class ShipControllerUitlities
             }
         }
         return thrustVectors;
+        
     }
+   
 }

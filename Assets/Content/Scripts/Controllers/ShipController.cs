@@ -46,16 +46,18 @@ public class ShipController : MonoBehaviour
     private GameObject _target;
     private Camera _camera;
     public bool[] thrusterGroupFiring = new bool[4];
-    private ShipGrid shipGrid;
+    private ShipGrid _shipGrid;
+    
     #endregion
     private void Awake()
     {
         _ship = transform.parent.gameObject;
-        shipGrid = _ship.GetComponent<ShipGrid>();
+        _shipGrid = _ship.GetComponent<ShipGrid>();
     }
     private void Start()
     {
         _cameraAnchorPoint.SetThisAsCameraTarget();
+        UIManager.Instance.energyBar.maxVal = _shipGrid.totalPowerConsumption;
     }
     void Update()
     {
@@ -64,14 +66,14 @@ public class ShipController : MonoBehaviour
             case AimingMode.Cursor:
                 if (!Input.GetKey(KeyCode.LeftShift))
                 {
-                    var rot = RotationUtilities.MouseLookAtRotation(_grid, shipGrid.turningRate.leftTurningRate, shipGrid.turningRate.rightTurningRate);
+                    var rot = RotationUtilities.MouseLookAtRotation(_grid, _shipGrid.turningRate.leftTurningRate, _shipGrid.turningRate.rightTurningRate);
                     _grid.transform.rotation = rot;
                 }
                 break;
             case AimingMode.Keyboard:
                 break;
         }
-        foreach (var turret in shipGrid.turrets)
+        foreach (var turret in _shipGrid.turrets)
         {
             turret.turretObject.transform.rotation = RotationUtilities.MouseLookAtRotation(turret.turretObject.transform, turret.turretSpeed);
             if (Input.GetMouseButton(0) && turret.hasReloaded) turret.Fire();
@@ -91,11 +93,11 @@ public class ShipController : MonoBehaviour
         {
             if (thrusterGroupFiring[i])
             {
-                shipGrid.FireThrusterGroup(i);
+                _shipGrid.FireThrusterGroup(i);
             }
             else
             {
-                ShipControllerUitlities.SetThrusterGroupFlame(shipGrid._thrusterGroups[i], false);
+                ShipControllerUitlities.SetThrusterGroupFlame(_shipGrid._thrusterGroups[i], false);
             }
         }
         //dampen ship movement with thruster force pointing in the opposite direction of current velocity;

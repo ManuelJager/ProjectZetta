@@ -119,7 +119,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e1ebd6e648ecca40bcb45dac2a68fcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _powerGeneration: 300
   _blockBaseClass:
     _health: 400
     _mass: 5
     _armor: 30
+    _blastResistance: 0
