@@ -44,7 +44,9 @@ public class UIBar : MonoBehaviour
     public void Update()
     {
         var val = Mathf.Clamp01(_val / _maxVal);
-        _bar.localScale = new Vector2(1 - val, 1);
+        var xSize = _bar.localScale.x;
+        xSize.MixedInterpolate(val, 0.01f, 0.005f);
+        _bar.localScale = new Vector2(xSize, 1);
         _energyUsageText.text = ((-val * 100) + 100).ToString() + "%";
     }
 }

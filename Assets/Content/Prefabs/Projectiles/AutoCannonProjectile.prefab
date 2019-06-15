@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7555580661055215608}
   - component: {fileID: 852520014707592142}
   - component: {fileID: 3510501793158498312}
+  - component: {fileID: 1899819241859824971}
   m_Layer: 0
   m_Name: AutoCannonProjectile
   m_TagString: Untagged
@@ -142,7 +143,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3214c980f82734e90fbe0b0143f796, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sourceGridID: 0
-  range: 0
   _projectileReferences:
     _rb2d: {fileID: 7555580661055215608}
+  _projectileParameters:
+    range: 0
+    speed: 0
+--- !u!114 &1899819241859824971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1637550786022612463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03fec885f7819354cbb1ecb2488986f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  life: 10

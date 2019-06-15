@@ -34,6 +34,8 @@ public class PlayerPrefs : MonoBehaviour
     /// Wether or not sabot rounds instantiate shell casing graphics on fire
     /// </summary>
     public bool sabotRoundSpread;
+    public bool clearLog;
+    public float thrusterLeniancy;
     public static PlayerPrefs Instance;
     private void Awake()
     {

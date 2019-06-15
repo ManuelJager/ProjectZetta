@@ -178,6 +178,19 @@ public static class Extensions
     public static bool IsPositive (this float value) => value > 0f;
     public static float GetTotalTheoriticalPowerConsumption(List<IPowerConsumer> powerConsumers) => powerConsumers.Sum(item => item.powerConsumption);
     public static float GetTotalTheoriticalPowerGeneration(List<IPowerGenerator> powerGenerators) => powerGenerators.Sum(item => item.powerGeneration);
+
+    public static void MixedInterpolate(this ref float from, float to, float multiplier = 0.5f, float step = 0.5f)
+    {
+        if (from == to)
+            return;
+        var dif = to - from;
+        if (dif == 0f)
+            return;
+        from += dif * multiplier;
+        from += dif > 0 ? dif > step ? step : dif : dif < -step ? -step : dif;
+    }
+
+    public static bool IsInRange(this float value, float min, float max) => value > min && value < max;
 }
 
 public class ManuQueue<T> : IEnumerable

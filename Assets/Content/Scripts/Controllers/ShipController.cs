@@ -57,16 +57,18 @@ public class ShipController : MonoBehaviour
     private void Start()
     {
         _cameraAnchorPoint.SetThisAsCameraTarget();
-        UIManager.Instance.energyBar.maxVal = _shipGrid.totalPowerConsumption;
+        //UIManager.Instance.energyBar.maxVal = _shipGrid.totalPowerConsumption;
     }
     void Update()
     {
+        var q = RotationUtilities.GetMouseWorldPos(_grid);
+        //aiming
         switch (aimingMode)
         {
             case AimingMode.Cursor:
                 if (!Input.GetKey(KeyCode.LeftShift))
                 {
-                    var rot = RotationUtilities.MouseLookAtRotation(_grid, _shipGrid.turningRate.leftTurningRate, _shipGrid.turningRate.rightTurningRate);
+                    var rot = RotationUtilities.MouseLookAtRotation(_grid, _shipGrid.turningRate.leftTurningRate, _shipGrid.turningRate.rightTurningRate, q);
                     _grid.transform.rotation = rot;
                 }
                 break;
@@ -78,28 +80,15 @@ public class ShipController : MonoBehaviour
             turret.turretObject.transform.rotation = RotationUtilities.MouseLookAtRotation(turret.turretObject.transform, turret.turretSpeed);
             if (Input.GetMouseButton(0) && turret.hasReloaded) turret.Fire();
         }
-    }
-    void FixedUpdate()
-    {
+        //movement
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        thrusterGroupFiring = new bool[4] { false, false, false, false };
-        if (dampeningMode == DampeningMode.On)
-            //Dampening.Dampen(input, _rb2d, _ship.transform.rotation.eulerAngles.z, _ship, thrust);
-        if (input.x > 0) thrusterGroupFiring[2] = true;
-        if (input.x < 0) thrusterGroupFiring[3] = true;
-        if (input.y > 0) thrusterGroupFiring[0] = true;
-        if (input.y < 0) thrusterGroupFiring[1] = true;
-        for (int i = 0; i < 4; i++)
-        {
-            if (thrusterGroupFiring[i])
-            {
-                _shipGrid.FireThrusterGroup(i);
-            }
-            else
-            {
-                ShipControllerUitlities.SetThrusterGroupFlame(_shipGrid._thrusterGroups[i], false);
-            }
-        }
-        //dampen ship movement with thruster force pointing in the opposite direction of current velocity;
+        float inputAngle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
+        if (PlayerPrefs.Instance.clearLog)
+            Common.ClearLog();
+        if (inputAngle < 0f)
+            inputAngle += 360f;
+        Debug.Log("Input angle is : " + inputAngle);
+        if (input != Vector2.zero)
+            _shipGrid.newThrust.FireThrusterInDirection(_shipGrid.transform.rotation.eulerAngles.z, inputAngle);
     }
 }   

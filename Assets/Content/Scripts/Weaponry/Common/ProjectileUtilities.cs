@@ -64,7 +64,8 @@ public static class ProjectileUtilities
             var colliderBlock = colliders2D[i].transform.CastToIBlock();
             if (colliderBlock != null)
             {
-                var instanceID = colliders2D[i].transform.GetRootGridID();
+                //Explosion knockback calculations
+                var instanceID = colliderBlock.blockBaseClass.gridID;
                 if (!gridInstanceIDs.Contains(instanceID))
                 {
                     var shipObject = Extensions.GetFromTable(instanceID);
@@ -72,12 +73,12 @@ public static class ProjectileUtilities
                     {
                         Debug.LogWarning("ship object doesnt exist");
                     }
-
                     var shipCollider = shipObject.rb2d;
                     var worldPosCenterOfMass = Extensions.GetWorldPosCenterOfMassFromGridID(instanceID);
                     shipCollider.AddForce((worldPosCenterOfMass - explosionPosition) * damageParams.explosiveForce);
                     gridInstanceIDs.Add(instanceID);
                 }
+                //applies damage
                 colliderBlock.ApplyExplosiveDamageToBlock(damageParams.explosiveDamage);
             }
         }

@@ -5,6 +5,8 @@ using UnityEngine;
 public class BlockBaseClass
 {
     [SerializeField]
+    private Common.Orientation? _orientation;
+    [SerializeField]
     private float _health;
     [SerializeField]
     private int _mass;
@@ -22,6 +24,11 @@ public class BlockBaseClass
         _armor = armor;
         _block = block;
         _parentClass = parentClass;
+    }
+    public Common.Orientation? orientation
+    {
+        get => _orientation;
+        set => _orientation = value;
     }
     public float health
     {

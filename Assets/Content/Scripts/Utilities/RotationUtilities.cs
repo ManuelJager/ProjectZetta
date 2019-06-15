@@ -11,12 +11,14 @@ public static class RotationUtilities
     /// <param name="camera">Rendering camera</param>
     /// <param name="leftTurningRate">Speed at which the object should turn to the left</param>
     /// <param name="rightTurningRate">Speed at which the object should turn to the right</param>
+    /// <param name="q">Rotation from object to mouse position</param>
     /// <returns></returns>
-    public static Quaternion MouseLookAtRotation(Transform target, float leftTurningRate, float rightTurningRate, Camera camera = null)
+    public static Quaternion MouseLookAtRotation(Transform target, float leftTurningRate, float rightTurningRate, Quaternion? q = null, Camera camera = null)
     {
         camera = camera ?? Camera.main;
-        Quaternion q = GetMouseWorldPos(target, camera);
-        var zStep = CalculateZStep(target.rotation.eulerAngles, q.eulerAngles, leftTurningRate, rightTurningRate);
+        q = q ?? GetMouseWorldPos(target, camera);
+        Quaternion effectiveQ = q ?? default;
+        var zStep = CalculateZStep(target.rotation.eulerAngles, effectiveQ.eulerAngles, leftTurningRate, rightTurningRate);
         return Quaternion.Euler(target.rotation.eulerAngles + new Vector3(.0f, .0f, zStep));
     }
     /// <summary>
@@ -64,8 +66,9 @@ public static class RotationUtilities
     /// <summary>
     /// gets rotation relative from target to mouse position
     /// </summary>
-    private static Quaternion GetMouseWorldPos(Transform target, Camera camera)
+    public static Quaternion GetMouseWorldPos(Transform target, Camera camera = null)
     {
+        camera = camera ?? Camera.main;
         Vector3 vectorToTarget = camera.ScreenToWorldPoint(Input.mousePosition) - target.position;
         float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg;
         return Quaternion.AngleAxis(angle, Vector3.forward);
@@ -98,11 +101,11 @@ public static class RotationUtilities
         //wether to rotate left(true) or right(false)
         bool isTargetRotationLeftToRotation = IsTargetRotationLeftToRotation(targetRotation, currentRotation);
         //angle in degrees the rotation should added uppon
-        float zStep = isTargetRotationLeftToRotation ? leftTurningRate : rightTurningRate * -1;
+        float zStep = isTargetRotationLeftToRotation ? leftTurningRate : -rightTurningRate;
         zStep *= Time.deltaTime;
         //the effective value of zStep
         //this line makes sure the zStep doesn't exceed the zDif. This is to prevent the rotation from overshooting its target
-        float effectiveZStep = Mathf.Abs(zStep) > zDif ? isTargetRotationLeftToRotation ? zDif : zDif * -1f : zStep;
+        float effectiveZStep = Mathf.Abs(zStep) > zDif ? isTargetRotationLeftToRotation ? zDif : -zDif : zStep;
         return effectiveZStep;
     }
     /// <summary>
@@ -121,7 +124,7 @@ public static class RotationUtilities
         //wether to rotate left(true) or right(false)
         bool isTargetRotationLeftToRotation = IsTargetRotationLeftToRotation(targetRotation, currentRotation);
         //angle in degrees the rotation should added uppon
-        float zStep = isTargetRotationLeftToRotation ? turningRate : turningRate * -1;
+        float zStep = isTargetRotationLeftToRotation ? turningRate : -turningRate;
         zStep *= Time.deltaTime;
         //the effective value of zStep
         //this line makes sure the zStep doesn't exceed the zDif. This is to prevent the rotation from overshooting its target
@@ -161,5 +164,90 @@ public static class RotationUtilities
         var py = vector.x * sn + vector.y * cs;
         #endregion
         return new Vector2(px, py);
+    }
+    public static Common.Orientation GetOrientation(this IBlock block)
+    {
+        if (block.blockBaseClass.orientation != null)
+            return block.blockBaseClass.orientation ?? default;
+        var rotation = ((MonoBehaviour)block).transform.rotation;
+        var orientation = GetOrientation(rotation);
+        block.blockBaseClass.orientation = orientation;
+        return orientation;
+    }
+    private static Common.Orientation GetOrientation(Quaternion rotation)
+    {
+        switch (Mathf.RoundToInt(rotation.eulerAngles.z))
+        {
+            case 0:
+                return Common.Orientation.forward;
+            case 90:
+                return Common.Orientation.left;
+            case 180:
+                return Common.Orientation.backward;
+            case 270:
+                return Common.Orientation.right;
+            default:
+                throw new System.ArgumentException("Rotation is invalid");
+        }
+    }
+    public static Common.Orientation GetOrientation(float zRotation)
+    {
+        switch (zRotation)
+        {
+            case 0f:
+                return Common.Orientation.forward;
+            case 90f:
+                return Common.Orientation.right;
+            case 180f:
+                return Common.Orientation.backward;
+            case 270f:
+                return Common.Orientation.left;
+            default:
+                throw new System.ArgumentException("Rotation is invalid");
+        }
+    }
+    public static Common.Orientation GetOrientation(char keyPressed)
+    {
+        switch (keyPressed)
+        {
+            case 'w':
+                return Common.Orientation.forward;
+            case 'a':
+                return Common.Orientation.left;
+            case 's':
+                return Common.Orientation.backward;
+            case 'd':
+                return Common.Orientation.right;
+            default:
+                throw new System.ArgumentException("KeyPressed is invalid");
+        }
+    }
+    public static float GetRotation(Common.Orientation orientation)
+    {
+        switch (orientation)
+        {
+            case Common.Orientation.forward:
+                return 0f;
+            case Common.Orientation.backward:
+                return 180f;
+            case Common.Orientation.left:
+                return 270f;
+            case Common.Orientation.right:
+                return 90f;
+            default:
+                throw new System.ArgumentException("Orientation Invalid");
+        }
+    }
+    public static void AddAngle(this ref float angle, float addition)
+    {
+        angle += addition;
+            if (angle > 360f)
+            {
+                angle -= 360f;
+            }
+            else if (angle < 0f)
+            {
+                angle += 360f;
+            }
     }
 }

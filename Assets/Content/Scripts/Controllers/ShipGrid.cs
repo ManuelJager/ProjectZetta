@@ -56,22 +56,6 @@ public class ShipGrid : MonoBehaviour
     public float totalPowerGeneration;
     [HideInInspector]
     public float totalPowerConsumption;
-
-    public struct Thrust
-    {
-        public float forwardThrust;
-        public float backwardsThrust;
-        public float leftThrust;
-        public float rightThrust;
-        public Thrust(float forwardThrust, float backwardsThrust, float leftThrust, float rightThrust)
-        {
-            this.forwardThrust = forwardThrust;
-            this.backwardsThrust = backwardsThrust;
-            this.leftThrust = leftThrust;
-            this.rightThrust = rightThrust;
-        }
-    }
-    public Thrust thrust;
     public struct TurningRate
     {
         public float leftTurningRate;
@@ -89,6 +73,9 @@ public class ShipGrid : MonoBehaviour
     public List<IThruster>[] _thrusterGroups;
     public Vector2 centerOfMass;
     public int gridID;
+
+    public List<IThruster> thrusters = new List<IThruster>();
+    public NewThrust newThrust;
     private void Start()
     {
         _ship = gameObject;
@@ -102,8 +89,7 @@ public class ShipGrid : MonoBehaviour
         }
         ConstructGrid();
         SetTurningRateVectors();
-        SetThrustVectors(ShipControllerUitlities.CalculateThrustVectors(_thrusterGroups));
-        
+        newThrust = new NewThrust(thrusters);
     }
     [Obsolete("mass calculations are automatically done in ContructGrid now")]
     private void CalculateMass()
@@ -134,30 +120,12 @@ public class ShipGrid : MonoBehaviour
         }
         _rb2d.mass = targetMass;
     }
-    public void SetThrustVectors(float[] thrustVectors = null)
-    {
-        //if no argument has been given, thrust vectors will be set to default values
-        thrustVectors = thrustVectors ?? new float[4] { 150f, 100f, 100f, 100f };
-        thrust.forwardThrust = thrustVectors[0];
-        thrust.backwardsThrust = thrustVectors[1];
-        thrust.leftThrust = thrustVectors[2];
-        thrust.rightThrust = thrustVectors[3];
-    }
     public void RemoveFromThrustGroup(IThruster thrusterToBeRemoved)
     {
         for (int i = 0; i < 4; i++)
         {
             _thrusterGroups[i].Remove(thrusterToBeRemoved);
         }
-    }
-    public float[] GetThrustVectors()
-    {
-        var thrustVectors = new float[4];
-        thrustVectors[0] = thrust.forwardThrust;
-        thrustVectors[1] = thrust.backwardsThrust;
-        thrustVectors[2] = thrust.leftThrust;
-        thrustVectors[3] = thrust.rightThrust;
-        return thrustVectors;
     }
     public void SetTurningRateVectors(float[] turningRateVectors = null)
     {
@@ -173,25 +141,7 @@ public class ShipGrid : MonoBehaviour
         turningRateVectors[1] = turningRate.rightTurningRate;
         return turningRateVectors;
     }
-    private void AddToThrusterGroups(IThruster thruster)
-    {
-        switch (((MonoBehaviour)thruster).transform.rotation.eulerAngles.z)
-        {
-            case 0f:
-                _thrusterGroups[0].Add(thruster);
-                break;
-            case 90f:
-                _thrusterGroups[3].Add(thruster);
-                break;
-            case 180f:
-                _thrusterGroups[1].Add(thruster);
-                break;
-            case 270f:
-                _thrusterGroups[2].Add(thruster);
-                break;
-        }
-    }
-    public void FireThrusterGroup(int group)
+    public void FireThrusterGroup(int group, float multiplier)
     {
         var orientation = new Common.Orientation();
         switch (group)
@@ -209,7 +159,7 @@ public class ShipGrid : MonoBehaviour
                 orientation = Common.Orientation.left;
                 break;
         }
-        ShipControllerUitlities.ApplyRB2DForce(_rb2d, shipLayout, thrust, orientation);
+        ShipControllerUitlities.ApplyRB2DForce(_rb2d, transform, newThrust, multiplier, orientation);
         ShipControllerUitlities.SetThrusterGroupFlame(_thrusterGroups[group], true);
     }
     public void AddToGrid(Transform block)
@@ -275,7 +225,10 @@ public class ShipGrid : MonoBehaviour
                 turrets.Add(turret);
             var thruster = (IThruster)child.GetComponent(typeof(IThruster));
             if (thruster != null)
-                AddToThrusterGroups(thruster);
+            {
+                thrusters.Add(thruster);
+                //AddToThrusterGroups(thruster);
+            }
             var multiSizeBlock = (IMultiSizeBlock)child.GetComponent(typeof(IMultiSizeBlock));
             if (multiSizeBlock != null)
             {
