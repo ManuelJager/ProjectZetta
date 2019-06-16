@@ -43,7 +43,7 @@ public class ShipGrid : MonoBehaviour
         }
     }
     private GameObject _ship;
-    private Rigidbody2D _rb2d;
+    public Rigidbody2D _rb2d;
     private GameObject[,] _shipGrid;
     private Vector2Int lowest;
     private Vector2Int highest;
@@ -66,9 +66,13 @@ public class ShipGrid : MonoBehaviour
             this.rightTurningRate = rightTurningRate;
         }
     }
+    [SerializeField]
     private Transform _shipLayout;
     public Transform shipLayout => _shipLayout != null ? _shipLayout : _shipLayout = transform.GetChild(0).GetChild(0);
-    
+    [SerializeField]
+    private Transform _grid;
+    public Transform grid => _grid != null ? _grid : _grid = transform.GetChild(0);
+
     public TurningRate turningRate;
     public List<IThruster>[] _thrusterGroups;
     public Vector2 centerOfMass;
@@ -89,7 +93,7 @@ public class ShipGrid : MonoBehaviour
         }
         ConstructGrid();
         SetTurningRateVectors();
-        newThrust = new NewThrust(thrusters);
+        newThrust = new NewThrust(this, thrusters);
     }
     [Obsolete("mass calculations are automatically done in ContructGrid now")]
     private void CalculateMass()
@@ -140,27 +144,6 @@ public class ShipGrid : MonoBehaviour
         turningRateVectors[0] = turningRate.leftTurningRate;
         turningRateVectors[1] = turningRate.rightTurningRate;
         return turningRateVectors;
-    }
-    public void FireThrusterGroup(int group, float multiplier)
-    {
-        var orientation = new Common.Orientation();
-        switch (group)
-        {
-            case 0:
-                orientation = Common.Orientation.forward;
-                break;
-            case 1:
-                orientation = Common.Orientation.backward;
-                break;
-            case 2:
-                orientation = Common.Orientation.right;
-                break;
-            case 3:
-                orientation = Common.Orientation.left;
-                break;
-        }
-        ShipControllerUitlities.ApplyRB2DForce(_rb2d, transform, newThrust, multiplier, orientation);
-        ShipControllerUitlities.SetThrusterGroupFlame(_thrusterGroups[group], true);
     }
     public void AddToGrid(Transform block)
     {

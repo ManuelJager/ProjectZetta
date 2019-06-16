@@ -4,29 +4,33 @@ public class MediumThruster : MonoBehaviour, IBlock, IThruster, IMultiSizeBlock
 {
     [SerializeField]
     private float _thrust;
+    public float thrust
+    {
+        get => _thrust;
+        set => _thrust = value;
+    }
     [SerializeField]
     private GameObject thruster;
     [SerializeField]
     private Animator animator;
     [SerializeField]
     private BlockBaseClass _blockBaseClass;
-    [SerializeField]
-    private MultiSizeBlockBaseClass _multiSizeBlockBaseClass;
     public BlockBaseClass blockBaseClass
     {
         get => _blockBaseClass;
         set => _blockBaseClass = value;
     }
+    [SerializeField]
+    private MultiSizeBlockBaseClass _multiSizeBlockBaseClass;
     public MultiSizeBlockBaseClass multiSizeBlockBaseClass
     {
         get => _multiSizeBlockBaseClass;
         set => _multiSizeBlockBaseClass = value;
     }
-    public float thrust
-    {
-        get => _thrust;
-        set => _thrust = value;
-    }
+    [SerializeField]
+    private TrailRenderer _trailRenderer;
+    public TrailRenderer trailRenderer => _trailRenderer;
+
     public void SubtractFromGridAndDestroy()
     {
         Destroy(gameObject);

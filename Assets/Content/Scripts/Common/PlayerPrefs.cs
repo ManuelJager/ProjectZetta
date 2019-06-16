@@ -35,6 +35,10 @@ public class PlayerPrefs : MonoBehaviour
     /// </summary>
     public bool sabotRoundSpread;
     public bool clearLog;
+    /// <summary>
+    /// debugs newThrust values
+    /// </summary>
+    public bool debug8;
     public float thrusterLeniancy;
     public static PlayerPrefs Instance;
     private void Awake()

@@ -191,6 +191,128 @@ public static class Extensions
     }
 
     public static bool IsInRange(this float value, float min, float max) => value > min && value < max;
+
+    public static Common.Orientation GetOrientation(this IBlock block)
+    {
+        if (block.blockBaseClass.orientation != null)
+            return block.blockBaseClass.orientation ?? default;
+        var rotation = ((MonoBehaviour)block).transform.rotation;
+        var orientation = GetOrientation(rotation);
+        block.blockBaseClass.orientation = orientation;
+        return orientation;
+    }
+    private static Common.Orientation GetOrientation(Quaternion rotation)
+    {
+        switch (Mathf.RoundToInt(rotation.eulerAngles.z))
+        {
+            case 0:
+                return Common.Orientation.forward;
+            case 90:
+                return Common.Orientation.left;
+            case 180:
+                return Common.Orientation.backward;
+            case 270:
+                return Common.Orientation.right;
+            default:
+                throw new System.ArgumentException("Rotation is invalid");
+        }
+    }
+    public static Common.Orientation GetOrientation(float zRotation)
+    {
+        switch (zRotation)
+        {
+            case 0f:
+                return Common.Orientation.forward;
+            case 90f:
+                return Common.Orientation.right;
+            case 180f:
+                return Common.Orientation.backward;
+            case 270f:
+                return Common.Orientation.left;
+            default:
+                throw new System.ArgumentException("Rotation is invalid");
+        }
+    }
+    public static Common.Orientation GetOrientation(char keyPressed)
+    {
+        switch (keyPressed)
+        {
+            case 'w':
+                return Common.Orientation.forward;
+            case 'a':
+                return Common.Orientation.left;
+            case 's':
+                return Common.Orientation.backward;
+            case 'd':
+                return Common.Orientation.right;
+            default:
+                throw new System.ArgumentException("KeyPressed is invalid");
+        }
+    }
+    public static float GetRotation(this Common.Orientation orientation)
+    {
+        switch (orientation)
+        {
+            case Common.Orientation.forward:
+                return 0f;
+            case Common.Orientation.backward:
+                return 180f;
+            case Common.Orientation.left:
+                return 270f;
+            case Common.Orientation.right:
+                return 90f;
+            default:
+                throw new System.ArgumentException("Orientation Invalid");
+        }
+    }
+    public static void AddAngleRef(this ref float angle, float addition)
+    {
+        angle += addition;
+        if (angle > 360f)
+            angle -= 360f;
+        
+        else if (angle < 0f)
+            angle += 360f;
+    }
+    public static float AddAngle(this float angle, float addition)
+    {
+        angle += addition;
+        if (angle > 360f)
+            angle -= 360f;
+        
+        else if (angle < 0f)
+            angle += 360f;
+        
+        return angle;
+    }
+    /// <summary>
+    /// Returns true if the given angle is between the range of the min and max
+    /// </summary>
+    public static bool AngleIsInRange(this float angle, float min, float max)
+    {
+        angle = (360 + (angle % 360)) % 360;
+        min = (3600000 + min) % 360;
+        max = (3600000 + max) % 360;
+
+        if (min < max)
+            return min <= angle && angle <= max;
+        return min <= angle || angle <= max;
+    }
+    /// <summary>
+    /// Returns true if the given angle is between the range of the min and max
+    /// </summary>
+    public static bool AngleIsInRange(this float angle, NewThrust.MinMax minMax)
+    {
+        var min = minMax.min;
+        var max = minMax.max;
+        angle = (360 + (angle % 360)) % 360;
+        min = (3600000 + min) % 360;
+        max = (3600000 + max) % 360;
+
+        if (min < max)
+            return min <= angle && angle <= max;
+        return min <= angle || angle <= max;
+    }
 }
 
 public class ManuQueue<T> : IEnumerable

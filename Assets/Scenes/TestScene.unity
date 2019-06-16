@@ -167,7 +167,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.0001
-  m_LinearDrag: 0
+  m_LinearDrag: 0.3
   m_AngularDrag: 0.3
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -187,8 +187,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11fde7350f7cc104b80e92e8b48fcbea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rb2d: {fileID: 0}
   totalPowerGeneration: 0
   totalPowerConsumption: 0
+  _shipLayout: {fileID: 0}
+  _grid: {fileID: 0}
   centerOfMass: {x: 0, y: 0}
   gridID: 0
 --- !u!4 &39962231 stripped
@@ -425,7 +428,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &122787542
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -438,8 +441,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11fde7350f7cc104b80e92e8b48fcbea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rb2d: {fileID: 0}
   totalPowerGeneration: 0
   totalPowerConsumption: 0
+  _shipLayout: {fileID: 0}
+  _grid: {fileID: 0}
   centerOfMass: {x: 0, y: 0}
   gridID: 0
 --- !u!50 &122787543
@@ -1538,6 +1544,9 @@ MonoBehaviour:
   debug6: 0
   debug7: 0
   sabotRoundSpread: 0
+  clearLog: 0
+  debug8: 0
+  thrusterLeniancy: 0
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0

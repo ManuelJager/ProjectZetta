@@ -61,14 +61,15 @@ public class ShipController : MonoBehaviour
     }
     void Update()
     {
-        var q = RotationUtilities.GetMouseWorldPos(_grid);
+        var rotationFromShipToMouse = RotationUtilities.GetMouseWorldPos(_grid);
+        var shipZRotation = 360 - _grid.rotation.eulerAngles.z;
         //aiming
         switch (aimingMode)
         {
             case AimingMode.Cursor:
                 if (!Input.GetKey(KeyCode.LeftShift))
                 {
-                    var rot = RotationUtilities.MouseLookAtRotation(_grid, _shipGrid.turningRate.leftTurningRate, _shipGrid.turningRate.rightTurningRate, q);
+                    var rot = RotationUtilities.MouseLookAtRotation(_grid, _shipGrid.turningRate.leftTurningRate, _shipGrid.turningRate.rightTurningRate, rotationFromShipToMouse);
                     _grid.transform.rotation = rot;
                 }
                 break;
@@ -87,8 +88,14 @@ public class ShipController : MonoBehaviour
             Common.ClearLog();
         if (inputAngle < 0f)
             inputAngle += 360f;
-        Debug.Log("Input angle is : " + inputAngle);
+        var thrustRotation = inputAngle;
+        if (PlayerPrefs.Instance.debug8)
+            Debug.Log("input angle is : " + inputAngle);
+        var mouseRot = 360 - rotationFromShipToMouse.eulerAngles.z;
+        thrustRotation.AddAngleRef(mouseRot.AddAngle(-shipZRotation));
+        if (PlayerPrefs.Instance.debug8)
+            Debug.Log("thrustRotation is : " + thrustRotation);
         if (input != Vector2.zero)
-            _shipGrid.newThrust.FireThrusterInDirection(_shipGrid.transform.rotation.eulerAngles.z, inputAngle);
+            _shipGrid.newThrust.FireThrustersInDirection(thrustRotation);
     }
 }   

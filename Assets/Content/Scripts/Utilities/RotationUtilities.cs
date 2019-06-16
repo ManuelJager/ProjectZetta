@@ -154,7 +154,6 @@ public static class RotationUtilities
     /// </summary>
     public static Vector2 RotateVector2(Vector2 vector, float angle)
     {
-        #region magic
         var theta = angle * Mathf.Deg2Rad;
 
         var cs = Mathf.Cos(theta);
@@ -162,92 +161,7 @@ public static class RotationUtilities
 
         var px = vector.x * cs - vector.y * sn;
         var py = vector.x * sn + vector.y * cs;
-        #endregion
+
         return new Vector2(px, py);
-    }
-    public static Common.Orientation GetOrientation(this IBlock block)
-    {
-        if (block.blockBaseClass.orientation != null)
-            return block.blockBaseClass.orientation ?? default;
-        var rotation = ((MonoBehaviour)block).transform.rotation;
-        var orientation = GetOrientation(rotation);
-        block.blockBaseClass.orientation = orientation;
-        return orientation;
-    }
-    private static Common.Orientation GetOrientation(Quaternion rotation)
-    {
-        switch (Mathf.RoundToInt(rotation.eulerAngles.z))
-        {
-            case 0:
-                return Common.Orientation.forward;
-            case 90:
-                return Common.Orientation.left;
-            case 180:
-                return Common.Orientation.backward;
-            case 270:
-                return Common.Orientation.right;
-            default:
-                throw new System.ArgumentException("Rotation is invalid");
-        }
-    }
-    public static Common.Orientation GetOrientation(float zRotation)
-    {
-        switch (zRotation)
-        {
-            case 0f:
-                return Common.Orientation.forward;
-            case 90f:
-                return Common.Orientation.right;
-            case 180f:
-                return Common.Orientation.backward;
-            case 270f:
-                return Common.Orientation.left;
-            default:
-                throw new System.ArgumentException("Rotation is invalid");
-        }
-    }
-    public static Common.Orientation GetOrientation(char keyPressed)
-    {
-        switch (keyPressed)
-        {
-            case 'w':
-                return Common.Orientation.forward;
-            case 'a':
-                return Common.Orientation.left;
-            case 's':
-                return Common.Orientation.backward;
-            case 'd':
-                return Common.Orientation.right;
-            default:
-                throw new System.ArgumentException("KeyPressed is invalid");
-        }
-    }
-    public static float GetRotation(Common.Orientation orientation)
-    {
-        switch (orientation)
-        {
-            case Common.Orientation.forward:
-                return 0f;
-            case Common.Orientation.backward:
-                return 180f;
-            case Common.Orientation.left:
-                return 270f;
-            case Common.Orientation.right:
-                return 90f;
-            default:
-                throw new System.ArgumentException("Orientation Invalid");
-        }
-    }
-    public static void AddAngle(this ref float angle, float addition)
-    {
-        angle += addition;
-            if (angle > 360f)
-            {
-                angle -= 360f;
-            }
-            else if (angle < 0f)
-            {
-                angle += 360f;
-            }
     }
 }

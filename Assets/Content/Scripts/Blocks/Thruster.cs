@@ -4,6 +4,11 @@ public class Thruster : MonoBehaviour, IBlock, IThruster
 {
     [SerializeField]
     private float _thrust;
+    public float thrust
+    {
+        get => _thrust;
+        set => _thrust = value;
+    }
     [SerializeField]
     private GameObject thruster;
     [SerializeField]
@@ -15,10 +20,10 @@ public class Thruster : MonoBehaviour, IBlock, IThruster
         get => _blockBaseClass;
         set => _blockBaseClass = value;
     }
-    public float thrust {
-        get => _thrust;
-        set => _thrust = value;
-    }
+    [SerializeField]
+    private TrailRenderer _trailRenderer;
+    public TrailRenderer trailRenderer => _trailRenderer;
+
     public void SubtractFromGridAndDestroy()
     {
         Destroy(gameObject);

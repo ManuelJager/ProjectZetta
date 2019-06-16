@@ -17,7 +17,6 @@ public class NewThrust
             this.forceDirection = forceDirection;
         }
     }
-
     public class ThrusterGroup
     {
         private Dictionary<Common.Orientation, bool> orientationShouldFire = new Dictionary<Common.Orientation, bool>();
@@ -39,21 +38,43 @@ public class NewThrust
         }
         
     }
+    public struct MinMax
+    {
+        public float min;
+        public float max;
+
+        public MinMax(float centre, float offset)
+        {
+            min = centre.AddAngle(-90 + offset);
+            max = centre.AddAngle(90 - offset);
+        }
+    }
+
+    private float offset = 2;
 
     public Dictionary<Common.Orientation, ThrustVector> thrustVectors;
 
-    public NewThrust(List<IThruster> thrusters = null)
+    Dictionary<Common.Orientation, MinMax> thrusterRanges = new Dictionary<Common.Orientation, MinMax>();
+
+    ShipGrid parentClass;
+
+    public NewThrust(ShipGrid parentClass, List<IThruster> thrusters = null)
     {
         thrustVectors = new Dictionary<Common.Orientation, ThrustVector>();
-        thrustVectors.Add(Common.Orientation.forward,  new ThrustVector(Vector2.up));
-        thrustVectors.Add(Common.Orientation.left,     new ThrustVector(Vector2.left));
-        thrustVectors.Add(Common.Orientation.backward, new ThrustVector(Vector2.down));
-        thrustVectors.Add(Common.Orientation.right,    new ThrustVector(Vector2.right));
+        this.parentClass = parentClass;
+        thrustVectors.Add(Common.Orientation.forward,  new ThrustVector(Vector2.right));
+        thrustVectors.Add(Common.Orientation.left,     new ThrustVector(Vector2.up));
+        thrustVectors.Add(Common.Orientation.backward, new ThrustVector(Vector2.left));
+        thrustVectors.Add(Common.Orientation.right,    new ThrustVector(Vector2.down));
+        //Initializes thruster ranges
+        for (int i = 0; i < 4; i++)
+            thrusterRanges[(Common.Orientation)i] = new MinMax(((Common.Orientation)i).GetRotation(), offset);
+        
         if (thrusters == null)
             return;
         thrusters.ForEach(thruster => AddToThrusterGroup(thruster));
     }
-    private void AddToThrusterGroup(IThruster thruster)
+    public void AddToThrusterGroup(IThruster thruster)
     {
         var orientation = ((IBlock)thruster).GetOrientation();
         var tempThrustVector = thrustVectors[orientation];
@@ -69,25 +90,38 @@ public class NewThrust
         tempThrustVector.thrusterMembers.Remove(thruster);
         thrustVectors[orientation] = tempThrustVector;
     }
-    public void FireThrusterInDirection(float rotation, float rotationOffset)
-    {
-        rotation.AddAngle(rotationOffset);
-        FireThrustersInDirection(rotation);
-    }
     public void FireThrustersInDirection(float zRotDirection = 0)
     {
-        Common.Orientation orientation0 = new Common.Orientation();
-        Common.Orientation orientation1 = new Common.Orientation();
-        ThrusterGroup thrusterGroup = new ThrusterGroup();
-        thrusterGroup[orientation0] = true;
-        thrusterGroup[orientation1] = true;
-        Debug.Log(zRotDirection);
+        Common.Orientation? orientation0 = null;
+        Common.Orientation? orientation1 = null;
+        //loops through the thruster ranges and finds thruster groups that can thrust forward.
+        foreach (var thrusterRange in thrusterRanges)
+        {
+            if (zRotDirection.AngleIsInRange(thrusterRange.Value))
+            {
+                if (orientation0 == null)
+                    orientation0 = thrusterRange.Key;
+                else
+                    orientation1 = thrusterRange.Key;
+            }
+        }
+        if (orientation0 != null)
+            FireThrusterGroup((Common.Orientation)orientation0);
+        
+        if (orientation1 != null)
+            FireThrusterGroup((Common.Orientation)orientation1);
     }
     private void GetResultantAndMagnitude()
     {
 
     }
-
+    private void FireThrusterGroup(Common.Orientation orientation, float multiplier = 1)
+    {
+        var thrustVector = thrustVectors[orientation];
+        multiplier = Mathf.Clamp01(multiplier);
+        parentClass._rb2d.AddForce(RotationUtilities.RotateVector2(thrustVector.thrustVector * multiplier, parentClass.grid.rotation.eulerAngles.z));
+    }
+    
 
 
 
