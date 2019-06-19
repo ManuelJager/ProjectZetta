@@ -16,6 +16,20 @@ public class NewThrust
             thrusterMembers = new List<IThruster>();
             this.forceDirection = forceDirection;
         }
+        public bool isFiring
+        {
+            set
+            {
+                thrusterMembers.ForEach(item => item.trailManager.isFiring = value);
+            }
+        }
+        public float strength
+        {
+            set
+            {
+
+            }
+        }
     }
     public class ThrusterGroup
     {
@@ -105,11 +119,29 @@ public class NewThrust
                     orientation1 = thrusterRange.Key;
             }
         }
+
+        var multiplier0 = 1f;
+        var multiplier1 = 1f;
+
+        for (int i = 0; i < 4; i++)
+        {
+            var orientation = (Common.Orientation)i;
+            thrustVectors[orientation].isFiring = false;
+        }
+
         if (orientation0 != null)
+        {
             FireThrusterGroup((Common.Orientation)orientation0);
-        
+            thrustVectors[(Common.Orientation)orientation0].isFiring = true;
+        }
+
         if (orientation1 != null)
+        {
             FireThrusterGroup((Common.Orientation)orientation1);
+            thrustVectors[(Common.Orientation)orientation1].isFiring = true;
+        }
+
+
     }
     private void GetResultantAndMagnitude()
     {

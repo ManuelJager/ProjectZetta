@@ -130,7 +130,7 @@ MonoBehaviour:
     _mass: 2
     _armor: 5
     _blastResistance: 0
-  _trailRenderer: {fileID: 0}
+  _trailManager: {fileID: 4813113264947663905}
 --- !u!1 &2671299439371699410
 GameObject:
   m_ObjectHideFlags: 0
@@ -319,3 +319,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2085416692120948839}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4813113264947663905 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6790159873069220934, guid: be527baf481380b45a33b1716b1dda7c,
+    type: 3}
+  m_PrefabInstance: {fileID: 2085416692120948839}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e95aee0a26106a4893340d157b8479e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

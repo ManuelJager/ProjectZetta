@@ -21,8 +21,8 @@ public class Thruster : MonoBehaviour, IBlock, IThruster
         set => _blockBaseClass = value;
     }
     [SerializeField]
-    private TrailRenderer _trailRenderer;
-    public TrailRenderer trailRenderer => _trailRenderer;
+    private TrailManager _trailManager;
+    public TrailManager trailManager => _trailManager;
 
     public void SubtractFromGridAndDestroy()
     {

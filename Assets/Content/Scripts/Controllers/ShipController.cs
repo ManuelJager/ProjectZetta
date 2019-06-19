@@ -86,6 +86,7 @@ public class ShipController : MonoBehaviour
         float inputAngle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
         if (PlayerPrefs.Instance.clearLog)
             Common.ClearLog();
+        //normalizes inputAngle
         if (inputAngle < 0f)
             inputAngle += 360f;
         var thrustRotation = inputAngle;

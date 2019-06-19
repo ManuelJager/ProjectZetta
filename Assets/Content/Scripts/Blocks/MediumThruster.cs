@@ -28,8 +28,8 @@ public class MediumThruster : MonoBehaviour, IBlock, IThruster, IMultiSizeBlock
         set => _multiSizeBlockBaseClass = value;
     }
     [SerializeField]
-    private TrailRenderer _trailRenderer;
-    public TrailRenderer trailRenderer => _trailRenderer;
+    private TrailManager _trailManager;
+    public TrailManager trailManager => _trailManager;
 
     public void SubtractFromGridAndDestroy()
     {

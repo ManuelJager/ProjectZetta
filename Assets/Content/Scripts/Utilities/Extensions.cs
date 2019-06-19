@@ -187,6 +187,7 @@ public static class Extensions
         if (dif == 0f)
             return;
         from += dif * multiplier;
+        dif = to - from;
         from += dif > 0 ? dif > step ? step : dif : dif < -step ? -step : dif;
     }
 
