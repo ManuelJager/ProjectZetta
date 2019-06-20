@@ -22,7 +22,11 @@ public class TrailManager : MonoBehaviour
 
     void LateUpdate()
     {
-        currentThickness.MixedInterpolate(isFiring ? maxThickness : 0f, slopeMultiplier, slopeStep);
+        _trailRenderer.emit = isFiring;
+        if (isFiring)
+            currentThickness.MixedInterpolate(maxThickness, slopeMultiplier, slopeStep);
+        else
+            currentThickness = 0;
         isFiring = false;
     }
 }

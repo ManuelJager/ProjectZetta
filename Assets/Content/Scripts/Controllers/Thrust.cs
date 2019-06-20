@@ -142,6 +142,7 @@ public class NewThrust
         }
 
 
+
     }
     private void GetResultantAndMagnitude()
     {

@@ -47,7 +47,7 @@ MonoBehaviour:
   _trailRenderer: {fileID: 3848547445016146530}
   maxThickness: 1
   slopeMultiplier: 0.01
-  slopeStep: 0.01
+  slopeStep: 0.04
   isFiring: 0
 --- !u!114 &3848547445016146530
 MonoBehaviour:
@@ -87,7 +87,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   colorOverLenght:
     serializedVersion: 2
-    key0: {r: 0.023584902, g: 1, b: 0.9577767, a: 1}
+    key0: {r: 0.495283, g: 1, b: 0.9777032, a: 1}
     key1: {r: 0.21764706, g: 0.7859601, b: 0.76144457, a: 1}
     key2: {r: 0, g: 0.6304108, b: 0.754717, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
@@ -160,7 +160,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   emit: 1
   initialThickness: 1
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
+  initialColor: {r: 0, g: 0.89485645, b: 1, a: 1}
   initialVelocity: {x: 0, y: 0, z: 0}
   timeInterval: 0.025
   minDistance: 0.025
