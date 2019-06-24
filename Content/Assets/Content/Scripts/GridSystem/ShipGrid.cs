@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+
 public class ShipGrid : MonoBehaviour
-{ 
+{
     enum type
     {
         single,
@@ -14,7 +15,7 @@ public class ShipGrid : MonoBehaviour
         public Vector2 gridPosition;
         public float mass;
 
-        public PosBlockData (Vector2 gridPosition, float mass)
+        public PosBlockData(Vector2 gridPosition, float mass)
         {
             this.gridPosition = gridPosition;
             this.mass = mass;
@@ -49,7 +50,7 @@ public class ShipGrid : MonoBehaviour
     private Vector2Int highest;
 
     public List<ITurret> turrets = new List<ITurret>();
-    
+
     public List<IPowerConsumer> powerConsumers = new List<IPowerConsumer>();
     public List<IPowerGenerator> powerGenerators = new List<IPowerGenerator>();
     [HideInInspector]
@@ -154,7 +155,7 @@ public class ShipGrid : MonoBehaviour
         {
             if (_shipGrid[targetXIndex, targetYIndex] != null)
             {
-                Debug.LogWarning("ShipGrid at : " + new Vector2(targetXIndex, targetYIndex) + " is already assigned by " + _shipGrid[targetXIndex, targetYIndex].name + ", name of block is : " + block.name );
+                Debug.LogWarning("ShipGrid at : " + new Vector2(targetXIndex, targetYIndex) + " is already assigned by " + _shipGrid[targetXIndex, targetYIndex].name + ", name of block is : " + block.name);
             }
             else
             {
@@ -250,7 +251,7 @@ public class ShipGrid : MonoBehaviour
         Vector2Int gridSize = highest - lowest + new Vector2Int(1, 1);
 
         _shipGrid = new GameObject[gridSize.x, gridSize.y];
-        
+
         //holds the local positions and mass of all blocks
         var posBlockData = new List<PosBlockData>();
         //ship grid population
@@ -296,7 +297,7 @@ public class ShipGrid : MonoBehaviour
             {
                 for (int y = 0; y < _shipGrid.GetLength(1); y++)
                 {
-                    if (_shipGrid[x,y] != null)
+                    if (_shipGrid[x, y] != null)
                     {
                         count++;
                     }
@@ -310,10 +311,10 @@ public class ShipGrid : MonoBehaviour
         }
         #endregion
     }
-    public void RemoveFromPowerConsumption(IPowerConsumer item)  => totalPowerConsumption -= item.powerConsumption;
-    public void AddToPowerConsumption     (IPowerConsumer item)  => totalPowerConsumption += item.powerConsumption;
-    public void RemoveFromPowerGeneration (IPowerGenerator item) => totalPowerGeneration  -= item.powerGeneration;
-    public void AddToPowerGeneration      (IPowerGenerator item) => totalPowerGeneration  += item.powerGeneration;
+    public void RemoveFromPowerConsumption(IPowerConsumer item) => totalPowerConsumption -= item.powerConsumption;
+    public void AddToPowerConsumption(IPowerConsumer item) => totalPowerConsumption += item.powerConsumption;
+    public void RemoveFromPowerGeneration(IPowerGenerator item) => totalPowerGeneration -= item.powerGeneration;
+    public void AddToPowerGeneration(IPowerGenerator item) => totalPowerGeneration += item.powerGeneration;
     private bool IndexIsOutsideGridBounds(int[] index)
     {
         for (int x = 0; x < index.Length; x++)
