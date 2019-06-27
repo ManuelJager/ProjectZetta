@@ -130,6 +130,7 @@ MonoBehaviour:
     _armor: 10
     _blastResistance: 0
   _trailManager: {fileID: 2512031579937284224}
+  _powerConsumption: 50
 --- !u!1 &7177366742054446435
 GameObject:
   m_ObjectHideFlags: 0

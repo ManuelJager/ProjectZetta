@@ -1,6 +1,6 @@
 ﻿#pragma warning disable 649
 using UnityEngine;
-public class ShipController : MonoBehaviour
+public class ShipController : MonoBehaviour, IController
 {
     #region declarations
     public enum AimingMode
@@ -46,20 +46,26 @@ public class ShipController : MonoBehaviour
     private GameObject _target;
     private Camera _camera;
     public bool[] thrusterGroupFiring = new bool[4];
+    [SerializeField]
     private ShipGrid _shipGrid;
-    
-    #endregion
-    private void Awake()
+    [SerializeField]
+    private UIBar _powerConsumptionBar;
+    private float _currentConsumption;
+    public float currentConsumption
     {
-        _ship = transform.parent.gameObject;
-        _shipGrid = _ship.GetComponent<ShipGrid>();
+        get => _currentConsumption;
+        set => _currentConsumption = value;
     }
+    public static ShipController Instance;
+
+    #endregion
     private void Start()
     {
         _cameraAnchorPoint.SetThisAsCameraTarget();
-        //UIManager.Instance.energyBar.maxVal = _shipGrid.totalPowerConsumption;
+        if (Instance == null)
+            Instance = this;
     }
-    void Update()
+    public void Update()
     {
         var rotationFromShipToMouse = RotationUtilities.GetMouseWorldPos(_grid);
         var shipZRotation = 360 - _grid.rotation.eulerAngles.z;
@@ -98,5 +104,8 @@ public class ShipController : MonoBehaviour
             Debug.Log("thrustRotation is : " + thrustRotation);
         if (input != Vector2.zero)
             _shipGrid.newThrust.FireThrustersInDirection(thrustRotation);
+        _powerConsumptionBar.val = currentConsumption;
+        _powerConsumptionBar.UIUpdate();
+        currentConsumption = 0;
     }
 }   

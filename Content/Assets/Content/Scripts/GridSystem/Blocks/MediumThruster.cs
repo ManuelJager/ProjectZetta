@@ -30,6 +30,9 @@ public class MediumThruster : MonoBehaviour, IBlock, IThruster, IMultiSizeBlock
     [SerializeField]
     private TrailManager _trailManager;
     public TrailManager trailManager => _trailManager;
+    [SerializeField]
+    private float _powerConsumption;
+    public float powerConsumption => _powerConsumption;
 
     public void SubtractFromGridAndDestroy()
     {

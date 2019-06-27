@@ -175,7 +175,7 @@ public static class Extensions
         
     }
 
-    public static bool IsPositive (this float value) => value > 0f;
+    public static bool IsPositive (this float value) => value >= 0f;
     public static float GetTotalTheoriticalPowerConsumption(List<IPowerConsumer> powerConsumers) => powerConsumers.Sum(item => item.powerConsumption);
     public static float GetTotalTheoriticalPowerGeneration(List<IPowerGenerator> powerGenerators) => powerGenerators.Sum(item => item.powerGeneration);
 

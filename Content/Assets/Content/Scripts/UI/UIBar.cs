@@ -6,11 +6,17 @@ public class UIBar : MonoBehaviour
     [SerializeField]
     private RectTransform _bar;
     [SerializeField]
+    private Image _barImage;
+    [SerializeField]
     private Text _energyUsageText;
     [SerializeField]
     private float _maxVal = 1;
     [SerializeField]
     private float _val = 1;
+    [SerializeField]
+    private Color _normalColor;
+    [SerializeField]
+    private Color _maxColor;
     public float val
     {
         set
@@ -41,12 +47,29 @@ public class UIBar : MonoBehaviour
                 Debug.LogWarning("maxVal value must be positive");
         }
     }
-    public void Update()
+    public void UIUpdate()
     {
         var val = Mathf.Clamp01(_val / _maxVal);
         var xSize = _bar.localScale.x;
-        xSize.MixedInterpolate(val, 0.01f, 0.005f);
+        xSize.MixedInterpolate(val, 0.02f, 0.02f);
         _bar.localScale = new Vector2(xSize, 1);
-        _energyUsageText.text = ((-val * 100) + 100).ToString() + "%";
+        _energyUsageText.text = Mathf.RoundToInt(xSize * 100).ToString() + "%";
+        if (xSize == 1f)
+        {
+            _barImage.color = _maxColor;
+            _energyUsageText.color = _maxColor;
+        }
+        else
+        {
+            _barImage.color = _normalColor;
+            _energyUsageText.color = _normalColor;
+        }
+    }
+    public void OnValidate()
+    {
+        var val = Mathf.Clamp01(_val / _maxVal);
+        _bar.localScale = new Vector2(val, 1);
+        _energyUsageText.text = Mathf.RoundToInt(val * 100).ToString() + "%";
+
     }
 }

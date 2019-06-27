@@ -23,6 +23,9 @@ public class Thruster : MonoBehaviour, IBlock, IThruster
     [SerializeField]
     private TrailManager _trailManager;
     public TrailManager trailManager => _trailManager;
+    [SerializeField]
+    private float _powerConsumption;
+    public float powerConsumption => _powerConsumption;
 
     public void SubtractFromGridAndDestroy()
     {

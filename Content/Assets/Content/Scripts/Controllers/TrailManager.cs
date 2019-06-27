@@ -17,7 +17,7 @@ public class TrailManager : MonoBehaviour
     private float currentThickness;
     public bool isFiring;
 
-    void Update()
+    void LateUpdate()
     {
         _trailRenderer.initialThickness = currentThickness;
         currentThickness.MixedInterpolate(isFiring ? maxThickness : 0, slopeMultiplier, slopeStep);

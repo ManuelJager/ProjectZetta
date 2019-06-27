@@ -221,7 +221,7 @@ RectTransform:
   m_GameObject: {fileID: 5563601177240599562}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 1, z: 0}
   m_Children: []
   m_Father: {fileID: 5139214212815095975}
   m_RootOrder: 0
@@ -346,9 +346,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '10%
-
-'
+  m_Text: 0%
 --- !u!1 &7792651212733693685
 GameObject:
   m_ObjectHideFlags: 0
@@ -440,6 +438,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bar: {fileID: 7034395211108514415}
+  _barImage: {fileID: 1975710182843135857}
   _energyUsageText: {fileID: 6850050449315055124}
-  _maxVal: 1
-  _val: 1
+  _maxVal: 150
+  _val: 0
+  _normalColor: {r: 0.4745098, g: 0.93333334, b: 1, a: 1}
+  _maxColor: {r: 0.41509432, g: 0.074791394, b: 0, a: 1}

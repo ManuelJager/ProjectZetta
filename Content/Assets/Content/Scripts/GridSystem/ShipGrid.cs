@@ -81,6 +81,11 @@ public class ShipGrid : MonoBehaviour
 
     public List<IThruster> thrusters = new List<IThruster>();
     public NewThrust newThrust;
+
+    [SerializeField]
+    private MonoBehaviour _controller;
+    public IController controller;
+
     private void Start()
     {
         _ship = gameObject;
@@ -95,35 +100,7 @@ public class ShipGrid : MonoBehaviour
         ConstructGrid();
         SetTurningRateVectors();
         newThrust = new NewThrust(this, thrusters);
-    }
-    [Obsolete("mass calculations are automatically done in ContructGrid now")]
-    private void CalculateMass()
-    {
-        List<IMultiSizeBlockObject> multiSizeBlocks = new List<IMultiSizeBlockObject>();
-        List<IBlockObject> blocks = new List<IBlockObject>();
-        var shipLayout = _ship.transform.GetChild(0);
-        var count = shipLayout.childCount;
-        for (int i = 0; i < count; i++)
-        {
-            var child = shipLayout.transform.GetChild(i);
-            //interface cast
-            var block = (IBlock)child.GetComponent(typeof(IBlock));
-            if (block != null)
-            {
-                blocks.Add(new IBlockObject());
-            }
-        }
-        if (PlayerPrefs.Instance.debug4)
-        {
-            Debug.Log("count of blocks in " + _ship.name + " is : " + blocks.Count);
-            Debug.Log("count of multi size blocks in " + _ship.name + " is : " + multiSizeBlocks.Count);
-        }
-        float targetMass = 0f;
-        foreach (var block in blocks)
-        {
-            targetMass += block.block.blockBaseClass.mass;
-        }
-        _rb2d.mass = targetMass;
+        controller = (IController)_controller;
     }
     public void RemoveFromThrustGroup(IThruster thrusterToBeRemoved)
     {
@@ -311,10 +288,6 @@ public class ShipGrid : MonoBehaviour
         }
         #endregion
     }
-    public void RemoveFromPowerConsumption(IPowerConsumer item) => totalPowerConsumption -= item.powerConsumption;
-    public void AddToPowerConsumption(IPowerConsumer item) => totalPowerConsumption += item.powerConsumption;
-    public void RemoveFromPowerGeneration(IPowerGenerator item) => totalPowerGeneration -= item.powerGeneration;
-    public void AddToPowerGeneration(IPowerGenerator item) => totalPowerGeneration += item.powerGeneration;
     private bool IndexIsOutsideGridBounds(int[] index)
     {
         for (int x = 0; x < index.Length; x++)
