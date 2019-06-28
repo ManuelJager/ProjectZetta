@@ -75,7 +75,7 @@ public class ShipController : MonoBehaviour, IController
             case AimingMode.Cursor:
                 if (!Input.GetKey(KeyCode.LeftShift))
                 {
-                    var rot = RotationUtilities.MouseLookAtRotation(_grid, _shipGrid.turningRate.leftTurningRate, _shipGrid.turningRate.rightTurningRate, rotationFromShipToMouse);
+                    var rot = RotationUtilities.MouseLookAtRotation(_grid, _shipGrid.turningRate.turningRate, _shipGrid.turningRate.turningRate, rotationFromShipToMouse);
                     _grid.transform.rotation = rot;
                 }
                 break;

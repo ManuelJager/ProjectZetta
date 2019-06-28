@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4626919914727301584}
   - component: {fileID: 4626919914727301585}
   - component: {fileID: 6443857214121855262}
-  - component: {fileID: 4447588000038884139}
+  - component: {fileID: 3862271369203288335}
   m_Layer: 0
   m_Name: MediumThruster
   m_TagString: Thruster
@@ -109,7 +109,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3, y: 1}
   m_EdgeRadius: 0
---- !u!114 &4447588000038884139
+--- !u!114 &3862271369203288335
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,7 +118,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4626919914727301599}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7dfd1d687d2b7084d97935faee8a7a4c, type: 3}
+  m_Script: {fileID: 11500000, guid: 310c1cfcc44050d4284c08076e9078cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _thrust: 200

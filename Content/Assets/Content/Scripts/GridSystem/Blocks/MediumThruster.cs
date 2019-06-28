@@ -1,6 +1,6 @@
 ﻿#pragma warning disable 649
 using UnityEngine;
-public class MediumThruster : MonoBehaviour, IBlock, IThruster, IMultiSizeBlock
+public class MediumThruster : MonoBehaviour, IThruster, IMultiSizeBlock
 {
     [SerializeField]
     private float _thrust;

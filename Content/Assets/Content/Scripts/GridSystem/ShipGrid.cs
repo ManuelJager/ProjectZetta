@@ -1,15 +1,11 @@
-﻿using System;
+﻿#pragma warning disable 649
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
 public class ShipGrid : MonoBehaviour
 {
-    enum type
-    {
-        single,
-        multiple
-    }
     public struct PosBlockData
     {
         public Vector2 gridPosition;
@@ -43,6 +39,7 @@ public class ShipGrid : MonoBehaviour
             this.transform = transform;
         }
     }
+
     private GameObject _ship;
     public Rigidbody2D _rb2d;
     private GameObject[,] _shipGrid;
@@ -53,20 +50,12 @@ public class ShipGrid : MonoBehaviour
 
     public List<IPowerConsumer> powerConsumers = new List<IPowerConsumer>();
     public List<IPowerGenerator> powerGenerators = new List<IPowerGenerator>();
+
     [HideInInspector]
     public float totalPowerGeneration;
     [HideInInspector]
     public float totalPowerConsumption;
-    public struct TurningRate
-    {
-        public float leftTurningRate;
-        public float rightTurningRate;
-        public TurningRate(float leftTurningRate, float rightTurningRate)
-        {
-            this.leftTurningRate = leftTurningRate;
-            this.rightTurningRate = rightTurningRate;
-        }
-    }
+
     [SerializeField]
     private Transform _shipLayout;
     public Transform shipLayout => _shipLayout != null ? _shipLayout : _shipLayout = transform.GetChild(0).GetChild(0);
@@ -74,12 +63,30 @@ public class ShipGrid : MonoBehaviour
     private Transform _grid;
     public Transform grid => _grid != null ? _grid : _grid = transform.GetChild(0);
 
+    public struct TurningRate
+    {
+        private float _turningRate;
+        public float turningRate => _turningRate;
+
+        public TurningRate(float turningRate = 0.0f)
+        {
+            _turningRate = new float();
+        }
+        public void Add(IGyroscope gyroscope)
+        {
+            _turningRate += gyroscope.gyroForce;
+        }
+        public void Remove(IGyroscope gyroscope)
+        {
+            _turningRate += gyroscope.gyroForce;
+        }
+    }
     public TurningRate turningRate;
-    public List<IThruster>[] _thrusterGroups;
+
     public Vector2 centerOfMass;
+
     public int gridID;
 
-    public List<IThruster> thrusters = new List<IThruster>();
     public NewThrust newThrust;
 
     [SerializeField]
@@ -91,37 +98,11 @@ public class ShipGrid : MonoBehaviour
         _ship = gameObject;
         _rb2d = GetComponent<Rigidbody2D>();
         gridID = transform.GetRootGridID();
+        newThrust = new NewThrust(this);
+        turningRate = new TurningRate();
         new GridManager.shipReference(gameObject, this, _rb2d).AddToTable(gridID);
-        _thrusterGroups = new List<IThruster>[4];
-        for (int i = 0; i < 4; i++)
-        {
-            _thrusterGroups[i] = new List<IThruster>();
-        }
         ConstructGrid();
-        SetTurningRateVectors();
-        newThrust = new NewThrust(this, thrusters);
         controller = (IController)_controller;
-    }
-    public void RemoveFromThrustGroup(IThruster thrusterToBeRemoved)
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            _thrusterGroups[i].Remove(thrusterToBeRemoved);
-        }
-    }
-    public void SetTurningRateVectors(float[] turningRateVectors = null)
-    {
-        //if no argument has been given, turning rate vectors will be set to default values
-        turningRateVectors = turningRateVectors ?? new float[2] { 100f, 100f };
-        turningRate.leftTurningRate = turningRateVectors[0];
-        turningRate.rightTurningRate = turningRateVectors[1];
-    }
-    public float[] GetTurningRateVectors()
-    {
-        var turningRateVectors = new float[2];
-        turningRateVectors[0] = turningRate.leftTurningRate;
-        turningRateVectors[1] = turningRate.rightTurningRate;
-        return turningRateVectors;
     }
     public void AddToGrid(Transform block)
     {
@@ -165,6 +146,57 @@ public class ShipGrid : MonoBehaviour
             Debug.LogWarning("Block is outside of bounds");
         }
     }
+    public void AddStatsToGrid(Transform pBlock)
+    {
+        var component = pBlock.GetComponent(typeof(IBlock));
+        if (component == null)
+        {
+            Debug.LogWarning("block : " + pBlock.name + " could not be cast to IBlock");
+            return;
+        }
+        var block = (IBlock)component;
+
+        try
+        {
+            var multisizeBlock = (IMultiSizeBlock)component;
+        }
+        catch { }
+
+        try
+        {
+            var turret = (ITurret)component;
+            if (turret != null)
+            {
+                turrets.Add(turret);
+            }
+        }
+        catch { }
+
+        try
+        {
+            var thruster = (IThruster)component;
+            if (thruster != null)
+            {
+                newThrust.AddToThrusterGroup(thruster);
+            }
+        }
+        catch { }
+
+        try
+        {
+            var gyroscope = (IGyroscope)component;
+            if (gyroscope != null)
+            {
+                turningRate.Add(gyroscope);
+            }
+        }
+        catch { }
+        
+
+
+
+
+    }
     private void ConstructGrid()
     {
         var childCount = shipLayout.childCount;
@@ -181,15 +213,8 @@ public class ShipGrid : MonoBehaviour
         for (int i = 0; i < childCount; i++)
         {
             var child = shipLayout.transform.GetChild(i);
-            var turret = (ITurret)child.GetComponent(typeof(ITurret));
-            if (turret != null)
-                turrets.Add(turret);
-            var thruster = (IThruster)child.GetComponent(typeof(IThruster));
-            if (thruster != null)
-            {
-                thrusters.Add(thruster);
-                //AddToThrusterGroups(thruster);
-            }
+            AddStatsToGrid(child);
+
             var multiSizeBlock = (IMultiSizeBlock)child.GetComponent(typeof(IMultiSizeBlock));
             if (multiSizeBlock != null)
             {
