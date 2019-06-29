@@ -98,16 +98,16 @@ public class NewThrust
 
         if (thrusters == null)
             return;
-        thrusters.ForEach(thruster => AddToThrusterGroup(thruster));
+        thrusters.ForEach(thruster => Add(thruster));
     }
-    public void AddToThrusterGroup(IThruster thruster)
+    public void Add(IThruster thruster)
     {
         var orientation = ((IBlock)thruster).GetOrientation();
         var tempThrustVector = thrustVectors[orientation];
         tempThrustVector.AddToGroup(thruster);
         thrustVectors[orientation] = tempThrustVector;
     }
-    private void RemoveFromThrusterGroup(IThruster thruster)
+    public void Remove(IThruster thruster)
     {
         var orientation = ((IBlock)thruster).GetOrientation();
         var tempThrustVector = thrustVectors[orientation];

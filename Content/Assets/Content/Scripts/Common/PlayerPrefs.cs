@@ -31,14 +31,19 @@ public class PlayerPrefs : MonoBehaviour
     /// </summary>
     public bool debug7;
     /// <summary>
+    /// debugs newThrust values
+    /// </summary>
+    public bool debug8;
+    /// <summary>
+    /// Debugs new blockGrid system
+    /// </summary>
+    public bool debug9;
+    /// <summary>
     /// Wether or not sabot rounds instantiate shell casing graphics on fire
     /// </summary>
     public bool sabotRoundSpread;
     public bool clearLog;
-    /// <summary>
-    /// debugs newThrust values
-    /// </summary>
-    public bool debug8;
+
     public float thrusterLeniancy;
     public static PlayerPrefs Instance;
     private void Awake()
