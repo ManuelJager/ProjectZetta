@@ -1,4 +1,8 @@
 ﻿using UnityEngine;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GridUtilities
 {
@@ -9,9 +13,8 @@ namespace GridUtilities
             public static string ReadGrid(this BlockGrid blockGrid)
             {
                 var output = "";
-
                 blockGrid.blockList.ForEach(block => output += ReadBlock(block));
-                
+                output = output.Remove(output.Length - 1, 1);
                 return output;
             }
 
@@ -19,7 +22,7 @@ namespace GridUtilities
             {
                 var orientation = Extensions.GetOrientation(block.block);
                 var pos = block.transform.localPosition;
-                return string.Format("{0},{1},{2},{3};", block.block.blockBaseClass.blockID, pos.x, pos.y, (int)orientation);
+                return $@"{block.block.blockBaseClass.blockID},{pos.x},{pos.y},{(int)orientation};";
             }
         }
     }
@@ -27,14 +30,31 @@ namespace GridUtilities
     {
         public static class GridWriter
         {
-            public static void ReadString(string value)
+            public static List<GameObject> ReadString(string value, ShipGrid grid)
             {
-                string[] lines = value.Split(';');
+                List<string> lines = value.Split(';').ToList();
+                List<GameObject> blocks = new List<GameObject>();
+                var index = 1;
+                lines.ForEach(line => blocks.Add(ReadLine(line, ref index, grid)));
+                var succesful = true;
+                blocks.ForEach(block => succesful = succesful ? block == null ? false : true : false);
+                if (PlayerPrefs.Instance.debug10)
+                    Debug.Log(succesful ? "write operation succesful" : "write operation unsuccesful");
+                return blocks;
             }
 
-            private static void ReadLine(string line)
+            private static GameObject ReadLine(string line, ref int index, ShipGrid grid)
             {
                 string[] args = line.Split(',');
+                var go = BlockDictionary.Instance[int.Parse(args[0])];
+                if (go != null)
+                    go = GameObject.Instantiate(go, grid.shipLayout);
+                go.name += $@"({index})";
+                go.transform.localPosition = new Vector2(int.Parse(args[1]), int.Parse(args[2]));
+                var rot = new Quaternion();
+                rot.eulerAngles = new Vector3(0f, 0f, Extensions.GetRotation((Common.Orientation)int.Parse(args[3])));
+                go.transform.localRotation = rot;
+                return go;
             }
         }
     }
@@ -96,13 +116,7 @@ public static class StringUtil
         return new string(buffer);
     }
 
-    public static void CopyToClipboard(this string s)
-    {
-        TextEditor te = new TextEditor();
-        te.text = s;
-        te.SelectAll();
-        te.Copy();
-    }
+    public static void CopyToClipboard(this string s) => GUIUtility.systemCopyBuffer = s;
 
     public static string ReadClipboard() => GUIUtility.systemCopyBuffer;
 

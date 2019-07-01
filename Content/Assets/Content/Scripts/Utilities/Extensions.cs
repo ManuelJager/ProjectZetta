@@ -209,11 +209,11 @@ public static class Extensions
             case 0:
                 return Common.Orientation.forward;
             case 90:
-                return Common.Orientation.left;
+                return Common.Orientation.right;
             case 180:
                 return Common.Orientation.backward;
             case 270:
-                return Common.Orientation.right;
+                return Common.Orientation.left;
             default:
                 throw new System.ArgumentException("Rotation is invalid");
         }

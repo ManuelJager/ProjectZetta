@@ -152,7 +152,7 @@ Transform:
   - {fileID: 805398944}
   - {fileID: 530485646}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &38816889
 Rigidbody2D:
@@ -429,7 +429,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &122787542
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1445,6 +1445,7 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
+  - component: {fileID: 519420035}
   - component: {fileID: 519420033}
   - component: {fileID: 519420034}
   m_Layer: 0
@@ -1552,6 +1553,7 @@ MonoBehaviour:
   debug7: 0
   debug8: 0
   debug9: 0
+  debug10: 1
   sabotRoundSpread: 0
   clearLog: 0
   thrusterLeniancy: 0
@@ -1567,6 +1569,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df29bd8445adf654b876b6fde8e1ec3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &519420035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c8a09e982340c9499594294e31a9d7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightArmorBlock: {fileID: 8159743720387264984, guid: 8f2519f7ee4bf81448a13b8d92e3e215,
+    type: 3}
+  FighterCockpit: {fileID: 8145373105469277320, guid: 0063762d93cba1742a48d11fd6028929,
+    type: 3}
+  SmallGyroscope: {fileID: 1664229416059295325, guid: 2e56c0b72c6e0604e986b573141def19,
+    type: 3}
+  SmallThruster: {fileID: 486215640213389422, guid: 35d941c784a331b4c9a7f086abb559d6,
+    type: 3}
+  MediumThruster: {fileID: 4626919914727301599, guid: 4aff8d213d2b0784f9b8585ab8aa07a3,
+    type: 3}
+  AutoCannon: {fileID: 8018928745348943435, guid: 3c80e8dea23e9bd47bc6fa3e4bb05f74,
+    type: 3}
+  Cannon: {fileID: 7082588843081460572, guid: aebd5ba2a518abe4eaa554d91ef21e1f, type: 3}
 --- !u!1 &530485645
 GameObject:
   m_ObjectHideFlags: 0
@@ -4033,7 +4060,7 @@ Transform:
   m_LocalScale: {x: 100, y: 100, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1548831072 stripped
 Transform:

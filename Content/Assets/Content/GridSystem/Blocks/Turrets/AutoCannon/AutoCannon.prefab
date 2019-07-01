@@ -355,10 +355,12 @@ MonoBehaviour:
   projectilePrefab: {fileID: 1637550786022612463, guid: 3714aee51fa18904db470fdd5ebd079c,
     type: 3}
   _blockBaseClass:
+    _blockID: 40
     _health: 50
     _mass: 2
     _armor: 5
     _blastResistance: 0
+    _transform: {fileID: 0}
   _turretObject: {fileID: 576754049139088684}
   _turretSpeed: 50
   _rateOfFire: 180

@@ -39,6 +39,10 @@ public class PlayerPrefs : MonoBehaviour
     /// </summary>
     public bool debug9;
     /// <summary>
+    /// Debugs blueprint string
+    /// </summary>
+    public bool debug10;
+    /// <summary>
     /// Wether or not sabot rounds instantiate shell casing graphics on fire
     /// </summary>
     public bool sabotRoundSpread;

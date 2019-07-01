@@ -81,6 +81,10 @@ public class ShipGrid : MonoBehaviour
         {
             _turningRate += gyroscope.gyroForce;
         }
+        public void Clear()
+        {
+            _turningRate = 0;
+        }
     }
     public TurningRate turningRate;
 
@@ -106,48 +110,6 @@ public class ShipGrid : MonoBehaviour
         new GridManager.shipReference(gameObject, this, _rb2d).AddToTable(gridID);
         ConstructGrid();
         controller = (IController)_controller;
-    }
-    public void AddToGrid(Transform block)
-    {
-        var pos = block.localPosition;
-        var targetXIndex = (int)pos.x - lowest.x;
-        var targetYIndex = (int)pos.y - lowest.y;
-        if (!IndexIsOutsideGridBounds(new int[] { targetXIndex, targetYIndex }))
-        {
-            if (_shipGrid[targetXIndex, targetYIndex] != null)
-            {
-                Debug.LogWarning("ShipGrid at : " + new Vector2(targetXIndex, targetYIndex) + " is already assigned by " + _shipGrid[targetXIndex, targetYIndex].name + ", name of block is : " + block.name);
-            }
-            else
-            {
-                _shipGrid[targetXIndex, targetYIndex] = block.gameObject;
-            }
-        }
-        else
-        {
-            Debug.LogWarning("Block is outside of bounds");
-        }
-    }
-    public void AddToGrid(Transform block, Vector2 posInGrid)
-    {
-        var pos = posInGrid;
-        var targetXIndex = (int)pos.x - lowest.x;
-        var targetYIndex = (int)pos.y - lowest.y;
-        if (!IndexIsOutsideGridBounds(new int[] { targetXIndex, targetYIndex }))
-        {
-            if (_shipGrid[targetXIndex, targetYIndex] != null)
-            {
-                Debug.LogWarning("ShipGrid at : " + new Vector2(targetXIndex, targetYIndex) + " is already assigned by " + _shipGrid[targetXIndex, targetYIndex].name + ", name of block is : " + block.name);
-            }
-            else
-            {
-                _shipGrid[targetXIndex, targetYIndex] = block.gameObject;
-            }
-        }
-        else
-        {
-            Debug.LogWarning("Block is outside of bounds");
-        }
     }
     public void AddStatsToGrid(Transform pBlock)
     {
@@ -263,41 +225,60 @@ public class ShipGrid : MonoBehaviour
             }
         }
         catch { }
-
-
-
     }
     public void RemoveFromGrid(Transform pBlock)
     {
         RemoveStatsFromGrid(pBlock);
         Destroy(pBlock.gameObject);
     }
-    private void ConstructGrid()
+    public void ClearGrid()
     {
         var childCount = shipLayout.childCount;
 
+        for (int i = 0; i < childCount; i++)
+        {
+            var child = shipLayout.transform.GetChild(i);
+            RemoveFromGrid(child);
+        }
+    }
+    private void ConstructGrid()
+    {
+        var childCount = shipLayout.childCount;
+        var children = new List<GameObject>();
+        for (int i = 0; i < childCount; i++)
+        {
+            children.Add(shipLayout.transform.GetChild(i).gameObject);
+        }
+        Initialize(children);
+    }
+    public void Load(List<GameObject> blocks)
+    {
+        Initialize(blocks);
+    }
+    private void Initialize(List<GameObject> blocks)
+    {
+        var Count = blocks.Count;
+
         float targetMass = 0f;
 
-        var multiSizeBlocks = new List<IMultiSizeBlockObject>();
-        var blocks = new List<IBlockObject>();
+        var multiSizeBlockObjects = new List<IMultiSizeBlockObject>();
+        var blockObjects = new List<IBlockObject>();
         //list of all x and y positions of all blocks
         var xPositions = new List<float>();
         var yPositions = new List<float>();
         //iterates through all blocks and adds the positions to their respective list
         //total ship mass calculations
-        for (int i = 0; i < childCount; i++)
+        for (int i = 0; i < Count; i++)
         {
-            var child = shipLayout.transform.GetChild(i);
+            var child = blocks[i].transform;
 
             AddStatsToGrid(child);
-
-            
 
             var multiSizeBlock = (IMultiSizeBlock)child.GetComponent(typeof(IMultiSizeBlock));
             if (multiSizeBlock != null)
             {
                 var multiSizeBlockObject = new IMultiSizeBlockObject(multiSizeBlock, child);
-                multiSizeBlocks.Add(multiSizeBlockObject);
+                multiSizeBlockObjects.Add(multiSizeBlockObject);
                 multiSizeBlock.blockBaseClass.shipGrid = this;
                 var positions = multiSizeBlockObject.GetPositionsOfMultiSizeBlock();
                 foreach (var position in positions)
@@ -312,7 +293,7 @@ public class ShipGrid : MonoBehaviour
                 var block = (IBlock)child.GetComponent(typeof(IBlock));
                 if (block != null)
                 {
-                    blocks.Add(new IBlockObject(block, child));
+                    blockObjects.Add(new IBlockObject(block, child));
                     xPositions.Add(child.transform.localPosition.x);
                     yPositions.Add(child.transform.localPosition.y);
                     targetMass += block.blockBaseClass.mass;
@@ -320,9 +301,6 @@ public class ShipGrid : MonoBehaviour
                     block.blockBaseClass.shipGrid = this;
                 }
             }
-
-            
-
         }
         _rb2d.mass = targetMass;
         //lowest abd highest offset of block positions from 0,0
@@ -336,17 +314,13 @@ public class ShipGrid : MonoBehaviour
         //holds the local positions and mass of all blocks
         var posBlockData = new List<PosBlockData>();
         //ship grid population
-        for (int i = 0; i < childCount; i++)
+        for (int i = 0; i < Count; i++)
         {
             var child = shipLayout.transform.GetChild(i);
             var multiSizeBlock = (IMultiSizeBlock)child.GetComponent(typeof(IMultiSizeBlock));
             if (multiSizeBlock != null)
             {
                 posBlockData.Add(new PosBlockData(child.localPosition, multiSizeBlock.blockBaseClass.mass));
-                foreach (var vector2 in new IMultiSizeBlockObject(multiSizeBlock, child.transform).GetPositionsOfMultiSizeBlock())
-                {
-                    AddToGrid(child, vector2);
-                }
             }
             else
             {
@@ -354,7 +328,6 @@ public class ShipGrid : MonoBehaviour
                 if (block != null)
                 {
                     posBlockData.Add(new PosBlockData(child.localPosition, block.blockBaseClass.mass));
-                    AddToGrid(child);
                 }
             }
         }
@@ -369,9 +342,9 @@ public class ShipGrid : MonoBehaviour
         }
         if (PlayerPrefs.Instance.debug4)
         {
-            Debug.Log("Child count of ship grid is : " + childCount);
+            Debug.Log("Child count of ship grid is : " + Count);
             Debug.Log("count of block objects in " + _ship.name + " is : " + blocks.Count);
-            Debug.Log("count of multi size block objects in " + _ship.name + " is : " + multiSizeBlocks.Count);
+            Debug.Log("count of multi size block objects in " + _ship.name + " is : " + multiSizeBlockObjects.Count);
             int count = 0;
             for (int x = 0; x < _shipGrid.GetLength(0); x++)
             {
@@ -394,8 +367,6 @@ public class ShipGrid : MonoBehaviour
             Debug.Log(blockGrid.countInGrid);
         }
         #endregion
-        
-        
     }
     private bool IndexIsOutsideGridBounds(int[] index)
     {

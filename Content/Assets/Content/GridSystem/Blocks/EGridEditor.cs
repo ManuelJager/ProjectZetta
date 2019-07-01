@@ -25,24 +25,35 @@ public class EGridEditor : Editor
         if (GUILayout.Button("Debug blueprint scrabling"))
         {
             var output = grid.blockGrid.ReadGrid();
-            Debug.Log("Pure ship blueprint data is : " + output);
+            if (PlayerPrefs.Instance.debug10)
+                Debug.Log("Pure ship blueprint data is : " + output);
             StringUtil.Scramble(ref output);
             output.CopyToClipboard();
-            Debug.Log("Scrambled ship blueprint data is : " + output);
+            if (PlayerPrefs.Instance.debug10)
+                Debug.Log("Scrambled ship blueprint data is : " + output);
         }
 
         if (GUILayout.Button("Debug blueprint descrambling"))
         {
+            grid.ClearGrid();
             var clipboard = StringUtil.ReadClipboard();
-            Debug.Log("clipboard data is : " + clipboard);
+            if (PlayerPrefs.Instance.debug10)
+                Debug.Log("clipboard data is : " + clipboard);
             StringUtil.ScrambleBack(ref clipboard);
-            Debug.Log("unscrambled clipboard data is : " + clipboard);
-
+            if (PlayerPrefs.Instance.debug10)
+                Debug.Log("unscrambled clipboard data is : " + clipboard);
+            var blueprint = GridWriter.ReadString(clipboard, grid);
+            grid.Load(blueprint);
         }
 
         if (GUILayout.Button("Clear Clipboard"))
         {
             StringUtil.ClearClipboard();
+        }
+
+        if (GUILayout.Button("Clear Grid"))
+        {
+            grid.ClearGrid();
         }
     }
 }
