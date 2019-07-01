@@ -5,6 +5,8 @@ using UnityEngine;
 public class BlockBaseClass
 {
     [SerializeField]
+    private uint _blockID;
+    [SerializeField]
     private Common.Orientation? _orientation;
     [SerializeField]
     private float _health;
@@ -18,6 +20,8 @@ public class BlockBaseClass
     private MonoBehaviour _parentClass;
     private ShipGrid _shipGrid;
     private int _gridID;
+    [SerializeField]
+    private Transform _transform;
     public BlockBaseClass(float health, int mass, int armor, IBlock block, MonoBehaviour parentClass, ShipGrid shipGrid)
     {
         _health = health;
@@ -70,5 +74,14 @@ public class BlockBaseClass
     {
         get => _blastResistance;
         set => _blastResistance = value;
+    }
+    public uint blockID => _blockID;
+    public Transform transform
+    {
+        get
+        {
+            _transform = _transform != null ? _transform : parentClass.transform;
+            return _transform;
+        }
     }
 }

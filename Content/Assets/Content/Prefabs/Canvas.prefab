@@ -442,5 +442,5 @@ MonoBehaviour:
   _energyUsageText: {fileID: 6850050449315055124}
   _maxVal: 150
   _val: 0
-  _normalColor: {r: 0.4745098, g: 0.93333334, b: 1, a: 1}
-  _maxColor: {r: 0.41509432, g: 0.074791394, b: 0, a: 1}
+  _normalColor: {r: 0, g: 0.8430972, b: 1, a: 1}
+  _maxColor: {r: 1, g: 0, b: 0, a: 1}

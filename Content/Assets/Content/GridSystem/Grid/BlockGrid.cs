@@ -7,7 +7,7 @@ public class BlockGrid
 {
     private Dictionary<Vector2Int, IBlock> _blocks;
 
-    public int count
+    public int countInGrid
     {
         get
         {
@@ -15,6 +15,28 @@ public class BlockGrid
             return list.Count;
         }
     }
+
+    public int countOfBlocks
+    {
+        get
+        {
+            return blockList.Count;
+        }
+    }
+
+    public struct Block
+    {
+        public Transform transform;
+        public IBlock block;
+
+        public Block(Transform transform, IBlock block)
+        {
+            this.transform = transform;
+            this.block = block;
+        }
+    }
+
+    public List<Block> blockList = new List<Block>();
 
     private int lowestX;
     private int highestX;
@@ -44,7 +66,10 @@ public class BlockGrid
         var positions = getPositions(size, pos);
 
         if (isAvailible(positions))
+        {
+            blockList.Add(new Block(block.blockBaseClass.transform, block));
             this[positions] = block;
+        }
     }
 
     private List<Vector2Int> getPositions (Vector2Int size, Vector2 pos)

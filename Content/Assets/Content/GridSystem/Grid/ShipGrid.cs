@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using GridUtilities.GridReader;
 
 public class ShipGrid : MonoBehaviour
 {
@@ -290,6 +291,8 @@ public class ShipGrid : MonoBehaviour
 
             AddStatsToGrid(child);
 
+            
+
             var multiSizeBlock = (IMultiSizeBlock)child.GetComponent(typeof(IMultiSizeBlock));
             if (multiSizeBlock != null)
             {
@@ -357,7 +360,6 @@ public class ShipGrid : MonoBehaviour
         }
         centerOfMass = posBlockData.WeightedAverage();
         shipLayout.localPosition = -centerOfMass;
-
         #region debugging
         if (PlayerPrefs.Instance.debug3)
         {
@@ -389,9 +391,10 @@ public class ShipGrid : MonoBehaviour
         }
         if (PlayerPrefs.Instance.debug9)
         {
-            Debug.Log(blockGrid.count);
+            Debug.Log(blockGrid.countInGrid);
         }
         #endregion
+        
         
     }
     private bool IndexIsOutsideGridBounds(int[] index)

@@ -37,6 +37,7 @@ public class Turret : MonoBehaviour, ITurret, IBlock
     public Transform turretObject => _turretObject;
     [SerializeField]
     private ProjectileParameters projectileParameters;
+
     public void Fire()
     {
         if (hasReloaded) StartCoroutine(FireShot(rateOfFire));

@@ -122,6 +122,7 @@ MonoBehaviour:
   _multiSizeBlockBaseClass:
     _size: {x: 3, y: 1}
   _blockBaseClass:
+    _blockID: 10
     _health: 400
     _mass: 5
     _armor: 30

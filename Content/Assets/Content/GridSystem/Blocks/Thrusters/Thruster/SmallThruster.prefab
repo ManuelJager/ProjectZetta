@@ -126,10 +126,12 @@ MonoBehaviour:
   thruster: {fileID: 2671299439371699410}
   animator: {fileID: 4796861235190296954}
   _blockBaseClass:
+    _blockID: 30
     _health: 30
     _mass: 2
     _armor: 5
     _blastResistance: 0
+    _transform: {fileID: 0}
   _trailManager: {fileID: 4813113264947663905}
   _powerConsumption: 20
 --- !u!1 &2671299439371699410
@@ -224,7 +226,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.32, y: 0.32, z: 0.2}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &4796861235190296954
 Animator:

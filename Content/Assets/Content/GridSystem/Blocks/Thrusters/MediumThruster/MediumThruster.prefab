@@ -125,6 +125,7 @@ MonoBehaviour:
   thruster: {fileID: 7177366742054446435}
   animator: {fileID: 295164212138938571}
   _blockBaseClass:
+    _blockID: 31
     _health: 100
     _mass: 6
     _armor: 10

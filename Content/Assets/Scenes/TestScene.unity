@@ -1550,9 +1550,10 @@ MonoBehaviour:
   debug5: 0
   debug6: 0
   debug7: 0
+  debug8: 0
+  debug9: 0
   sabotRoundSpread: 0
   clearLog: 0
-  debug8: 0
   thrusterLeniancy: 0
 --- !u!114 &519420034
 MonoBehaviour:

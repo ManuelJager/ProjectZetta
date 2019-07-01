@@ -197,7 +197,7 @@ public static class Extensions
     {
         if (block.blockBaseClass.orientation != null)
             return block.blockBaseClass.orientation ?? default;
-        var rotation = ((MonoBehaviour)block).transform.rotation;
+        var rotation = ((MonoBehaviour)block).transform.localRotation;
         var orientation = GetOrientation(rotation);
         block.blockBaseClass.orientation = orientation;
         return orientation;
