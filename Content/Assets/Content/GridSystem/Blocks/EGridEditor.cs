@@ -42,8 +42,8 @@ public class EGridEditor : Editor
             StringUtil.ScrambleBack(ref clipboard);
             if (PlayerPrefs.Instance.debug10)
                 Debug.Log("unscrambled clipboard data is : " + clipboard);
-            var blueprint = GridWriter.ReadString(clipboard, grid);
-            grid.Load(blueprint);
+            var blueprint = new GridUtilities.Blueprint(clipboard);
+            grid.LoadBlueprint(blueprint);
         }
 
         if (GUILayout.Button("Clear Clipboard"))

@@ -13,8 +13,8 @@ namespace GridUtilities
             public static string ReadGrid(this BlockGrid blockGrid)
             {
                 var output = "";
+                output += blockGrid.shipGrid.transform.name;
                 blockGrid.blockList.ForEach(block => output += ReadBlock(block));
-                output = output.Remove(output.Length - 1, 1);
                 return output;
             }
 
@@ -22,7 +22,7 @@ namespace GridUtilities
             {
                 var orientation = Extensions.GetOrientation(block.block);
                 var pos = block.transform.localPosition;
-                return $@"{block.block.blockBaseClass.blockID},{pos.x},{pos.y},{(int)orientation};";
+                return $@";{block.block.blockBaseClass.blockID},{pos.x},{pos.y},{(int)orientation}";
             }
         }
     }
@@ -30,27 +30,30 @@ namespace GridUtilities
     {
         public static class GridWriter
         {
-            public static List<GameObject> ReadString(string value, ShipGrid grid)
+            public static List<GameObject> ReadString(string value, out string name, out bool valid)
             {
                 List<string> lines = value.Split(';').ToList();
                 List<GameObject> blocks = new List<GameObject>();
                 var index = 1;
-                lines.ForEach(line => blocks.Add(ReadLine(line, ref index, grid)));
+                name = lines.First();
+                lines.RemoveAt(0);
+                lines.ForEach(line => blocks.Add(ReadLine(line, ref index)));
                 var succesful = true;
-                blocks.ForEach(block => succesful = succesful ? block == null ? false : true : false);
+                blocks.ForEach(block => succesful = succesful ? block != null : false);
                 if (PlayerPrefs.Instance.debug10)
                     Debug.Log(succesful ? "write operation succesful" : "write operation unsuccesful");
+                valid = succesful;
                 return blocks;
             }
 
-            private static GameObject ReadLine(string line, ref int index, ShipGrid grid)
+            private static GameObject ReadLine(string line, ref int index)
             {
                 string[] args = line.Split(',');
                 var go = BlockDictionary.Instance[int.Parse(args[0])];
                 if (go != null)
-                    go = GameObject.Instantiate(go, grid.shipLayout);
+                    go = GameObject.Instantiate(go);
                 go.name += $@"({index})";
-                go.transform.localPosition = new Vector2(int.Parse(args[1]), int.Parse(args[2]));
+                go.transform.localPosition = new Vector2(float.Parse(args[1]), float.Parse(args[2]));
                 var rot = new Quaternion();
                 rot.eulerAngles = new Vector3(0f, 0f, Extensions.GetRotation((Common.Orientation)int.Parse(args[3])));
                 go.transform.localRotation = rot;
@@ -68,6 +71,25 @@ namespace GridUtilities
         public static int HexToInt(string value)
         {
             return int.Parse(value, System.Globalization.NumberStyles.HexNumber);
+        }
+    }
+    public struct Blueprint
+    {
+        private List<GameObject> _blocks;
+        public List<GameObject> blocks => _blocks;
+
+        public string _name;
+        public string name => _name;
+
+        public bool _valid;
+        public bool valid => _valid;
+
+        public Blueprint(string pureBluePrintString)
+        {
+            _valid = true;
+            _name = "";
+            _blocks = new List<GameObject>();
+            _blocks = GridWriter.GridWriter.ReadString(pureBluePrintString, out _name, out _valid);
         }
     }
 }
@@ -122,4 +144,3 @@ public static class StringUtil
 
     public static void ClearClipboard() => "".CopyToClipboard();
 }
-

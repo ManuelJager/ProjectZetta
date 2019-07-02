@@ -98,8 +98,12 @@ public class ShipGrid : MonoBehaviour
     private MonoBehaviour _controller;
     public IController controller;
 
-    public BlockGrid blockGrid = new BlockGrid();
+    public BlockGrid blockGrid;
 
+    private void Awake()
+    {
+        blockGrid = new BlockGrid(this);
+    }
     private void Start()
     {
         _ship = gameObject;
@@ -251,9 +255,23 @@ public class ShipGrid : MonoBehaviour
         }
         Initialize(children);
     }
-    public void Load(List<GameObject> blocks)
+    public void LoadBlueprint(GridUtilities.Blueprint blueprint)
     {
-        Initialize(blocks);
+        if (blueprint.valid)
+        {
+            transform.name = blueprint.name;
+            foreach (var block in blueprint.blocks)
+            {
+                var pos = block.transform.localPosition;
+                block.transform.parent = shipLayout;
+                block.transform.localPosition = pos;
+            }
+            Initialize(blueprint.blocks);
+        }
+        else
+        {
+            Debug.LogError("Invalid blueprint given");
+        }
     }
     private void Initialize(List<GameObject> blocks)
     {

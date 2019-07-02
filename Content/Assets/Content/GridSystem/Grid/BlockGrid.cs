@@ -44,11 +44,15 @@ public class BlockGrid
     private int lowestY;
     private int highestY;
 
-    public BlockGrid(List<IBlock> pBlocks0 = null)
+    private ShipGrid _shipGrid;
+    public ShipGrid shipGrid => _shipGrid;
+
+    public BlockGrid(ShipGrid shipGrid, List<IBlock> pBlocks0 = null)
     {
         _blocks = new Dictionary<Vector2Int, IBlock>();
         if (pBlocks0 != null)
             pBlocks0.ForEach(block => AddToGrid(block));
+        _shipGrid = shipGrid;
     }
 
     public void AddToGrid(IBlock block)
