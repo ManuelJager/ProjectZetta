@@ -51,7 +51,10 @@ namespace GridUtilities
                 string[] args = line.Split(',');
                 var go = BlockDictionary.Instance[int.Parse(args[0])];
                 if (go != null)
+                {
                     go = GameObject.Instantiate(go);
+                    go.SetActive(false);
+                }
                 go.name += $@"({index})";
                 go.transform.localPosition = new Vector2(float.Parse(args[1]), float.Parse(args[2]));
                 var rot = new Quaternion();

@@ -20,15 +20,4 @@ public static class ShipControllerUitlities
                 break;
         }
     }
-    public static void SetThrusterGroupFlame(List<IThruster> thrusters, bool value) 
-    {
-        if (thrusters != null)
-        {
-            foreach (var thruster in thrusters)
-            {
-                thruster.SetThrusterFlame(value);
-            }
-        }
-    }
-   
 }

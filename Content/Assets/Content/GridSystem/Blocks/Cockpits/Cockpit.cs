@@ -3,10 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cockpit : MonoBehaviour, IMultiSizeBlock, IPowerGenerator, IGyroscope
+public class Cockpit : MonoBehaviour, IBlock, IPowerGenerator, IGyroscope
 {
-    [SerializeField]
-    private MultiSizeBlockBaseClass _multiSizeBlockBaseClass;
     [SerializeField]
     private BlockBaseClass _blockBaseClass;
 
@@ -14,11 +12,6 @@ public class Cockpit : MonoBehaviour, IMultiSizeBlock, IPowerGenerator, IGyrosco
     {
         get => _blockBaseClass;
         set => _blockBaseClass = value;
-    }
-    public MultiSizeBlockBaseClass multiSizeBlockBaseClass
-    {
-        get => _multiSizeBlockBaseClass;
-        set => _multiSizeBlockBaseClass = value;
     }
     [SerializeField]
     private float _powerGeneration;

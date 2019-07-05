@@ -126,4 +126,5 @@ MonoBehaviour:
     _mass: 1
     _armor: 20
     _blastResistance: 0
+    _size: {x: 1, y: 1}
     _transform: {fileID: 0}

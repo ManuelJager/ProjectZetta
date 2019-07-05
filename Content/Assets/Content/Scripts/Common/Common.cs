@@ -4,9 +4,9 @@ public static class Common
     public enum Orientation
     {
         forward,
+        right,
         backward,
-        left,
-        right
+        left
     }
     public static void ClearLog()
     {

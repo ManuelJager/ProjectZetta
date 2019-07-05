@@ -44,8 +44,43 @@ public class BlockGrid
     private int lowestY;
     private int highestY;
 
+    private float _mass;
+    public float mass
+    {
+        get
+        {
+            return _mass;
+        }
+        private set
+        {
+            _mass = value;
+            shipGrid._rb2d.mass = value;
+        }
+    }
+
     private ShipGrid _shipGrid;
     public ShipGrid shipGrid => _shipGrid;
+
+    private Vector2 _centerOfMass;
+    public Vector2 centerOfMass
+    {
+        private set
+        {
+            var dif = value - -shipGrid.shipLayout.localPosition.ToVector2();
+
+            shipGrid.transform.position       += dif.ToVector3();
+            shipGrid.shipLayout.localPosition -= dif.ToVector3();
+
+            _centerOfMass = value;
+        }
+        get
+        {
+            UpdateCenterOfMass();
+            return _centerOfMass;
+        }
+    }
+
+    private bool isCenterOfMassUpToDate;
 
     public BlockGrid(ShipGrid shipGrid, List<IBlock> pBlocks0 = null)
     {
@@ -55,28 +90,51 @@ public class BlockGrid
         _shipGrid = shipGrid;
     }
 
-    public void AddToGrid(IBlock block)
+    private Vector2 WeightedAverage()
     {
-        var pos = block.blockBaseClass.parentClass.transform.localPosition.ToVector2();
-        var size = new Vector2Int();
+        var weightedXPosValueSum = blockList.Sum(block => block.transform.localPosition.x * block.block.blockBaseClass.mass);
+        var weightedYPosValueSum = blockList.Sum(block => block.transform.localPosition.y * block.block.blockBaseClass.mass);
+        var weightSum = blockList.Sum(block => block.block.blockBaseClass.mass);
+        isCenterOfMassUpToDate = true;
+        return new Vector2(weightedXPosValueSum / weightSum, weightedYPosValueSum / weightSum);
+    }
 
-        try
-        {
-            var IMultiSizeBlock = (IMultiSizeBlock)block.blockBaseClass.parentClass;
-            size = IMultiSizeBlock.multiSizeBlockBaseClass.effectiveSize;
-        }
-        catch { size = new Vector2Int(1, 1); }
+    public void UpdateCenterOfMass()
+    {
+        if (!isCenterOfMassUpToDate)
+            centerOfMass = WeightedAverage();
+    }
 
-        var positions = getPositions(size, pos);
+    public void AddToGrid(IBlock pBlock)
+    {
+        var pos  = pBlock.blockBaseClass.parentClass.transform.localPosition.ToVector2();
+        var size = pBlock.blockBaseClass.effectiveSize;
+
+        var positions = GetPositions(size, pos);
 
         if (isAvailible(positions))
         {
-            blockList.Add(new Block(block.blockBaseClass.transform, block));
-            this[positions] = block;
+            blockList.Add(new Block(pBlock.blockBaseClass.transform, pBlock));
+            this[positions] = pBlock;
+            isCenterOfMassUpToDate = false;
+            mass += pBlock.blockBaseClass.mass;
         }
     }
 
-    private List<Vector2Int> getPositions (Vector2Int size, Vector2 pos)
+    public void RemoveFromGrid(IBlock pBlock)
+    {
+        var pos =  pBlock.blockBaseClass.parentClass.transform.localEulerAngles.ToVector2();
+        var size = pBlock.blockBaseClass.effectiveSize;
+
+        var positions = GetPositions(size, pos);
+
+        blockList.Remove(blockList.Find(block => block.block == pBlock));
+        positions.ForEach(position => _blocks.Remove(position));
+        isCenterOfMassUpToDate = false;
+        mass -= pBlock.blockBaseClass.mass;
+    }
+
+    private List<Vector2Int> GetPositions (Vector2Int size, Vector2 pos)
     {
         List<Vector2Int> inner = new List<Vector2Int>();
         for (int x = 0; x < size.x; x++)
@@ -155,7 +213,6 @@ public class BlockGrid
         }
         private set
         {
-
             lowestX = px < lowestX ? px : lowestX;
             highestX = px > highestX ? px : highestX;
 
@@ -164,7 +221,6 @@ public class BlockGrid
 
             if (this[px, py] == default)
                 _blocks.Add(new Vector2Int(px, py), value);
-           
         }
     }
 
@@ -184,7 +240,5 @@ public class BlockGrid
     {
         set => positions.ForEach(position => this[position] = value);
     }
-
-
-
+    
 }

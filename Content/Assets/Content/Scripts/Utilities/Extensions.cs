@@ -6,58 +6,6 @@ using System;
 public static class Extensions
 {
     /// <summary>
-    /// calculates the center of mass of given grid data
-    /// </summary>
-    /// <param name="posBlockData"></param>
-    /// <returns></returns>
-    public static Vector2 WeightedAverage(this List<ShipGrid.PosBlockData> posBlockData)
-    {
-        var weightedXPosValueSum = posBlockData.Sum(x => x.gridPosition.x * x.mass);
-        var weightedYPosValueSum = posBlockData.Sum(y => y.gridPosition.y * y.mass);
-        var weightSum = posBlockData.Sum(x => x.mass);
-        return new Vector2(weightedXPosValueSum / weightSum, weightedYPosValueSum / weightSum);
-    }
-    /// <summary>
-    /// Returns a vector2 array of the gridpositions a multi size block object would occupy
-    /// </summary>
-    /// <param name="multiSizeBlockObject"></param>
-    /// <returns></returns>
-    public static Vector2Int[] GetPositionsOfMultiSizeBlock(this ShipGrid.IMultiSizeBlockObject multiSizeBlockObject)
-    {
-        var size = multiSizeBlockObject.multiSizeBlock.multiSizeBlockBaseClass.effectiveSize;
-        var pos = multiSizeBlockObject.transform.localPosition;
-        var startingPos = new Vector2Int((int)pos.x - ((size.x - 1) / 2),(int) pos.y - ((size.y - 1) / 2));
-        var returnData = new Vector2Int[size.x * size.y];
-        int index = 0;
-
-        for (int x = 0; x < size.x; x++)
-        {
-            for (int y = 0; y < size.y; y++)
-            {
-                var xPos = startingPos.x + x;
-                var yPos = startingPos.y + y;
-                returnData[index] = new Vector2Int(xPos, yPos);
-                index++;
-            }
-        }
-        #region debugging
-        if (PlayerPrefs.Instance.debug5)
-        {
-            foreach (var item in returnData)
-            {
-                Debug.Log(item);
-            }
-        }
-        if (PlayerPrefs.Instance.debug6)
-        {
-            Debug.Log(pos);
-            Debug.Log(startingPos);
-            Debug.Log("subtraction value is : " + ((size.x - 1) / 2));
-        }
-        #endregion
-        return returnData;
-    }
-    /// <summary>
     /// Gets the instance id of the absolute parent of a give transform
     /// </summary>
     /// <param name="transform"></param>
@@ -126,12 +74,11 @@ public static class Extensions
     }
     public static void Destroy(this GameObject gameObject) => UnityEngine.Object.Destroy(gameObject);
     public static IBlock CastToIBlock(this Transform transform) => (IBlock)transform.GetComponent(typeof(IBlock));
-    public static IMultiSizeBlock CastToIMultiSizeBlock(this Transform transform) => (IMultiSizeBlock)transform.GetComponent(typeof(IMultiSizeBlock));
     public static Vector2 GetWorldPosCenterOfMassFromGridID(int instanceID)
     {
         var shipObject = GetFromTable(instanceID);
         var shipGrid = shipObject.shipGridClass;
-        var shipGridCenterOfMass = shipGrid.centerOfMass;
+        var shipGridCenterOfMass = shipGrid.blockGrid.centerOfMass;
         var shipGridPos = shipGrid.transform.position;
         var worldPosCenterOfMass = new Vector2(shipGridPos.x + shipGridCenterOfMass.x, shipGridPos.y + shipGridCenterOfMass.y);
         return worldPosCenterOfMass;
@@ -139,20 +86,14 @@ public static class Extensions
     public static Vector2 GetWorldPosCenterOfMassFromGridObject(GameObject shipObject)
     {
         var shipGrid = shipObject.GetComponent<ShipGrid>();
-        var shipGridCenterOfMass = shipGrid.centerOfMass;
+        var shipGridCenterOfMass = shipGrid.blockGrid.centerOfMass;
         var shipGridPos = shipGrid.transform.position;
         var worldPosCenterOfMass = new Vector2(shipGridPos.x + shipGridCenterOfMass.x, shipGridPos.y + shipGridCenterOfMass.y);
         return worldPosCenterOfMass;
     }
-    public static Vector2 ToVector2(this Vector3 vector)
-    {
-        return new Vector2(vector.x, vector.y);
-    }
+    public static Vector2 ToVector2(this Vector3 vector) => new Vector2(vector.x, vector.y);
     public static float Effective01RangeMultiplier(float multiplier) => -multiplier + 1;
-    public static void RemoveFromGridAndDestroy(this IBlock block)
-    {
-
-    }
+    public static Vector3 ToVector3(this Vector2 vector, float zValue = 0f) => new Vector3(vector.x, vector.y, zValue);
     /// <summary>
     /// for loop wrapper that repeats an action an amount of time
     /// </summary>

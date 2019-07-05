@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4626919914727301599}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3, y: -2, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 606029655088998811}
@@ -130,9 +130,8 @@ MonoBehaviour:
     _mass: 6
     _armor: 10
     _blastResistance: 0
-    _transform: {fileID: 0}
-  _multiSizeBlockBaseClass:
     _size: {x: 3, y: 1}
+    _transform: {fileID: 0}
   _trailManager: {fileID: 2512031579937284224}
   _powerConsumption: 50
 --- !u!1 &7177366742054446435

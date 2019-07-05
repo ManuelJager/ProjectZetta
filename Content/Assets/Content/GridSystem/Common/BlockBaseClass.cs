@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿#pragma warning disable 649
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 [System.Serializable]
@@ -16,6 +17,8 @@ public class BlockBaseClass
     private int _armor;
     [SerializeField]
     private float _blastResistance;
+    [SerializeField]
+    private Vector2Int _size = new Vector2Int(1,1);
     private IBlock _block;
     private MonoBehaviour _parentClass;
     private ShipGrid _shipGrid;
@@ -84,4 +87,10 @@ public class BlockBaseClass
             return _transform;
         }
     }
+    public Vector2Int size
+    {
+        get => _size;
+        set => _size = value;
+    }
+    public Vector2Int effectiveSize => _parentClass.transform.EffectiveSize(size);
 }

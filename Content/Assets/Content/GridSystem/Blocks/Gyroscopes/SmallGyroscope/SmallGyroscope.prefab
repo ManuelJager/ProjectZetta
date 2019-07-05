@@ -126,5 +126,6 @@ MonoBehaviour:
     _mass: 1
     _armor: 0
     _blastResistance: 0
+    _size: {x: 1, y: 1}
     _transform: {fileID: 1664229416059295314}
   _gyroForce: 100

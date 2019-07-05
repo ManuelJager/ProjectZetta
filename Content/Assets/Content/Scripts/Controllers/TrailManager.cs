@@ -2,26 +2,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Ara;
 
 public class TrailManager : MonoBehaviour
 {
     [SerializeField]
-    private AraTrail _trailRenderer;
-    [SerializeField]
-    private float maxThickness;
-    [SerializeField]
-    private float slopeMultiplier;
-    [SerializeField]
-    private float slopeStep;
+    private ParticleSystem _trailRenderer;
 
-    private float currentThickness;
     public bool isFiring;
+
+    public Color particleColor
+    {
+        set
+        {
+            var col = _trailRenderer.colorOverLifetime;
+            col.enabled = true;
+
+            var grad = new Gradient();
+
+            var alphaKeys = col.color.gradient.alphaKeys;
+            var colorKeys = new GradientColorKey[alphaKeys.Length];
+
+            for (int i = 0; i < colorKeys.Length; i++)
+                colorKeys[i] = new GradientColorKey(value, alphaKeys[i].time);
+
+            grad.SetKeys(colorKeys, alphaKeys);
+            col.color = grad;
+        }
+    }   
+
+    private void Start()
+    {
+        _trailRenderer.Play();
+    }
 
     void LateUpdate()
     {
-        _trailRenderer.initialThickness = currentThickness;
-        currentThickness.MixedInterpolate(isFiring ? maxThickness : 0, slopeMultiplier, slopeStep);
+        var eot = _trailRenderer.emission;
+        eot.enabled = isFiring;
         isFiring = false;
     }
 }
