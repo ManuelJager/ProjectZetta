@@ -61,7 +61,7 @@ public static class ProjectileUtilities
         for (int i = 0; i < colliders2D.Length; i++)
         {
             //casts the collider to an IBlock and then performs a null check so only blocks are damaged
-            var colliderBlock = colliders2D[i].transform.CastToIBlock();
+            var colliderBlock = (IBlock)colliders2D[i].transform.GetComponent(typeof(IBlock));
             if (colliderBlock != null)
             {
                 //Explosion knockback calculations

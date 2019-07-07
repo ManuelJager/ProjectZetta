@@ -8,7 +8,7 @@ public class BlockBaseClass
     [SerializeField]
     private uint _blockID;
     [SerializeField]
-    private Common.Orientation? _orientation;
+    private Vector2Int _orientation = Vector2Int.zero;
     [SerializeField]
     private float _health;
     [SerializeField]
@@ -34,10 +34,20 @@ public class BlockBaseClass
         _parentClass = parentClass;
         _shipGrid = shipGrid;
     }
-    public Common.Orientation? orientation
+    public Vector2Int orientation
     {
-        get => _orientation;
-        set => _orientation = value;
+        get
+        {
+            if (_orientation == Vector2Int.zero)
+            {
+                _orientation = Extensions.GetOrientation(_parentClass.transform.localRotation.eulerAngles.z);
+            }
+            return _orientation;
+        }
+        set
+        {
+            
+        }
     }
     public float health
     {

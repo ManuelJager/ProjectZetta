@@ -73,7 +73,6 @@ public static class Extensions
         return shipReference ?? default; ;
     }
     public static void Destroy(this GameObject gameObject) => UnityEngine.Object.Destroy(gameObject);
-    public static IBlock CastToIBlock(this Transform transform) => (IBlock)transform.GetComponent(typeof(IBlock));
     public static Vector2 GetWorldPosCenterOfMassFromGridID(int instanceID)
     {
         var shipObject = GetFromTable(instanceID);
@@ -117,8 +116,7 @@ public static class Extensions
     }
 
     public static bool IsPositive (this float value) => value >= 0f;
-    public static float GetTotalTheoriticalPowerConsumption(List<IPowerConsumer> powerConsumers) => powerConsumers.Sum(item => item.powerConsumption);
-    public static float GetTotalTheoriticalPowerGeneration(List<IPowerGenerator> powerGenerators) => powerGenerators.Sum(item => item.powerGeneration);
+
 
     public static void MixedInterpolate(this ref float from, float to, float multiplier = 0.5f, float step = 0.5f)
     {
@@ -134,79 +132,55 @@ public static class Extensions
 
     public static bool IsInRange(this float value, float min, float max) => value > min && value < max;
 
-    public static Common.Orientation GetOrientation(this IBlock block)
+    public static Vector2Int GetOrientation(float zRot)
     {
-        if (block.blockBaseClass.orientation != null)
-            return block.blockBaseClass.orientation ?? default;
-        var rotation = ((MonoBehaviour)block).transform.localRotation;
-        var orientation = GetOrientation(rotation);
-        block.blockBaseClass.orientation = orientation;
-        return orientation;
-    }
-    private static Common.Orientation GetOrientation(Quaternion rotation)
-    {
-        switch (Mathf.RoundToInt(rotation.eulerAngles.z))
+        switch (zRot)
         {
-            case 0:
-                return Common.Orientation.forward;
-            case 90:
-                return Common.Orientation.right;
-            case 180:
-                return Common.Orientation.backward;
-            case 270:
-                return Common.Orientation.left;
+            case 0f: return Vector2Int.right;
+            case 90f: return Vector2Int.up;
+            case 180: return Vector2Int.left;
+            case 270: return Vector2Int.down;
             default:
-                throw new System.ArgumentException("Rotation is invalid");
+                Debug.LogError("Invalid rotation given");
+                return Vector2Int.zero;
         }
     }
-    public static Common.Orientation GetOrientation(float zRotation)
+
+    public static float GetOrientation(Vector2Int orientation)
     {
-        switch (zRotation)
-        {
-            case 0f:
-                return Common.Orientation.forward;
-            case 90f:
-                return Common.Orientation.right;
-            case 180f:
-                return Common.Orientation.backward;
-            case 270f:
-                return Common.Orientation.left;
-            default:
-                throw new System.ArgumentException("Rotation is invalid");
-        }
+        if (orientation == Vector2Int.right) return 0f;
+        if (orientation == Vector2Int.up) return 90f;
+        if (orientation == Vector2Int.left) return 180f;
+        if (orientation == Vector2Int.down) return 270f;
+        Debug.LogError("Invalid orientation given");
+        return 0f;
     }
-    public static Common.Orientation GetOrientation(char keyPressed)
+
+    public static int GetOrientationIndex(Vector2Int orientation)
     {
-        switch (keyPressed)
-        {
-            case 'w':
-                return Common.Orientation.forward;
-            case 'a':
-                return Common.Orientation.left;
-            case 's':
-                return Common.Orientation.backward;
-            case 'd':
-                return Common.Orientation.right;
-            default:
-                throw new System.ArgumentException("KeyPressed is invalid");
-        }
+        if (orientation == Vector2Int.right) return 0;
+        if (orientation == Vector2Int.up) return 1;
+        if (orientation == Vector2Int.left) return 2;
+        if (orientation == Vector2Int.down) return 3;
+        Debug.LogError("Invalid orientation given");
+        return 0;
     }
-    public static float GetRotation(this Common.Orientation orientation)
+
+    public static Vector2Int GetOrientationByIndex(int orientationIndex)
     {
-        switch (orientation)
-        {
-            case Common.Orientation.forward:
-                return 0f;
-            case Common.Orientation.backward:
-                return 180f;
-            case Common.Orientation.left:
-                return 270f;
-            case Common.Orientation.right:
-                return 90f;
-            default:
-                throw new System.ArgumentException("Orientation Invalid");
-        }
+        if (orientationIndex == 0) return Vector2Int.right;
+        if (orientationIndex == 1) return Vector2Int.up;
+        if (orientationIndex == 2) return Vector2Int.left;
+        if (orientationIndex == 3) return Vector2Int.down;
+        Debug.LogError("Invalid index given");
+        return Vector2Int.zero;
     }
+
+    public static float GetRotation(this Vector2Int orientation)
+    {
+        return Mathf.Atan2(orientation.x, orientation.y);
+    }
+
     public static void AddAngleRef(this ref float angle, float addition)
     {
         angle += addition;

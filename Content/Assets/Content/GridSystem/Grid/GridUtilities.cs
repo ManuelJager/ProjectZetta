@@ -20,9 +20,9 @@ namespace GridUtilities
 
             private static string ReadBlock(BlockGrid.Block block)
             {
-                var orientation = Extensions.GetOrientation(block.block);
+                var orientation = Extensions.GetOrientation(block.block.blockBaseClass.parentClass.transform.localRotation.eulerAngles.z);
                 var pos = block.transform.localPosition;
-                return $@";{block.block.blockBaseClass.blockID},{pos.x},{pos.y},{(int)orientation}";
+                return $@";{block.block.blockBaseClass.blockID},{pos.x},{pos.y},{Extensions.GetOrientationIndex(orientation)}";
             }
         }
     }
@@ -58,7 +58,7 @@ namespace GridUtilities
                 go.name += $@"({index})";
                 go.transform.localPosition = new Vector2(float.Parse(args[1]), float.Parse(args[2]));
                 var rot = new Quaternion();
-                rot.eulerAngles = new Vector3(0f, 0f, Extensions.GetRotation((Common.Orientation)int.Parse(args[3])));
+                rot.eulerAngles = new Vector3(0f, 0f, Extensions.GetRotation(Extensions.GetOrientationByIndex(int.Parse(args[3]))));
                 go.transform.localRotation = rot;
                 return go;
             }

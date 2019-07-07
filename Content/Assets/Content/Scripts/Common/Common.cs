@@ -1,13 +1,6 @@
 ﻿using System.Reflection;
 public static class Common
 {
-    public enum Orientation
-    {
-        forward,
-        right,
-        backward,
-        left
-    }
     public static void ClearLog()
     {
         var assembly = Assembly.GetAssembly(typeof(UnityEditor.Editor));

@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Linq;
 
 public class BackgroundManager : MonoBehaviour
 {
@@ -11,22 +10,19 @@ public class BackgroundManager : MonoBehaviour
         Instance = this;
     }
 
-    public void GenerateBackground()
-    {
-
-    }
-
-
     public BackgroundLayer[] backgroundLayerParameters;
 
-    private ScrollUV[] quads;
-
     public GameObject quadPrefab, background;
+
+    private ScrollUV[] quads;
 
     [SerializeField]
     private int _layerSize;
     public int layerSize => _layerSize;
 
+    /// <summary>
+    /// class to store a min and max variable 
+    /// </summary>
     [System.Serializable]
     public class IntMinMax
     {
@@ -56,6 +52,9 @@ public class BackgroundManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// class to store background layer parameters
+    /// </summary>
     [System.Serializable]
     public class BackgroundLayer
     {
@@ -70,24 +69,38 @@ public class BackgroundManager : MonoBehaviour
             this.density = density;
             this.parallaxEffect = parallaxEffect;
             this.size = size;
+            size.ControlRange();
         }
     }
+
 
     public void SetUpBackground()
     {
         var count = backgroundLayerParameters.Length;
         quads = new ScrollUV[count];
 
+        // controls layer star size
+        backgroundLayerParameters.ToList().ForEach(param => param.size.ControlRange());
+
+        // loops through all of the layer parameters
         for (int i = 0; i < count; i++)
         {
-            quads[i] = Instantiate(quadPrefab, new Vector3(0, 0, i), transform.rotation, transform).GetComponent<ScrollUV>();
+            // creates layer object inside this hierarchy
+            var layer = Instantiate(quadPrefab, new Vector3(0, 0, i), transform.rotation, transform);
+            layer.name = $@"Layer {i + 1}";
+            quads[i] = layer.GetComponent<ScrollUV>();
+            // sets texture of the cutout material and parallax multiplier of the quad
             quads[i].texture = SetUpLayer(backgroundLayerParameters[i]);
             quads[i].parallax = backgroundLayerParameters[i].parallaxEffect;
         }
-
-        Instantiate(background, new Vector3(0, 0, count + 1), transform.rotation, transform);
+        
+        // instantiates static background 
+        Instantiate(background, new Vector3(0, 0, count + 1), transform.rotation, transform).name = "Background";
     }
 
+    /// <summary>
+    /// Generates a texture based on layer parameters
+    /// </summary>
     public Texture2D SetUpLayer(BackgroundLayer layerParameter)
     {
         var texture = new Texture2D(layerSize, layerSize);
@@ -98,16 +111,19 @@ public class BackgroundManager : MonoBehaviour
         var emptyColor = new Color(0, 0, 0);
         emptyColor.a = 0;
 
+        // makes complete texture transparent
         for (int x = 0; x < layerSize; x++)
             for (int y = 0; y < layerSize; y++)
                 texture.SetPixel(x, y, emptyColor);
 
+
+        // generates stars on texture
         for (int i = 0; i < starCount; i++)
         {
-            var randomX = Mathf.RoundToInt(UnityEngine.Random.Range(0f, layerSize));
-            var randomY = Mathf.RoundToInt(UnityEngine.Random.Range(0f, layerSize));
+            var randomX = Mathf.RoundToInt(Random.Range(0f, layerSize));
+            var randomY = Mathf.RoundToInt(Random.Range(0f, layerSize));
 
-            var color = layerParameter.colorGradient.Evaluate(UnityEngine.Random.Range(0f, 1f));
+            var color = layerParameter.colorGradient.Evaluate(Random.Range(0f, 1f));
             color.a = 1;
 
             var starSize = layerParameter.size.randomValue;
@@ -117,6 +133,7 @@ public class BackgroundManager : MonoBehaviour
                     texture.SetPixel(HandleOverflow(randomX + x, layerSize), HandleOverflow(randomY + y, layerSize), color);
         }
 
+        // applies setPixel changes on texture
         texture.Apply(false, true);
 
         return texture;
@@ -130,4 +147,6 @@ public class BackgroundManager : MonoBehaviour
             value += size;
         return value;
     }
+
+    public void Start() => SetUpBackground();
 }
