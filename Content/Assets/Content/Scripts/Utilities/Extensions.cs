@@ -136,7 +136,7 @@ public static class Extensions
     {
         switch (zRot)
         {
-            case 0f: return Vector2Int.right;
+            case 0f:  return Vector2Int.right;
             case 90f: return Vector2Int.up;
             case 180: return Vector2Int.left;
             case 270: return Vector2Int.down;
@@ -149,9 +149,9 @@ public static class Extensions
     public static float GetOrientation(Vector2Int orientation)
     {
         if (orientation == Vector2Int.right) return 0f;
-        if (orientation == Vector2Int.up) return 90f;
-        if (orientation == Vector2Int.left) return 180f;
-        if (orientation == Vector2Int.down) return 270f;
+        if (orientation == Vector2Int.up)    return 90f;
+        if (orientation == Vector2Int.left)  return 180f;
+        if (orientation == Vector2Int.down)  return 270f;
         Debug.LogError("Invalid orientation given");
         return 0f;
     }
@@ -159,9 +159,9 @@ public static class Extensions
     public static int GetOrientationIndex(Vector2Int orientation)
     {
         if (orientation == Vector2Int.right) return 0;
-        if (orientation == Vector2Int.up) return 1;
-        if (orientation == Vector2Int.left) return 2;
-        if (orientation == Vector2Int.down) return 3;
+        if (orientation == Vector2Int.up)    return 1;
+        if (orientation == Vector2Int.left)  return 2;
+        if (orientation == Vector2Int.down)  return 3;
         Debug.LogError("Invalid orientation given");
         return 0;
     }
@@ -178,7 +178,9 @@ public static class Extensions
 
     public static float GetRotation(this Vector2Int orientation)
     {
-        return Mathf.Atan2(orientation.x, orientation.y);
+        var val = Mathf.Rad2Deg * Mathf.Atan2(orientation.x, orientation.y) + 90f;
+        val.AddAngleRef(180f);
+        return val;
     }
 
     public static void AddAngleRef(this ref float angle, float addition)

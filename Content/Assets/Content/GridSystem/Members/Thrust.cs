@@ -43,27 +43,6 @@ public class NewThrust
             _consumption -= thruster.powerConsumption;
         }
     }
-    public class ThrusterGroup
-    {
-        private Dictionary<Vector2Int, bool> orientationShouldFire = new Dictionary<Vector2Int, bool>();
-
-        public ThrusterGroup()
-        {
-            orientationShouldFire = new Dictionary<Vector2Int, bool>()
-            {
-                { Vector2Int.right,false},
-                { Vector2Int.down, false},
-                { Vector2Int.left, false},
-                { Vector2Int.up,   false}
-            };
-        }
-        public bool this[Vector2Int index]
-        {
-            get => orientationShouldFire[index];
-            set => orientationShouldFire[index] = value;
-        }
-
-    }
     public struct MinMax
     {
         public float min;
@@ -76,13 +55,14 @@ public class NewThrust
         }
     }
 
-    private float offset = 2;
 
     public Dictionary<Vector2Int, ThrustVector> thrustVectors;
 
-    Dictionary<Vector2Int, MinMax> thrusterRanges = new Dictionary<Vector2Int, MinMax>();
+    private Dictionary<Vector2Int, MinMax> thrusterRanges = new Dictionary<Vector2Int, MinMax>();
 
-    ShipGrid parentClass;
+    private ShipGrid parentClass;
+
+    private float offset = 2;
 
     public NewThrust(ShipGrid parentClass, List<IThruster> thrusters = null)
     {
@@ -150,20 +130,10 @@ public class NewThrust
             parentClass.controller.currentConsumption += thrustVectors[orientation1].consumption;
         }
     }
-    private void GetResultantAndMagnitude()
-    {
-
-    }
     private void FireThrusterGroup(Vector2Int orientation, float multiplier = 1)
     {
         var thrustVector = thrustVectors[orientation];
         multiplier = Mathf.Clamp01(multiplier);
         parentClass._rb2d.AddForce(RotationUtilities.RotateVector2(thrustVector.thrustVector * multiplier, parentClass.grid.rotation.eulerAngles.z));
     }
-
-
-
-
-
-
 }
