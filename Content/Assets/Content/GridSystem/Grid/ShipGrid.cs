@@ -10,7 +10,13 @@ public class ShipGrid : MonoBehaviour
     public Color ThemeColor;
 
     private GameObject _ship;
-    public Rigidbody2D _rb2d;
+    [SerializeField]
+    private Rigidbody2D _rb2d;
+    public Rigidbody2D rb2d
+    {
+        get => _rb2d;
+        set => _rb2d = value;
+    }
 
     public List<ITurret> turrets = new List<ITurret>();
 

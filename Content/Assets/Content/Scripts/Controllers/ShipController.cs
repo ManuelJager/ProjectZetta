@@ -77,6 +77,7 @@ public class ShipController : MonoBehaviour, IController
                 {
                     var rot = RotationUtilities.MouseLookAtRotation(_grid, _shipGrid.turningRate.turningRate, _shipGrid.turningRate.turningRate, rotationFromShipToMouse);
                     _grid.transform.rotation = rot;
+                    _shipGrid.rb2d.angularVelocity = 0f;
                 }
                 break;
             case AimingMode.Keyboard:

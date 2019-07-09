@@ -116,24 +116,25 @@ public class NewThrust
             thrustVectors[orientation].isFiring = false;
         }
 
-        if (orientation0 != null)
+        if (orientation0 != Vector2Int.zero)
         {
             FireThrusterGroup(orientation0);
             thrustVectors[orientation0].isFiring = true;
             parentClass.controller.currentConsumption += thrustVectors[orientation0].consumption;
         }
 
-        if (orientation1 != null)
+        if (orientation1 != Vector2Int.zero)
         {
             FireThrusterGroup(orientation1);
             thrustVectors[orientation1].isFiring = true;
             parentClass.controller.currentConsumption += thrustVectors[orientation1].consumption;
         }
     }
+    
     private void FireThrusterGroup(Vector2Int orientation, float multiplier = 1)
     {
         var thrustVector = thrustVectors[orientation];
         multiplier = Mathf.Clamp01(multiplier);
-        parentClass._rb2d.AddForce(RotationUtilities.RotateVector2(thrustVector.thrustVector * multiplier, parentClass.grid.rotation.eulerAngles.z));
+        parentClass.rb2d.AddForce(RotationUtilities.RotateVector2(thrustVector.thrustVector * multiplier, parentClass.grid.rotation.eulerAngles.z));
     }
 }

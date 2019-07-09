@@ -54,7 +54,7 @@ public class BlockGrid
         private set
         {
             _mass = value;
-            shipGrid._rb2d.mass = value;
+            shipGrid.rb2d.mass = value;
         }
     }
 

@@ -19,7 +19,7 @@ public class PlayerPrefs : MonoBehaviour
     /// </summary>
     public bool debug4;
     /// <summary>
-    /// Debugs the grid positions of multi size blocks 
+    /// Debugs the grid positions of multi size blocks
     /// </summary>
     public bool debug5;
     /// <summary>
