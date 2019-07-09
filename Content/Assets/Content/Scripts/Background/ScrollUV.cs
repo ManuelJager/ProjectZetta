@@ -28,14 +28,38 @@ public class ScrollUV : MonoBehaviour
         }
     }
 
+    public float sizeMultiplier
+    {
+        get
+        {
+            return transform.localScale.x / _startSize.x;
+        }
+        set
+        {
+            var multiplier = value + _parallax;
+            transform.localScale = _startSize * multiplier;
+        }
+    }
+
+    private Vector3 _startSize;
+
+    private void Awake()
+    {
+        
+        _startSize = transform.localScale;
+    }
+
     private void Update()
     {
-        Material mat = meshRenderer.material;
+        var mat = meshRenderer.material;
 
         Vector2 offset;
 
-        offset.x = transform.position.x / transform.localScale.x * _parallax;
-        offset.y = transform.position.y / transform.localScale.y * _parallax;
+        offset.x = transform.position.x / _startSize.x * _parallax;
+        offset.y = transform.position.y / _startSize.y * _parallax;
+
+        offset.x %= 1f;
+        offset.y %= 1f;
 
         mat.mainTextureOffset = offset;
     }

@@ -187,7 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11fde7350f7cc104b80e92e8b48fcbea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ThemeColor: {r: 0, g: 0.989897, b: 1, a: 0}
+  ThemeColor: {r: 0, g: 0.94190407, b: 1, a: 0}
   _rb2d: {fileID: 38816889}
   totalPowerGeneration: 0
   totalPowerConsumption: 0
@@ -1077,6 +1077,26 @@ PrefabInstance:
       propertyPath: initialVelocity.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 606029655088998811, guid: 4aff8d213d2b0784f9b8585ab8aa07a3,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 606029655088998811, guid: 4aff8d213d2b0784f9b8585ab8aa07a3,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 606029655088998811, guid: 4aff8d213d2b0784f9b8585ab8aa07a3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 606029655088998811, guid: 4aff8d213d2b0784f9b8585ab8aa07a3,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4aff8d213d2b0784f9b8585ab8aa07a3, type: 3}
 --- !u!4 &389172595 stripped
@@ -1537,6 +1557,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe67ba94233b5014b9e5bb488dc0da1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _camera: {fileID: 519420031}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -1564,7 +1585,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 15
+  orthographic size: 20
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1613,7 +1634,7 @@ MonoBehaviour:
   debug4: 0
   debug5: 0
   debug6: 0
-  debug7: 0
+  debug7: 1
   debug8: 0
   debug9: 0
   debug10: 0

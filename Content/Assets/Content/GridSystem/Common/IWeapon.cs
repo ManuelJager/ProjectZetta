@@ -5,5 +5,5 @@ using UnityEngine;
 public interface IWeapon {
     float rateOfFire { get; } //rpm
     bool hasReloaded { get; set; }
-    void Fire();
+    void Fire(Vector2 gridVelocity);
 }

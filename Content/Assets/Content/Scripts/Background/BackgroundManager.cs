@@ -14,11 +14,24 @@ public class BackgroundManager : MonoBehaviour
 
     public GameObject quadPrefab, background;
 
-    private ScrollUV[] quads;
+    private ScrollUV[] layerUVs;
+
+    private ScrollUV backgroundUV;
 
     [SerializeField]
     private int _layerSize;
     public int layerSize => _layerSize;
+
+    public float globalScale
+    {
+        set
+        {
+            var count = layerUVs.Length;
+            for (int i = 0; i < count; i++)
+                layerUVs[i].sizeMultiplier = value;
+            backgroundUV.sizeMultiplier = value;
+        }
+    }
 
     /// <summary>
     /// class to store a min and max variable 
@@ -77,7 +90,7 @@ public class BackgroundManager : MonoBehaviour
     public void SetUpBackground()
     {
         var count = backgroundLayerParameters.Length;
-        quads = new ScrollUV[count];
+        layerUVs = new ScrollUV[count];
 
         // controls layer star size
         backgroundLayerParameters.ToList().ForEach(param => param.size.ControlRange());
@@ -88,14 +101,17 @@ public class BackgroundManager : MonoBehaviour
             // creates layer object inside this hierarchy
             var layer = Instantiate(quadPrefab, new Vector3(0, 0, i), transform.rotation, transform);
             layer.name = $@"Layer {i + 1}";
-            quads[i] = layer.GetComponent<ScrollUV>();
+            layerUVs[i] = layer.GetComponent<ScrollUV>();
             // sets texture of the cutout material and parallax multiplier of the quad
-            quads[i].texture = SetUpLayer(backgroundLayerParameters[i]);
-            quads[i].parallax = backgroundLayerParameters[i].parallaxEffect;
+            layerUVs[i].texture = SetUpLayer(backgroundLayerParameters[i]);
+            layerUVs[i].parallax = backgroundLayerParameters[i].parallaxEffect;
         }
-        
+
         // instantiates static background 
-        Instantiate(background, new Vector3(0, 0, count + 1), transform.rotation, transform).name = "Background";
+        var tempBackground = Instantiate(background, new Vector3(0, 0, count + 1), transform.rotation, transform);
+        tempBackground.name = "Background";
+        backgroundUV = tempBackground.GetComponent<ScrollUV>();
+        backgroundUV.parallax = 0f;
     }
 
     /// <summary>

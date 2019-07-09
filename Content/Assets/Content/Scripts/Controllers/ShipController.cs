@@ -69,6 +69,7 @@ public class ShipController : MonoBehaviour, IController
     {
         var rotationFromShipToMouse = RotationUtilities.GetMouseWorldPos(_grid);
         var shipZRotation = 360 - _grid.rotation.eulerAngles.z;
+        var velocity = _shipGrid.rb2d.velocity;
         //aiming
         switch (aimingMode)
         {
@@ -86,7 +87,7 @@ public class ShipController : MonoBehaviour, IController
         foreach (var turret in _shipGrid.turrets)
         {
             turret.turretObject.transform.rotation = RotationUtilities.MouseLookAtRotation(turret.turretObject.transform, turret.turretSpeed);
-            if (Input.GetMouseButton(0) && turret.hasReloaded) turret.Fire();
+            if (Input.GetMouseButton(0) && turret.hasReloaded) turret.Fire(velocity);
         }
         //movement
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));

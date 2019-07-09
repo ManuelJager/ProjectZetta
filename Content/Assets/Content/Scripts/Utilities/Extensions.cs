@@ -31,7 +31,7 @@ public static class Extensions
     /// Sets this transform as the target of the camera follower instance
     /// </summary>
     /// <param name="transform"></param>
-    public static void SetThisAsCameraTarget(this Transform transform) => CameraFollower.Instance.SetTarget(transform);
+    public static void SetThisAsCameraTarget(this Transform transform) => CameraFollower.Instance.target = transform;
 
     public static void AddToTable(this GridManager.shipReference shipReference, int instanceID)
     {

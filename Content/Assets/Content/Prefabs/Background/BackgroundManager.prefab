@@ -74,7 +74,7 @@ MonoBehaviour:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     density: 0.00001
-    parallaxEffect: 0.9
+    parallaxEffect: 0.02
     size:
       min: 2
       max: 9
@@ -108,7 +108,7 @@ MonoBehaviour:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     density: 0.00002
-    parallaxEffect: 0.7
+    parallaxEffect: 0.015
     size:
       min: 2
       max: 5
@@ -142,7 +142,7 @@ MonoBehaviour:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     density: 0.00007
-    parallaxEffect: 0.4
+    parallaxEffect: 0.01
     size:
       min: 2
       max: 3
@@ -176,7 +176,7 @@ MonoBehaviour:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     density: 0.00012
-    parallaxEffect: 0.2
+    parallaxEffect: 0.006
     size:
       min: 1
       max: 2
@@ -210,7 +210,7 @@ MonoBehaviour:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     density: 0.0024
-    parallaxEffect: 0.05
+    parallaxEffect: 0.003
     size:
       min: 1
       max: 1
@@ -218,4 +218,4 @@ MonoBehaviour:
     type: 3}
   background: {fileID: 1517538890006040638, guid: da4e7a52a3d669941a9e07be69a89149,
     type: 3}
-  _layerSize: 2048
+  _layerSize: 4096

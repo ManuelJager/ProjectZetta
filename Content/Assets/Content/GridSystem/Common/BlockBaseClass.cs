@@ -57,7 +57,7 @@ public class BlockBaseClass
             _health = value;
             if (value <= .0f)
             {
-                block.SubtractFromGridAndDestroy();
+                shipGrid.RemoveFromGrid(transform);
             }
         }
     }

@@ -9,12 +9,4 @@ public class ArmorBlock : MonoBehaviour, IBlock
         get => _blockBaseClass;
         set => _blockBaseClass = value;
     }
-    public void SubtractFromGridAndDestroy()
-    {
-        Destroy(gameObject);
-    }
-    public void DebugThis()
-    {
-        Debug.Log("Rood id of " + transform.root.name + " is : " + transform.GetRootGridID());
-    }
 }

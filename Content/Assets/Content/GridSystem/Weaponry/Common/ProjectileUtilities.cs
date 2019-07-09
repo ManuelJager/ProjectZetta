@@ -11,26 +11,13 @@ public static class ProjectileUtilities
         explosive,
         kinetic
     }
-    public static void Initialize(this IProjectile projectile, ProjectileParameters projectileParameters, DamageTypes damageParameters, Vector3 targetPosition, Quaternion targetRotation, Transform projectileTransform, int sourceGridID)
+    public static void Initialize(this IProjectile projectile, Vector2 gridVelocity, ProjectileParameters projectileParameters, DamageTypes damageParameters, Vector3 targetPosition, Quaternion targetRotation, Transform projectileTransform, int sourceGridID)
     {
         projectileTransform.position = targetPosition;
         projectileTransform.rotation = targetRotation;
         projectile.damageTypes = damageParameters;
-        projectile.projectileReferences.rb2d.AddForce(projectileTransform.right * projectileParameters.speed);
+        projectile.projectileReferences.rb2d.AddForce(gridVelocity.ToVector3() + (projectileTransform.right * projectileParameters.speed));
         projectile.sourceGridID = sourceGridID;
-        /*
-        Type type = projectile.GetType();
-        var fields = type.GetFields();
-        for (int i = 0; i < fields.Length; i++)
-        {
-            if (fields[i].Name == "range")
-            {
-                Debug.Log("field found");
-                fields[i].SetValue(projectile, projectileParameters.range);
-            }
-        }*/
-        
-        
     }
     public static void DealDamage(IProjectile projectile, IBlock block)
     {

@@ -45,30 +45,25 @@ public class AutoCannon : MonoBehaviour, IBlock, ITurret, IWeapon
         throw new System.NotImplementedException();
     }
 
-    public void Fire()
+    public void Fire(Vector2 gridVelocity)
     {
         if (hasReloaded)
-            StartCoroutine(FireShot());
+            StartCoroutine(FireShot(gridVelocity));
     }
 
-    public IEnumerator FireShot()
+    public IEnumerator FireShot(Vector2 gridVelocity)
     {
         hasReloaded = false;
         animator.SetTrigger("Fire");
         PlayShot();
         var projectile = Instantiate(projectilePrefab);
         var IProjectile = (IProjectile)projectile.GetComponent(typeof(IProjectile));
-        IProjectile.Initialize(projectileParameters, damageTypes, firePoint.transform.position, turretObject.rotation, projectile.transform, blockBaseClass.gridID);
+        IProjectile.Initialize(gridVelocity, projectileParameters, damageTypes, firePoint.transform.position, turretObject.rotation, projectile.transform, blockBaseClass.gridID);
         yield return new WaitForSeconds(60.0f / rateOfFire);
         hasReloaded = true;
     }
     public void PlayShot()
     {
         audioSource.Play();
-    }
-
-    public void SubtractFromGridAndDestroy()
-    {
-        
     }
 }
