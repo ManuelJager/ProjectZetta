@@ -74,7 +74,7 @@ MonoBehaviour:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     density: 0.00001
-    parallaxEffect: 0.02
+    parallaxEffect: 0.2
     size:
       min: 2
       max: 9
@@ -108,7 +108,7 @@ MonoBehaviour:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     density: 0.00002
-    parallaxEffect: 0.015
+    parallaxEffect: 0.15
     size:
       min: 2
       max: 5
@@ -142,7 +142,7 @@ MonoBehaviour:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     density: 0.00007
-    parallaxEffect: 0.01
+    parallaxEffect: 0.1
     size:
       min: 2
       max: 3
@@ -210,7 +210,7 @@ MonoBehaviour:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     density: 0.0024
-    parallaxEffect: 0.003
+    parallaxEffect: 0.03
     size:
       min: 1
       max: 1

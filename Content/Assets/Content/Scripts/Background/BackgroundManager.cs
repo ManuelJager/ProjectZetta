@@ -164,5 +164,9 @@ public class BackgroundManager : MonoBehaviour
         return value;
     }
 
-    public void Start() => SetUpBackground();
+    public void Start()
+    {
+        if (!PlayerPrefs.Instance.lightWeightMode)
+            SetUpBackground();
+    }
 }

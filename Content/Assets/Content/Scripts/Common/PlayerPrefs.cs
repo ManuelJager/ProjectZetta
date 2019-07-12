@@ -43,6 +43,10 @@ public class PlayerPrefs : MonoBehaviour
     /// </summary>
     public bool debug10;
     /// <summary>
+    /// Ignores some systems like background generation to save on loading time for debug purposes
+    /// </summary>
+    public bool lightWeightMode;
+    /// <summary>
     /// Wether or not sabot rounds instantiate shell casing graphics on fire
     /// </summary>
     public bool sabotRoundSpread;

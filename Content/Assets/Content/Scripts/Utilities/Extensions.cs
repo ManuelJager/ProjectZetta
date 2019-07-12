@@ -31,7 +31,7 @@ public static class Extensions
     /// Sets this transform as the target of the camera follower instance
     /// </summary>
     /// <param name="transform"></param>
-    public static void SetThisAsCameraTarget(this Transform transform) => CameraFollower.Instance.target = transform;
+    public static void SetThisAsCameraTarget(this Transform transform) => CameraManager.Instance.target = transform;
 
     public static void AddToTable(this GridManager.shipReference shipReference, int instanceID)
     {
@@ -128,6 +128,23 @@ public static class Extensions
         from += dif * multiplier;
         dif = to - from;
         from += dif > 0 ? dif > step ? step : dif : dif < -step ? -step : dif;
+    }
+
+    public static void MixedInterpolatev2(this ref Vector2 from, Vector2 to, float multiplier = 0.5f, float step = 0.5f)
+    {
+        var value = from;
+        value.x.MixedInterpolate(to.x, multiplier, step);
+        value.y.MixedInterpolate(to.y, multiplier, step);
+        from = value;
+    }
+
+    public static void MixedInterpolatev3(this ref Vector3 from, Vector3 to, float multiplier = 0.5f, float step = 0.5f)
+    {
+        var value = from;
+        value.x.MixedInterpolate(to.x, multiplier, step);
+        value.y.MixedInterpolate(to.y, multiplier, step);
+        value.z.MixedInterpolate(to.z, multiplier, step);
+        from = value;
     }
 
     public static bool IsInRange(this float value, float min, float max) => value > min && value < max;

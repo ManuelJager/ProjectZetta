@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraFollower : MonoBehaviour
+public class CameraManager : MonoBehaviour
 {
     private Transform _target;
     [SerializeField]
     private Camera _camera;
-    public static CameraFollower Instance;
+    public static CameraManager Instance;
 
     private float minSize = 20;
     private float maxSize = 50;
@@ -51,6 +51,7 @@ public class CameraFollower : MonoBehaviour
         var size = currentSize;
         Extensions.MixedInterpolate(ref size, targetSize, 0.01f, 0.01f);
         _camera.orthographicSize = size;
-        BackgroundManager.Instance.globalScale = currentSize / 20;
+        if (!PlayerPrefs.Instance.lightWeightMode)
+            BackgroundManager.Instance.globalScale = currentSize / 20;
     }
 }
