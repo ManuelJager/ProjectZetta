@@ -26,6 +26,8 @@ public class EnergyBarManager : MonoBehaviour, IPanel
         }
     }
 
+    public bool ready => enabled || !rawEnabled;
+
     public void Disable()
     {
     }

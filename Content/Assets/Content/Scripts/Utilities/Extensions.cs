@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Linq;
 using System;
+
 public static class Extensions
 {
     /// <summary>
@@ -249,7 +251,27 @@ public static class Extensions
         return min <= angle || angle <= max;
     }
     public static Vector2Int RoundToInt(this Vector2 vector) => new Vector2Int(Mathf.RoundToInt(vector.x), Mathf.RoundToInt(vector.y));
-    
+
+    public static ColorBlock MultiplyColorBlockByAlpha(ColorBlock colorBlock, float alpha)
+    {
+        var block = colorBlock;
+        var color = new Color[4];
+
+        color[0] = colorBlock.highlightedColor;
+        color[1] = colorBlock.normalColor;
+        color[2] = colorBlock.pressedColor;
+        color[3] = colorBlock.selectedColor;
+
+        for (int i = 0; i < 4; i++)
+            color[i].a *= alpha;
+
+        block.highlightedColor = color[0];
+        block.normalColor = color[1];
+        block.pressedColor = color[2];
+        block.selectedColor = color[3];
+
+        return block;
+    }
 }
 
 public class ManuQueue<T> : IEnumerable

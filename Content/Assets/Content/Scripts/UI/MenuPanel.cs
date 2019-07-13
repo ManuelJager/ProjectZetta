@@ -18,9 +18,10 @@ public class MenuPanel : MonoBehaviour, IPanel
     [SerializeField]
     private float targetAlpha;
     [SerializeField]
-    public Text[] buttonTextComponents;
-    [SerializeField]
-    public Button[] buttonButtonComponents;
+    public GameObject[] panelAnimatorObjects;
+    private IPanelAnimator[] panelAnimators;
+
+    public bool ready => enabled || !rawEnabled;
 
     public bool rawEnabled => gameObject.activeInHierarchy;
 
@@ -43,6 +44,13 @@ public class MenuPanel : MonoBehaviour, IPanel
     }
 
     private void SetEnabled(bool value) => _enabled = value;
+
+    private void Start()
+    {
+        panelAnimators = new IPanelAnimator[panelAnimatorObjects.Length];
+        for (int i = 0; i < panelAnimatorObjects.Length; i++)
+            panelAnimators[i] = (IPanelAnimator)panelAnimatorObjects[i].GetComponent(typeof(IPanelAnimator));
+    }
 
     IEnumerator LerpPos(Vector2 to, float initialDelay = 0f, Action<bool> endAction = null, bool value = false)
     {
@@ -85,33 +93,11 @@ public class MenuPanel : MonoBehaviour, IPanel
             StartCoroutine(LerpTimeScale(to));
     }
 
-    IEnumerator LerpPosOfText(RectTransform text, Vector2 to)
-    {
-        var pos = text.anchoredPosition;
-        pos.MixedInterpolatev2(to, 0.02f, 0.02f);
-        text.anchoredPosition = pos;
-
-        yield return Time.deltaTime;
-        if (pos != to)
-            StartCoroutine(LerpPosOfText(text, to));
-    }
-
-    IEnumerator LerpAlphaOfText(Text text, float to)
-    {
-        var color = text.color;
-        color.a.MixedInterpolate(to, 0.01f, 0.01f);
-        text.color = color;
-
-        yield return Time.deltaTime;
-        if (color.a != to)
-            StartCoroutine(LerpAlphaOfText(text, to));
-    }
-
-    IEnumerator LerpTextComponents(float initialDelay, Vector2 relativePos, float targetAlpha, float delayBetweenComponenets, bool orderTopToBottom)
+    IEnumerator LerpTextComponents(float initialDelay, UIManager.panelPos panelPos, float targetAlpha, float delayBetweenComponenets, bool orderTopToBottom)
     {
         yield return new WaitForSeconds(initialDelay);
 
-        var list = buttonTextComponents.ToList();
+        var list = panelAnimators.ToList();
 
         if (!orderTopToBottom)
             list.Reverse();
@@ -119,14 +105,17 @@ public class MenuPanel : MonoBehaviour, IPanel
         for (int i = 0; i < list.Count; i++)
         {
             var component = list[i];
-            StartCoroutine(LerpPosOfText(component.gameObject.GetComponent<RectTransform>(), relativePos));
-            StartCoroutine(LerpAlphaOfText(component, targetAlpha));
+            StartCoroutine(component.LerpAlpha(targetAlpha));
+            StartCoroutine(component.LerpPos(panelPos));
+            StartCoroutine(component.LerpAlphaOfText(targetAlpha));
             yield return new WaitForSeconds(delayBetweenComponenets);
         }
     }
 
     public void Enable()
     {
+        if (_enabled)
+            return;
         gameObject.SetActive(true);
         StopAllCoroutines();
 
@@ -141,11 +130,13 @@ public class MenuPanel : MonoBehaviour, IPanel
 
         StartCoroutine(LerpTimeScale(0f));
 
-        StartCoroutine(LerpTextComponents(initialDelay: 0.2f, relativePos: new Vector2(-15f, 0f), targetAlpha: 1f, delayBetweenComponenets: 0.02f, orderTopToBottom: true));
+        StartCoroutine(LerpTextComponents(initialDelay: 0.0f, panelPos: UIManager.panelPos.target, targetAlpha: 1f, delayBetweenComponenets: 0.03f, orderTopToBottom: true));
     }
 
     public void Disable()
     {
+        if (!_enabled)
+            return;
         _enabled = false;
         StopAllCoroutines();
 
@@ -156,7 +147,7 @@ public class MenuPanel : MonoBehaviour, IPanel
 
         StartCoroutine(LerpTimeScale(1f));
 
-        StartCoroutine(LerpTextComponents(initialDelay: 0.0f, relativePos: new Vector2(-115f, 0f), targetAlpha: 0f, delayBetweenComponenets: 0.02f, orderTopToBottom: false));
+        StartCoroutine(LerpTextComponents(initialDelay: 0.0f, panelPos: UIManager.panelPos.spawn, targetAlpha: 0f, delayBetweenComponenets: 0.03f, orderTopToBottom: false));
     }
 
     public void ImmideateEnable()
@@ -183,7 +174,4 @@ public class MenuPanel : MonoBehaviour, IPanel
         gameObject.SetActive(false);
     }
 
-    private void SetButtonComponentActive() => buttonButtonComponents.ToList().ForEach(component => component.gameObject.SetActive(true));
-
-    private void SetButtonComponentInactive() => buttonButtonComponents.ToList().ForEach(component => component.gameObject.SetActive(false));
 }

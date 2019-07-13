@@ -6,6 +6,12 @@ using System.Linq;
 
 public class UIManager : MonoBehaviour
 {
+    public enum panelPos
+    {
+        spawn,
+        target
+    }
+
     [SerializeField]
     private GameObject _energyBar;
     [SerializeField]
@@ -58,12 +64,12 @@ public class UIManager : MonoBehaviour
 
         currentState = to;
 
-        Debug.Log($@"Switched UIState to {to}");
+        //Debug.Log($@"Switched UIState to {to}");
     }
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && panelDict[_pauseMenu].ready)
         {
             switch (currentState)
             {

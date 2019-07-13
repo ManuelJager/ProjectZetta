@@ -10,4 +10,5 @@ public interface IPanel
     void ImmedeateDisable();
     bool rawEnabled { get; }
     bool enabled { get; set; }
+    bool ready { get; }
 }
