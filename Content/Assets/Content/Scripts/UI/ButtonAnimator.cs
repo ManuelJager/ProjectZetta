@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PanelAnimator : MonoBehaviour, IPanelAnimator
+public class ButtonAnimator : MonoBehaviour, IPanelAnimator
 {
     [SerializeField]
     private Vector2 _targetPos;
@@ -25,6 +25,8 @@ public class PanelAnimator : MonoBehaviour, IPanelAnimator
 
     public ColorBlock buttonColorBlock;
 
+    private AnimateableUIObject uIObject;
+
     private float colorMultiplier = 1f;
 
     public void Start()
@@ -34,8 +36,16 @@ public class PanelAnimator : MonoBehaviour, IPanelAnimator
         text = transform.GetChild(0).GetComponent<Text>();
         buttonColorBlock = button.colors;
 
+        uIObject = new AnimateableUIObject(gameObject);
+
         _targetPos = _rectTransform.anchoredPosition;
         _spawnPos = _targetPos + _spawnPosOffset;
+    }
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+            uIObject.alpha = 0.3f;
     }
 
     public IEnumerator LerpAlpha(float value)

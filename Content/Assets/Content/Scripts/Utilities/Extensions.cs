@@ -326,3 +326,177 @@ public class ManuQueue<T> : IEnumerable
         }
     }
 }
+
+
+public interface IComponentController
+{
+    float alpha { set; }
+}
+
+public class AnimateableUIObject : IComponentController
+{
+    private class ComponentType
+    {
+        private Type internalType;
+        private Component component;
+        public IComponentController componentController;
+
+        public ComponentType(Component component)
+        {
+            this.component = component;
+            internalType = component.GetType();
+
+            if (ComponentIsOfButtonType(component))
+                componentController = new ButtonController((Button)component);
+            if (ComponentIsOfTextType(component))
+                componentController = new TextController((Text)component);
+            if (ComponentIsOfImageType(component))
+                componentController = new ImageController((Image)component);
+        }
+
+        private bool ComponentIsOfButtonType(Component component)
+        {
+            try
+            {
+                var value = (Button)component;
+                return true;
+            }
+            catch { return false; }
+        }
+
+        private bool ComponentIsOfTextType(Component component)
+        {
+            try
+            {
+                var value = (Text)component;
+                return true;
+            }
+            catch { return false; }
+        }
+
+        private bool ComponentIsOfImageType(Component component)
+        {
+            try
+            {
+                var value = (Image)component;
+                return true;
+            }
+            catch { return false; }
+        }
+
+        private class ButtonController : IComponentController
+        {
+            private ColorBlock defaultColorBlock;
+
+            private Button button;
+
+            private float _alpha = 1f;
+            public float alpha
+            {
+                get
+                {
+                    return _alpha;
+                }
+                set
+                {
+                    button.colors = Extensions.MultiplyColorBlockByAlpha(defaultColorBlock, value);
+                    _alpha = value;
+                }
+            }
+
+            public ButtonController(Button button)
+            {
+                this.button = button;
+                defaultColorBlock = button.colors;
+            }
+        }
+
+        private class TextController : IComponentController
+        {
+            private Text text;
+
+            private float _alpha;
+            public float alpha
+            {
+                get
+                {
+                    return text.color.a;
+                }
+                set
+                {
+                    var color = text.color;
+                    color.a = value;
+                    text.color = color;
+                }
+            }
+
+            public TextController(Text text)
+            {
+                this.text = text;
+            }
+        }
+
+        private class ImageController : IComponentController
+        {
+            private Image image;
+
+            private float _alpha;
+            public float alpha
+            {
+                get
+                {
+                    return image.color.a;
+                }
+                set
+                {
+                    var color = image.color;
+                    color.a = value;
+                    image.color = color;
+                }
+            }
+
+            public ImageController(Image image)
+            {
+                this.image = image;
+            }
+        }
+    }
+
+    public static readonly Type[] acceptedTypes = new Type[3] { typeof(Button), typeof(Text), typeof(Image) };
+
+    private bool componentIsOfAcceptedTypes(Component component)
+    {
+        for (int i = 0; i < acceptedTypes.Length; i++)
+        {
+            try
+            {
+                var type = Convert.ChangeType(component, acceptedTypes[i]);
+                return true;
+            }
+            catch { }
+        }
+        return false;
+    }
+
+    private List<ComponentType> internalComponentList = new List<ComponentType>();
+
+    public float alpha
+    {
+        set => internalComponentList.ForEach(component => component.componentController.alpha = value);
+    }
+
+    public AnimateableUIObject(GameObject gameObject)
+    {
+        gameObject.GetComponents(typeof(Component))
+            .ToList()
+            .Where(component => componentIsOfAcceptedTypes(component))
+            .ToList()
+            .ForEach(component => internalComponentList.Add(new ComponentType(component: component)));
+    }
+
+
+
+
+
+
+}
